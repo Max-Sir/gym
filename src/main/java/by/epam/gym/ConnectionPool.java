@@ -79,6 +79,10 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Get instance of connection pool.
+     * @return instance of connection pool.
+     */
     public static ConnectionPool getInstance() {
 
         if (isInstanceAvailable.get()) {
