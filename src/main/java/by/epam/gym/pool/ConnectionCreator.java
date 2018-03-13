@@ -7,6 +7,14 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+/**
+ * Util class that creates connection to database using file resources.
+ *
+ * @see Connection
+ * @see Properties
+ * @see ResourceBundle
+ * @author Eugene Makarenko
+ */
 public class ConnectionCreator {
 
     private static final String RESOURCE_BUNDLE_FILE_NAME = "database";
@@ -27,10 +35,11 @@ public class ConnectionCreator {
 
     private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(RESOURCE_BUNDLE_FILE_NAME);
 
+    /**
+     * Create connection to chosen database using properties.
+     * @return created connection.
+     */
     private Connection create() {
-        String poolSizeValue = RESOURCE_BUNDLE.getString(POOL_SIZE_PROPERTY_VALUE);
-        int currentPoolSize = Integer.parseInt(poolSizeValue);
-
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException exception) {
@@ -60,6 +69,12 @@ public class ConnectionCreator {
         }
     }
 
+    /**
+     * Create LinkedList of connections to chosen database.
+     * @see java.util.List
+     * @see LinkedList
+     * @return list with database connections.
+     */
     public LinkedList<Connection> createConnections() {
         String poolSizeValue = RESOURCE_BUNDLE.getString(POOL_SIZE_PROPERTY_VALUE);
         int currentPoolSize = Integer.parseInt(poolSizeValue);

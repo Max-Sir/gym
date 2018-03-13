@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Thread safe connection pool.
+ *
  * @author Eugene Makarenko
  */
 public class ConnectionPool {
