@@ -10,10 +10,10 @@ import java.util.ResourceBundle;
 /**
  * Util class that creates connection to database using file resources.
  *
+ * @author Eugene Makarenko
  * @see Connection
  * @see Properties
  * @see ResourceBundle
- * @author Eugene Makarenko
  */
 public class ConnectionCreator {
 

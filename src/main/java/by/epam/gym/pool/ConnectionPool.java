@@ -43,7 +43,6 @@ public class ConnectionPool {
         if (isInstanceAvailable.get()) {
             LOCK.lock();
             try {
-
                 boolean isInstanceAvailableNow = instance == null;
                 if (isInstanceAvailableNow) {
                     instance = new ConnectionPool();

@@ -1,4 +1,9 @@
 package by.epam.gym.entities;
 
-public interface Entity {
+/**
+ * The type Entity.
+ *
+ * @author Eugene Makarenko
+ */
+public abstract class Entity {
 }
