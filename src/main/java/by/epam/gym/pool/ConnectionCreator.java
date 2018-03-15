@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import static by.epam.gym.pool.ConnectionPool.RESOURCE_BUNDLE_FILE_NAME;
+
 /**
  * Util class that creates connection to database using file resources.
  *
@@ -17,9 +19,6 @@ import java.util.ResourceBundle;
  */
 public class ConnectionCreator {
 
-    private static final String RESOURCE_BUNDLE_FILE_NAME = "database";
-
-    private static final String POOL_SIZE_PROPERTY_VALUE = "db.poolSize";
     private static final String USER_PROPERTY_VALUE = "db.user";
     private static final String PASSWORD_PROPERTY_VALUE = "db.password";
     private static final String AUTO_RECONNECT_PROPERTY_VALUE = "db.autoReconnect";
@@ -39,7 +38,7 @@ public class ConnectionCreator {
      * Create connection to chosen database using properties.
      * @return created connection.
      */
-    private Connection create() {
+    public Connection create() {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException exception) {
@@ -69,24 +68,4 @@ public class ConnectionCreator {
         }
     }
 
-    /**
-     * Create LinkedList of connections to chosen database.
-     * @see java.util.List
-     * @see LinkedList
-     * @return list with database connections.
-     */
-    public LinkedList<Connection> createConnections() {
-        String poolSizeValue = RESOURCE_BUNDLE.getString(POOL_SIZE_PROPERTY_VALUE);
-        int currentPoolSize = Integer.parseInt(poolSizeValue);
-
-        LinkedList<Connection> connections = new LinkedList<Connection>();
-
-        for (int listIndex = 0; listIndex < currentPoolSize; listIndex++) {
-            Connection currentConnection = create();
-
-            connections.addLast(currentConnection);
-        }
-
-        return connections;
-    }
 }

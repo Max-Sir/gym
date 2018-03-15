@@ -13,7 +13,6 @@ import java.math.BigDecimal;
  */
 public class Subscription extends Entity {
 
-    private int id;
     private TrainingsCountType trainingsCountType;
     private DurationType durationType;
     private int trainings_count;
@@ -24,24 +23,6 @@ public class Subscription extends Entity {
      * Instantiates a new Subscription.
      */
     public Subscription() {
-    }
-
-    /**
-     * Gets subscription's id.
-     *
-     * @return the subscription's id.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Sets subscription's id.
-     *
-     * @param id the subscription's id.
-     */
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**

@@ -9,13 +9,14 @@ import java.util.Date;
  *
  * @author Eugene Makarenko
  * @see UserType
+ * @see UserGender
  */
 public class User extends Entity {
 
-    private int id;
     private String login;
     private String password;
     private UserType userType;
+    private UserGender userGender;
     private String firstName;
     private String lastName;
     private String email;
@@ -29,23 +30,6 @@ public class User extends Entity {
     public User() {
     }
 
-    /**
-     * Gets user's id.
-     *
-     * @return the user's id.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Sets user's id.
-     *
-     * @param id the user's id.
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * Gets user's login.
@@ -99,6 +83,24 @@ public class User extends Entity {
      */
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    /**
+     * Gets user's gender.
+     *
+     * @return the user gender.
+     */
+    public UserGender getUserGender() {
+        return userGender;
+    }
+
+    /**
+     * Sets user's gender.
+     *
+     * @param userGender the user's gender.
+     */
+    public void setUserGender(UserGender userGender) {
+        this.userGender = userGender;
     }
 
     /**
