@@ -10,7 +10,7 @@ import by.epam.gym.commands.common.LogoutCommand;
  * @author Eugene Makarenko
  * @see ActionCommand
  */
-public enum  CommandType {
+public enum CommandType {
 
     LOGIN {
         {

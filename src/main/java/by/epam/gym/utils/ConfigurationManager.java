@@ -14,7 +14,8 @@ public class ConfigurationManager {
 
     private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(RESOURCE_FILE_NAME);
 
-    private ConfigurationManager() { }
+    private ConfigurationManager() {
+    }
 
     /**
      * Gets property from resource file.

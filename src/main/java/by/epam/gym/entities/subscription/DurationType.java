@@ -5,7 +5,7 @@ package by.epam.gym.entities.subscription;
  *
  * @author Eugene Makarenko
  */
-public enum  DurationType {
+public enum DurationType {
 
     MONTH, HALF_YEAR, YEAR, NO_DURATION
 

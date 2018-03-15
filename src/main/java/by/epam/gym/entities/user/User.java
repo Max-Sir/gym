@@ -20,7 +20,7 @@ public class User extends Entity {
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
+    private String phoneNumber;
     private Date birthDate;
     private int personalTrainerId;
 
@@ -158,21 +158,21 @@ public class User extends Entity {
     }
 
     /**
-     * Gets user's phone.
+     * Gets user's phone number.
      *
-     * @return the user's phone.
+     * @return the user's phone number.
      */
-    public String getPhone() {
-        return phone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     /**
-     * Sets user's phone.
+     * Sets user's phone number.
      *
-     * @param phone the user's phone.
+     * @param phoneNumber the user's phone number.
      */
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     /**

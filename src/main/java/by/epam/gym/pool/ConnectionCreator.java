@@ -3,7 +3,6 @@ package by.epam.gym.pool;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -36,6 +35,7 @@ public class ConnectionCreator {
 
     /**
      * Create connection to chosen database using properties.
+     *
      * @return created connection.
      */
     public Connection create() {

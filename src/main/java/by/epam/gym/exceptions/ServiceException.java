@@ -1,56 +1,56 @@
 package by.epam.gym.exceptions;
 
 /**
- * The type of checked exception that thrown from DAO-level.
+ * The type of service exception that thrown from service-level.
  *
  * @author Eugene Makarenko
  * @see Exception
  */
-public class DAOException extends Exception {
+public class ServiceException extends Exception {
 
     /**
-     * Instantiates a new DAO exception.
+     * Instantiates a new service exception.
      */
-    public DAOException() {
+    public ServiceException() {
     }
 
     /**
-     * Instantiates a new DAO exception.
+     * Instantiates a new service exception.
      *
      * @param message the message.
      */
-    public DAOException(String message) {
+    public ServiceException(String message) {
         super(message);
     }
 
     /**
-     * Instantiates a new DAO exception.
+     * Instantiates a new service exception.
      *
      * @param message the message.
      * @param cause   the cause.
      */
-    public DAOException(String message, Throwable cause) {
+    public ServiceException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Instantiates a new DAO exception.
+     * Instantiates a new service exception.
      *
      * @param cause the cause.
      */
-    public DAOException(Throwable cause) {
+    public ServiceException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * Instantiates a new DAO exception.
+     * Instantiates a new service exception.
      *
      * @param message            the message.
      * @param cause              the cause.
      * @param enableSuppression  the enable suppression.
      * @param writableStackTrace the writable stack trace.
      */
-    public DAOException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CommandFactory {
 
+
+
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand currentCommand = new EmptyCommand();
 
@@ -19,7 +21,7 @@ public class CommandFactory {
             currentCommand = currentType.getCurrentCommand();
         } catch (IllegalArgumentException e) {
             request.setAttribute("wrongAction", action
-                    + MessageManager.getProperty("message.wrongaction"));
+                    + MessageManager.getProperty("message.wrongAction"));
         }
         return currentCommand;
     }

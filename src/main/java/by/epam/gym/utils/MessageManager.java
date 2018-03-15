@@ -12,15 +12,16 @@ import java.util.ResourceBundle;
  */
 public class MessageManager {
 
-    private static final Locale DEFAULT_LOCALE = new Locale("","");
+    private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";
 
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, DEFAULT_LOCALE);
 
-    private MessageManager() { }
+    private MessageManager() {
+    }
 
     /**
-     *  Gets property from resource file.
+     * Gets property from resource file.
      *
      * @param key the key of property.
      * @return the property.
@@ -34,8 +35,8 @@ public class MessageManager {
      *
      * @param locale the locale.
      */
-    public static void changeLocale(Locale locale){
-        resourceBundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME,locale);
+    public static void changeLocale(Locale locale) {
+        resourceBundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, locale);
     }
 
 }
