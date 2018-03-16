@@ -49,7 +49,7 @@ public class OrderDAO extends AbstractDAO<Integer,Order> {
     }
 
     @Override
-    public boolean create(Order entity) throws DAOException {
+    public boolean insert(Order entity) throws DAOException {
         return false;
     }
 

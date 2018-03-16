@@ -49,7 +49,7 @@ public class SubscriptionDAO extends AbstractDAO<Integer, Subscription> {
     }
 
     @Override
-    public boolean create(Subscription entity) throws DAOException {
+    public boolean insert(Subscription entity) throws DAOException {
         return false;
     }
 

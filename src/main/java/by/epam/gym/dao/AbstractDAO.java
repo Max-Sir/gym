@@ -66,7 +66,7 @@ public abstract class AbstractDAO<K, T extends Entity> {
      * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract boolean create(T entity) throws DAOException;
+    public abstract boolean insert(T entity) throws DAOException;
 
     /**
      * This method updates entity in database.
