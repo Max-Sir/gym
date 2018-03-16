@@ -10,6 +10,10 @@ import java.util.ResourceBundle;
  */
 public class ConfigurationManager {
 
+    public static final String LOGIN_PAGE_PATH = "path.page.login";
+    public static final String MAIN_PAGE_PATH = "path.page.main";
+    public static final String INDEX_PAGE_PATH = "path.page.index";
+
     private static final String RESOURCE_FILE_NAME = "config";
 
     private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(RESOURCE_FILE_NAME);

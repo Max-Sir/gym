@@ -5,10 +5,8 @@ import by.epam.gym.entities.user.UserGender;
 import by.epam.gym.entities.user.UserType;
 import by.epam.gym.exceptions.DAOException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +16,15 @@ import java.util.List;
  * @author Eugene Makarenko
  * @see AbstractDAO
  * @see Connection
+ * @see ResultSet
+ * @see List
  * @see User
  */
 public class UserDAO extends AbstractDAO<Integer, User> {
 
-    private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login=? and password=?";
+    private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login=? AND password=?";
+    private static final String SQL_SELECT_ALL_USERS = "SELECT * FROM users";
+    private static final String SQL_SELECT_USER_BY_ID = "SELECT * FROM users WHERE id=?";
 
     /**
      * Instantiates a new UserDAO.
@@ -48,7 +50,11 @@ public class UserDAO extends AbstractDAO<Integer, User> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            User user = createEntity(resultSet);
+            User user = null;
+
+            if (resultSet.next()){
+                user = createEntity(resultSet);
+            }
 
             return user;
         } catch (SQLException exception) {
@@ -64,7 +70,20 @@ public class UserDAO extends AbstractDAO<Integer, User> {
      */
     @Override
     public List<User> findAll() throws DAOException {
-        return null;
+        try (Statement statement = connection.createStatement()) {
+            List<User> users = new ArrayList<>();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_USERS);
+
+            while (resultSet.next()) {
+                User user = createEntity(resultSet);
+
+                users.add(user);
+            }
+
+            return users;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. ", exception);
+        }
     }
 
     /**
@@ -76,7 +95,24 @@ public class UserDAO extends AbstractDAO<Integer, User> {
      */
     @Override
     public User findEntityById(Integer id) throws DAOException {
-        return null;
+       try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_BY_ID)) {
+           preparedStatement.setInt(1,id);
+           ResultSet resultSet = preparedStatement.executeQuery();
+
+           User user = null;
+           if (resultSet.next()){
+               user = createEntity(resultSet);
+           }
+
+           return user;
+       } catch (SQLException exception) {
+           throw new DAOException("SQL exception detected. ", exception);
+       }
+    }
+
+    @Override
+    public boolean delete(Integer id) throws DAOException {
+        return false;
     }
 
     /**
@@ -125,46 +161,43 @@ public class UserDAO extends AbstractDAO<Integer, User> {
     @Override
     public User createEntity(ResultSet resultSet) throws DAOException {
         try {
-            User user = null;
+            User user = new User();
 
-            if (resultSet.next()) {
-                user = new User();
+            int id = resultSet.getInt("id");
+            user.setId(id);
 
-                int id = resultSet.getInt("id");
-                user.setId(id);
+            String login = resultSet.getString("login");
+            user.setLogin(login);
 
-                String login = resultSet.getString("login");
-                user.setLogin(login);
+            String password = resultSet.getString("password");
+            user.setPassword(password);
 
-                String password = resultSet.getString("password");
-                user.setPassword(password);
+            String userTypeValue = resultSet.getString("type");
+            UserType userType = UserType.valueOf(userTypeValue);
+            user.setUserType(userType);
 
-                String userTypeValue = resultSet.getString("type");
-                UserType userType = UserType.valueOf(userTypeValue);
-                user.setUserType(userType);
+            String userGenderValue = resultSet.getString("gender");
+            UserGender userGender = UserGender.valueOf(userGenderValue);
+            user.setUserGender(userGender);
 
-                String userGenderValue = resultSet.getString("gender");
-                UserGender userGender = UserGender.valueOf(userGenderValue);
-                user.setUserGender(userGender);
+            String firstName = resultSet.getString("first_name");
+            user.setFirstName(firstName);
 
-                String firstName = resultSet.getString("first_name");
-                user.setFirstName(firstName);
+            String lastName = resultSet.getString("last_name");
+            user.setLastName(lastName);
 
-                String lastName = resultSet.getString("last_name");
-                user.setLastName(lastName);
+            String email = resultSet.getString("email");
+            user.setEmail(email);
 
-                String email = resultSet.getString("email");
-                user.setEmail(email);
+            String phoneNumber = resultSet.getString("phone_number");
+            user.setPhoneNumber(phoneNumber);
 
-                String phoneNumber = resultSet.getString("phone_number");
-                user.setPhoneNumber(phoneNumber);
+            int personalTrainerId = resultSet.getInt("personal_trainer_id");
+            user.setPersonalTrainerId(personalTrainerId);
 
-                int personalTrainerId = resultSet.getInt("personal_trainer_id");
-                user.setPersonalTrainerId(personalTrainerId);
+            Date birthDate = resultSet.getDate("birthdate");
+            user.setBirthDate(birthDate);
 
-                Date birthDate = resultSet.getDate("birthdate");
-                user.setBirthDate(birthDate);
-            }
 
             return user;
         } catch (SQLException exception) {

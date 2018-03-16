@@ -5,10 +5,20 @@ import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Factory class for creation commands.
+ *
+ * @author Eugene Makarenko
+ * @see ActionCommand
+ */
 public class CommandFactory {
 
-
-
+    /**
+     * This method define command and return it's instance.
+     *
+     * @param request the HttpServletRequest request.
+     * @return the defined command.
+     */
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand currentCommand = new EmptyCommand();
 

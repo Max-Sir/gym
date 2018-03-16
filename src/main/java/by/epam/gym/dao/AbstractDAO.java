@@ -33,13 +33,22 @@ public abstract class AbstractDAO<K, T extends Entity> {
     public abstract List<T> findAll() throws DAOException;
 
     /**
-     * This method deletes entity from database by id.
+     * This method finds entity from database by id.
      *
      * @param id entity id.
      * @return true if entity deleted successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
     public abstract T findEntityById(K id) throws DAOException;
+
+    /**
+     * This method deletes entity from database by id.
+     *
+     * @param id entity id.
+     * @return true if entity deleted successfully, otherwise false.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public abstract boolean delete(K id) throws DAOException;
 
     /**
      * This method deletes entity from database.

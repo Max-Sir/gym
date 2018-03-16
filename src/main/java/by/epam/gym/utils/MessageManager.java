@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
  */
 public class MessageManager {
 
+    public static final String ERROR_MESSAGE_PATH = "message.loginError";
+
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";
 

@@ -6,6 +6,8 @@ import by.epam.gym.utils.ConfigurationManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static by.epam.gym.utils.ConfigurationManager.INDEX_PAGE_PATH;
+
 /**
  * Command for user log out.
  *
@@ -14,8 +16,6 @@ import javax.servlet.http.HttpSession;
  * @see HttpServletRequest
  */
 public class LogoutCommand implements ActionCommand {
-
-    private static final String INDEX_PAGE_PATH = "path.page.index";
 
     /**
      * Implementation of command that user use to sign out
