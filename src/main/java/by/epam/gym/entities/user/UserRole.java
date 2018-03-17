@@ -1,12 +1,12 @@
 package by.epam.gym.entities.user;
 
 /**
- * Types of user.
+ * Role of user.
  *
  * @author Eugene Makarenko
  * @see User
  */
-public enum UserType {
+public enum UserRole {
 
     CLIENT, TRAINER, ADMIN
 

@@ -2,34 +2,26 @@ package by.epam.gym.entities.user;
 
 import by.epam.gym.entities.Entity;
 
-import java.util.Date;
-
 /**
  * This class describes user of application.
  *
  * @author Eugene Makarenko
- * @see UserType
- * @see UserGender
+ * @see UserRole
+ * @see Entity
  */
 public class User extends Entity {
 
     private String login;
     private String password;
-    private UserType userType;
-    private UserGender userGender;
+    private UserRole userRole;
     private String firstName;
     private String lastName;
-    private String email;
-    private String phoneNumber;
-    private Date birthDate;
-    private int personalTrainerId;
 
     /**
      * Instantiates a new User.
      */
     public User() {
     }
-
 
     /**
      * Gets user's login.
@@ -68,40 +60,23 @@ public class User extends Entity {
     }
 
     /**
-     * Gets user's type.
+     * Gets user's role.
      *
-     * @return the user's type.
+     * @return the user's role.
      */
-    public UserType getUserType() {
-        return userType;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
     /**
-     * Sets user's type.
+     * Sets user's role.
      *
-     * @param userType the user's type.
+     * @param userRole the user's role.
      */
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
-    /**
-     * Gets user's gender.
-     *
-     * @return the user gender.
-     */
-    public UserGender getUserGender() {
-        return userGender;
-    }
-
-    /**
-     * Sets user's gender.
-     *
-     * @param userGender the user's gender.
-     */
-    public void setUserGender(UserGender userGender) {
-        this.userGender = userGender;
-    }
 
     /**
      * Gets user's first name.
@@ -139,75 +114,4 @@ public class User extends Entity {
         this.lastName = lastName;
     }
 
-    /**
-     * Gets user's email.
-     *
-     * @return the user's email.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets user's email.
-     *
-     * @param email the user's email.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets user's phone number.
-     *
-     * @return the user's phone number.
-     */
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     * Sets user's phone number.
-     *
-     * @param phoneNumber the user's phone number.
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    /**
-     * Gets user's birth date.
-     *
-     * @return the user's birth date.
-     */
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    /**
-     * Sets user's birth date.
-     *
-     * @param birthDate the user's birth date.
-     */
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    /**
-     * Gets the user's personal trainer id.
-     *
-     * @return the user's personal trainer id.
-     */
-    public int getPersonalTrainerId() {
-        return personalTrainerId;
-    }
-
-    /**
-     * Sets the user's personal trainer id.
-     *
-     * @param personalTrainerId the user's personal trainer id.
-     */
-    public void setPersonalTrainerId(int personalTrainerId) {
-        this.personalTrainerId = personalTrainerId;
-    }
 }

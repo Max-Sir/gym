@@ -10,14 +10,13 @@ import java.util.List;
 /**
  * Abstract root class of DAO level that provide access to the database and deal with application entities.
  *
- * @param <K> the parameter type.
- * @param <T> the parameter type.
+ * @param <T> the entity type.
  * @author Eugene Makarenko
  * @see Connection
  * @see Entity
  * @see DAOException
  */
-public abstract class AbstractDAO<K, T extends Entity> {
+public abstract class AbstractDAO<T extends Entity> {
     protected Connection connection;
 
     public AbstractDAO(Connection connection) {
@@ -39,7 +38,7 @@ public abstract class AbstractDAO<K, T extends Entity> {
      * @return true if entity deleted successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract T findEntityById(K id) throws DAOException;
+    public abstract T findEntityById(int id) throws DAOException;
 
     /**
      * This method deletes entity from database by id.
@@ -48,16 +47,8 @@ public abstract class AbstractDAO<K, T extends Entity> {
      * @return true if entity deleted successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract boolean delete(K id) throws DAOException;
+    public abstract boolean delete(int id) throws DAOException;
 
-    /**
-     * This method deletes entity from database.
-     *
-     * @param entity the entity.
-     * @return boolean true if entity deleted successfully, otherwise false.
-     * @throws DAOException object if execution of query is failed.
-     */
-    public abstract boolean delete(T entity) throws DAOException;
 
     /**
      * This method creates entity in database.

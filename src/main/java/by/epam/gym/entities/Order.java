@@ -11,10 +11,8 @@ import java.util.Date;
 public class Order extends Entity {
 
     private int clientId;
-    private int orderExecutorId;
-    private int subscriptionId;
+    private int seasonTicketId;
     private Date purchaseDate;
-    private String appointment;
 
     /**
      * Instantiates a new Order.
@@ -40,40 +38,23 @@ public class Order extends Entity {
         this.clientId = clientId;
     }
 
+
     /**
-     * Gets order's executor id.
+     * Gets season ticket's id.
      *
-     * @return the order's executor id.
+     * @return the season ticket's id.
      */
-    public int getOrderExecutorId() {
-        return orderExecutorId;
+    public int getSeasonTicketId() {
+        return seasonTicketId;
     }
 
     /**
-     * Sets order's executor id.
+     * Sets season ticket's id.
      *
-     * @param orderExecutorId the order's executor id.
+     * @param seasonTicketId the season ticket's id.
      */
-    public void setOrderExecutorId(int orderExecutorId) {
-        this.orderExecutorId = orderExecutorId;
-    }
-
-    /**
-     * Gets order's subscription id.
-     *
-     * @return the order's subscription id.
-     */
-    public int getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    /**
-     * Sets order's subscription id.
-     *
-     * @param subscriptionId the order's subscription id.
-     */
-    public void setSubscriptionId(int subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    public void setSeasonTicketId(int seasonTicketId) {
+        this.seasonTicketId = seasonTicketId;
     }
 
     /**
@@ -92,23 +73,5 @@ public class Order extends Entity {
      */
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
-    }
-
-    /**
-     * Gets order's appointment, made by order's executor.
-     *
-     * @return the order's appointment.
-     */
-    public String getAppointment() {
-        return appointment;
-    }
-
-    /**
-     * Sets order's appointment, made by order's executor.
-     *
-     * @param appointment the order's appointment.
-     */
-    public void setAppointment(String appointment) {
-        this.appointment = appointment;
     }
 }
