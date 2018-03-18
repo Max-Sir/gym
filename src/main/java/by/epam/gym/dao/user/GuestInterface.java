@@ -1,20 +1,20 @@
-package by.epam.gym.dao;
+package by.epam.gym.dao.user;
 
 import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.DAOException;
 
 /**
- * Interface of user that describes possible users's actions.
+ * Interface of guest that describes possible guest's actions.
  *
  * @author Eugene Makarenko
  * @see User
  */
-public interface UserInterface {
+public interface GuestInterface {
 
     /**
      * SQL query to database for searching user by it's login and password.
      */
-    String FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY = "SELECT * FROM ? WHERE login=? and password=?";
+    String FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY = "SELECT * FROM users WHERE login=? AND password=?";
 
     /**
      * Finds user in database by it's login and password.

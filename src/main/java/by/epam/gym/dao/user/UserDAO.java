@@ -1,5 +1,7 @@
-package by.epam.gym.dao;
+package by.epam.gym.dao.user;
 
+import by.epam.gym.dao.AbstractDAO;
+import by.epam.gym.dao.user.GuestInterface;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.DAOException;
@@ -15,9 +17,9 @@ import java.sql.SQLException;
  * @author Eugene Makarenko
  * @see AbstractDAO
  * @see User
- * @see UserInterface
+ * @see GuestInterface
  */
-public class UserDAO extends AbstractDAO<User> implements UserInterface {
+public class UserDAO extends AbstractDAO<User> implements GuestInterface {
 
     private static final String LOGIN_COLUMN_LABEL = "login";
     private static final String PASSWORD_COLUMN_LABEL = "password";
@@ -27,7 +29,7 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
 
     private static final String TABLE_NAME = "users";
 
-    private static final String INSERT_USER_SQL_QUERY = "INSERT INTO ? (login, password, role, first_name, last_name) VALUES(?,?,?,?,?)";
+    private static final String INSERT_USER_SQL_QUERY = "INSERT INTO users (login, password, role, first_name, last_name) VALUES(?,?,?,?,?)";
 
     /**
      * Instantiates a new UserDAO.
@@ -49,9 +51,8 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
         try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY)) {
-            preparedStatement.setString(1,TABLE_NAME);
-            preparedStatement.setString(2,login);
-            preparedStatement.setString(3,password);
+            preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -84,12 +85,11 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
             String firstName = entity.getFirstName();
             String lastName = entity.getLastName();
 
-            preparedStatement.setString(1,TABLE_NAME);
-            preparedStatement.setString(2,login);
-            preparedStatement.setString(3,password);
-            preparedStatement.setString(4,roleValue);
-            preparedStatement.setString(5,firstName);
-            preparedStatement.setString(6,lastName);
+            preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
+            preparedStatement.setString(3,roleValue);
+            preparedStatement.setString(4,firstName);
+            preparedStatement.setString(5,lastName);
 
             int queryResult = preparedStatement.executeUpdate();
 
@@ -97,11 +97,6 @@ public class UserDAO extends AbstractDAO<User> implements UserInterface {
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
-    }
-
-    @Override
-    public boolean update(User entity) throws DAOException {
-        return false;
     }
 
     /**

@@ -21,9 +21,9 @@ import java.util.List;
  */
 public abstract class AbstractDAO<T extends Entity> {
 
-    private static final String FIND_ALL_SQL_QUERY = "SELECT * FROM ?";
-    private static final String FIND_BY_ID_SQL_QUERY = "SELECT * FROM ? WHERE id=?";
-    private static final String DELETE_BY_ID_SQL_QUERY = "DELETE FROM ? WHERE id=?";
+    private static final String SELECT_FROM_SQL_QUERY = "SELECT * FROM ";
+    private static final String DELETE_SQL_QUERY = "DELETE FROM ";
+    private static final String WHERE_SQL_QUERY = " WHERE id=?";
 
     protected Connection connection;
 
@@ -38,8 +38,9 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public List<T> findAll() throws DAOException{
-        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL_QUERY)){
-            preparedStatement.setString(1,getTableName());
+        String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName();
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
 
             List<T> entities = new ArrayList<T>();
 
@@ -63,9 +64,10 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public T findEntityById(int id) throws DAOException{
-        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL_QUERY)) {
-            preparedStatement.setString(1,getTableName());
-            preparedStatement.setInt(2,id);
+        String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1,id);
 
             T entity = null;
 
@@ -88,9 +90,10 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public boolean deleteById(int id) throws DAOException{
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL_QUERY)) {
-            preparedStatement.setString(1,getTableName());
-            preparedStatement.setInt(2,id);
+        String sqlQuery = DELETE_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1,id);
 
             int queryResult = preparedStatement.executeUpdate();
 
@@ -100,7 +103,6 @@ public abstract class AbstractDAO<T extends Entity> {
         }
     }
 
-
     /**
      * This method creates entity in database.
      *
@@ -109,15 +111,6 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public abstract boolean insert(T entity) throws DAOException;
-
-    /**
-     * This method updates entity in database.
-     *
-     * @param entity the entity.
-     * @return boolean true if entity updated successfully, otherwise false.
-     * @throws DAOException object if execution of query is failed.
-     */
-    public abstract boolean update(T entity) throws DAOException;
 
     /**
      * Factory method creates entity.

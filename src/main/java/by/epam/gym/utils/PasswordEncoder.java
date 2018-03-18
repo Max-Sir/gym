@@ -11,7 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class PasswordEncoder {
 
-    private static final String PASSWORD_PREFIX = "MD5_";
+    private static final String PASSWORD_PREFIX = "Salt_";
 
     /**
      * Encode password using sha256 algorithm.
