@@ -68,6 +68,26 @@ public class UserDAO extends AbstractDAO<User> implements GuestInterface {
     }
 
     /**
+     * Check user's login for unique.
+     *
+     * @param login the user's login.
+     * @return true if login is unique, else returns false.
+     * @throws DAOException object if execution of query is failed.
+     */
+    @Override
+    public boolean checkLoginForUnique(String login) throws DAOException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(CHECK_LOGIN_FOR_UNIQUE)) {
+            preparedStatement.setString(1,login);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            return resultSet.next();
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
      * This method inserts user to database.
      *
      * @param entity the entity.

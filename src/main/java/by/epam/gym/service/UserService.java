@@ -9,10 +9,26 @@ import by.epam.gym.utils.PasswordEncoder;
 
 import java.sql.Connection;
 
+/**
+ * Service class for User entity.
+ *
+ * @author Eugene Makarenko
+ * @see User
+ * @see UserDAO
+ * @see ServiceException
+ */
 public class UserService {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
+    /**
+     * The method returns authorized user.
+     *
+     * @param login the user's login.
+     * @param password the user's password.
+     * @return the User.
+     * @throws ServiceException object if execution of method is failed.
+     */
     public User login(String login, String password) throws ServiceException {
         password = PasswordEncoder.encode(password);
 
@@ -30,4 +46,9 @@ public class UserService {
         }
     }
 
+    public boolean checkUserLoginForUnique(String login){
+        
+
+        return true;
+    }
 }

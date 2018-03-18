@@ -5,7 +5,8 @@
 <body>
 <h1>Welcome to gym.</h1>
 <form>
-    <input type="button" value="Login" onClick='location.href="/jsp/login.jsp"'>
+    <input type="button" value="Login" onClick='location.href="/jsp/common/login.jsp"'>
+    <input type="button" value="Register" onClick='location.href="/jsp/common/register.jsp"'>
 </form>
 </body>
 </html>
