@@ -13,6 +13,7 @@ public class Exercise extends Entity {
 
     private String name;
     private ExerciseDifficultyLevel level;
+    private String description;
     private int setsCount;
     private int repeatsCount;
 
@@ -56,6 +57,24 @@ public class Exercise extends Entity {
      */
     public void setLevel(ExerciseDifficultyLevel level) {
         this.level = level;
+    }
+
+    /**
+     *Gets exercise's description.
+     *
+     * @return the exercise's description.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets exercise's description.
+     *
+     * @param description the exercise's description.
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

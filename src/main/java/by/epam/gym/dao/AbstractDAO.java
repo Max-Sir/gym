@@ -4,7 +4,10 @@ import by.epam.gym.entities.Entity;
 import by.epam.gym.exceptions.DAOException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +20,11 @@ import java.util.List;
  * @see DAOException
  */
 public abstract class AbstractDAO<T extends Entity> {
+
+    private static final String FIND_ALL_SQL_QUERY = "SELECT * FROM ?";
+    private static final String FIND_BY_ID_SQL_QUERY = "SELECT * FROM ? WHERE id=?";
+    private static final String DELETE_BY_ID_SQL_QUERY = "DELETE FROM ? WHERE id=?";
+
     protected Connection connection;
 
     public AbstractDAO(Connection connection) {
@@ -29,25 +37,68 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return List of found objects.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract List<T> findAll() throws DAOException;
+    public List<T> findAll() throws DAOException{
+        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL_QUERY)){
+            preparedStatement.setString(1,getTableName());
+
+            List<T> entities = new ArrayList<T>();
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                T entity = createEntity(resultSet);
+                entities.add(entity);
+            }
+
+            return entities;
+        } catch (SQLException exception) {
+           throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
 
     /**
      * This method finds entity from database by id.
      *
-     * @param id entity id.
-     * @return true if entity deleted successfully, otherwise false.
+     * @param id the entity's id.
+     * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract T findEntityById(int id) throws DAOException;
+    public T findEntityById(int id) throws DAOException{
+        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL_QUERY)) {
+            preparedStatement.setString(1,getTableName());
+            preparedStatement.setInt(2,id);
+
+            T entity = null;
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                entity = createEntity(resultSet);
+            }
+
+            return entity;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
 
     /**
      * This method deletes entity from database by id.
      *
      * @param id entity id.
-     * @return true if entity deleted successfully, otherwise false.
+     * @return true if entity deleted successfully, else false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract boolean delete(int id) throws DAOException;
+    public boolean deleteById(int id) throws DAOException{
+        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID_SQL_QUERY)) {
+            preparedStatement.setString(1,getTableName());
+            preparedStatement.setInt(2,id);
+
+            int queryResult = preparedStatement.executeUpdate();
+
+            return queryResult > 0;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
 
 
     /**
@@ -76,4 +127,11 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public abstract T createEntity(ResultSet resultSet) throws DAOException;
+
+    /**
+     * Gets table name for current DAO.
+     *
+     * @return the table name.
+     */
+    public abstract String getTableName();
 }
