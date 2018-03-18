@@ -10,7 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static by.epam.gym.utils.MessageManager.NULL_PAGE_MESSAGE_PATH;
 
 /**
  * MVC pattern controller class.
@@ -19,6 +22,7 @@ import java.io.IOException;
  */
 public class Controller extends HttpServlet {
 
+    private static final String NULL_ATTRIBUTE = "nullPage";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,15 +36,16 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page;
-        CommandFactory client = new CommandFactory();
-        ActionCommand command = client.defineCommand(request);
+        CommandFactory factory = new CommandFactory();
+        ActionCommand command = factory.defineCommand(request);
         page = command.execute(request);
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
         } else {
-            page = ConfigurationManager.getProperty("path.page.index");
-            request.getSession().setAttribute("nullPage", MessageManager.getProperty("message.nullPage"));
+            page = ConfigurationManager.getProperty(ConfigurationManager.MAIN_PAGE_PATH);
+            HttpSession session = request.getSession();
+            session.setAttribute(NULL_ATTRIBUTE, MessageManager.getProperty(NULL_PAGE_MESSAGE_PATH));
             response.sendRedirect(request.getContextPath() + page);
         }
     }

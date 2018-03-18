@@ -5,6 +5,8 @@ import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static by.epam.gym.utils.MessageManager.WRONG_ACTION_MESSAGE_PATH;
+
 /**
  * Factory class for creation commands.
  *
@@ -13,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CommandFactory {
 
+    private static final String COMMAND_PARAMETER = "command";
+
+    private static final String WRONG_ACTION_ATTRIBUTE = "wrongAction";
     /**
      * This method define command and return it's instance.
      *
@@ -22,7 +27,7 @@ public class CommandFactory {
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand currentCommand = new EmptyCommand();
 
-        String action = request.getParameter("command");
+        String action = request.getParameter(COMMAND_PARAMETER);
         if (action == null || action.isEmpty()) {
             return currentCommand;
         }
@@ -30,8 +35,8 @@ public class CommandFactory {
             CommandType currentType = CommandType.valueOf(action.toUpperCase());
             currentCommand = currentType.getCurrentCommand();
         } catch (IllegalArgumentException e) {
-            request.setAttribute("wrongAction", action
-                    + MessageManager.getProperty("message.wrongAction"));
+            request.setAttribute(WRONG_ACTION_ATTRIBUTE, action
+                    + MessageManager.getProperty(WRONG_ACTION_MESSAGE_PATH));
         }
         return currentCommand;
     }

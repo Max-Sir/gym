@@ -1,11 +1,11 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
-<head><title>Welcome</title></head>
+<head><title>The best gym ever.</title></head>
 <body>
-<h3>Welcome</h3>
-<hr/>
-<p>Name: ${user.lastName}</p>
-<hr/>
-<a href="controller?command=logout">Logout</a>
+<h1>Welcome to gym.</h1>
+<form>
+    <input type="button" value="Login" onClick='location.href="/jsp/login.jsp"'>
+</form>
 </body>
 </html>

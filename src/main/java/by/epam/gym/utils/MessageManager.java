@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 public class MessageManager {
 
     public static final String ERROR_MESSAGE_PATH = "message.loginError";
+    public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
+    public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";

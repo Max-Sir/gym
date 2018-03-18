@@ -13,6 +13,10 @@ public class ConfigurationManager {
     public static final String LOGIN_PAGE_PATH = "path.page.login";
     public static final String MAIN_PAGE_PATH = "path.page.main";
     public static final String INDEX_PAGE_PATH = "path.page.index";
+    public static final String ADMIN_PAGE_PATH = "path.page.admin";
+    public static final String CLIENT_PAGE_PATH = "path.page.client";
+    public static final String TRAINER_PAGE_PATH = "path.page.trainer";
+    public static final String ERROR_PAGE_PATH = "path.page.error";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

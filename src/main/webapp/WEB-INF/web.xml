@@ -10,6 +10,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>controller</servlet-name>
-        <url-pattern>/controller</url-pattern>
+        <url-pattern>/jsp/controller</url-pattern>
     </servlet-mapping>
 </web-app>
