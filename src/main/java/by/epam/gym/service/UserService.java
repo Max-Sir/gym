@@ -46,6 +46,26 @@ public class UserService {
         }
     }
 
+    /**
+     * The method registers user into data base.
+     *
+     * @param user the created user.
+     * @return true if registration was successful and false if not.
+     * @throws ServiceException object if execution of method is failed.
+     */
+    public boolean register(User user) throws ServiceException {
+        Connection connection = CONNECTION_POOL.getConnection();
+        UserDAO userDAO = new UserDAO(connection);
+
+        try {
+            return userDAO.insert(user);
+        } catch (DAOException exception) {
+            throw new ServiceException("DAO exception detected. " + exception);
+        } finally {
+            CONNECTION_POOL.returnConnection(connection);
+        }
+    }
+
     public boolean checkUserLoginForUnique(String login) throws ServiceException {
         Connection connection = CONNECTION_POOL.getConnection();
         UserDAO userDAO = new UserDAO(connection);
@@ -58,4 +78,5 @@ public class UserService {
             CONNECTION_POOL.returnConnection(connection);
         }
     }
+
 }

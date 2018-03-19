@@ -39,6 +39,7 @@ public class LoginCommand implements ActionCommand {
      * @param request HttpServletRequest object.
      * @return redirect page.
      */
+    @Override
     public String execute(HttpServletRequest request) {
         String page;
         String login = request.getParameter(PARAM_NAME_LOGIN);

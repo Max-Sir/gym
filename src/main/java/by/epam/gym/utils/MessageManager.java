@@ -15,6 +15,12 @@ public class MessageManager {
     public static final String ERROR_MESSAGE_PATH = "message.loginError";
     public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
     public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";
+    public static final String LOGIN_ERROR_MESSAGE_PATH = "message.checkLogin";
+    public static final String LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH = "message.notUniqueLogin";
+    public static final String PASSWORD_ERROR_MESSAGE_PATH = "message.checkPass";
+    public static final String NAME_ERROR_MESSAGE_PATH = "message.checkName";
+    public static final String REGISTRATION_SUCCESS_MESSAGE_PATH = "message.regSuccessful";
+    public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";
