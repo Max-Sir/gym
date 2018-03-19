@@ -46,9 +46,16 @@ public class UserService {
         }
     }
 
-    public boolean checkUserLoginForUnique(String login){
-        
+    public boolean checkUserLoginForUnique(String login) throws ServiceException {
+        Connection connection = CONNECTION_POOL.getConnection();
+        UserDAO userDAO = new UserDAO(connection);
+        try {
 
-        return true;
+            return userDAO.checkLoginForUnique(login);
+        } catch (DAOException exception) {
+            throw new ServiceException("DAO exception detected. " + exception);
+        } finally {
+            CONNECTION_POOL.returnConnection(connection);
+        }
     }
 }

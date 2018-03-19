@@ -17,6 +17,7 @@ public class ConfigurationManager {
     public static final String CLIENT_PAGE_PATH = "path.page.client";
     public static final String TRAINER_PAGE_PATH = "path.page.trainer";
     public static final String ERROR_PAGE_PATH = "path.page.error";
+    public static final String REGISTER_PAGE_PATH = "path.page.register";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

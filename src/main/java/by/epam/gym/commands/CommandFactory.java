@@ -32,7 +32,8 @@ public class CommandFactory {
             return currentCommand;
         }
         try {
-            CommandType currentType = CommandType.valueOf(action.toUpperCase());
+            String commandTypeValue = action.toUpperCase();
+            CommandType currentType = CommandType.valueOf(commandTypeValue);
             currentCommand = currentType.getCurrentCommand();
         } catch (IllegalArgumentException e) {
             request.setAttribute(WRONG_ACTION_ATTRIBUTE, action

@@ -1,6 +1,7 @@
 package by.epam.gym.commands;
 
 
+import by.epam.gym.commands.common.CheckLoginForUniqueCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 
@@ -21,8 +22,12 @@ public enum CommandType {
         {
             this.command = new LogoutCommand();
         }
+    },
+    CHECK_LOGIN {
+        {
+            this.command = new CheckLoginForUniqueCommand();
+        }
     };
-
     /**
      * Current command.
      */
