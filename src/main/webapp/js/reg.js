@@ -29,15 +29,15 @@ var submitChange = function () {
 var checkPass = function() {
     if (document.getElementById(passwordId).value.search(passwordRegEx) > notFoundIndex
         || document.getElementById(passwordId).value.length < minPasswordLength){
-        document.getElementById(passwordId).style.color = 'red';
+        document.getElementById(passwordId).style.backgroundColor = 'DarkSalmon';
     } else {
-        document.getElementById(passwordId).style.color = 'green';
+        document.getElementById(passwordId).style.backgroundColor = 'GreenYellow';
     }
     if (document.getElementById(passwordId).value == document.getElementById(confirmPasswordId).value) {
-        document.getElementById(confirmPasswordId).style.color = 'green';
+        document.getElementById(confirmPasswordId).style.backgroundColor = 'GreenYellow';
         passChecked = true;
     } else {
-        document.getElementById(confirmPasswordId).style.color = 'red';
+        document.getElementById(confirmPasswordId).style.backgroundColor = 'DarkSalmon';
     }
     submitChange();
 };
@@ -46,19 +46,19 @@ var checkName = function () {
     if (document.getElementById(firstNameId).value.search(punct) > notFoundIndex
         || document.getElementById(firstNameId).value.search(digigt) > notFoundIndex
         || document.getElementById(firstNameId).value.length < 1){
-        document.getElementById(firstNameId).style.color = 'red';
+        document.getElementById(firstNameId).style.backgroundColor = 'DarkSalmon';
         firstNameChecked = false;
     } else {
-        document.getElementById(firstNameId).style.color = 'green';
+        document.getElementById(firstNameId).style.backgroundColor = 'GreenYellow';
         firstNameChecked = true;
     }
     if (document.getElementById(lastNameId).value.search(punct) > notFoundIndex
         || document.getElementById(lastNameId).value.search(digigt) > notFoundIndex
         || document.getElementById(lastNameId).value.length < 1){
-        document.getElementById(lastNameId).style.color = 'red';
+        document.getElementById(lastNameId).style.backgroundColor = 'DarkSalmon';
         lastNameChecked = false;
     } else {
-        document.getElementById(lastNameId).style.color = 'green';
+        document.getElementById(lastNameId).style.backgroundColor = 'GreenYellow';
         lastNameChecked = true;
     }
     submitChange();
@@ -66,10 +66,10 @@ var checkName = function () {
 
 var checkLoginForPattern = function(){
     if (document.getElementById(loginId).value.search(logRegEx) > notFoundIndex){
-        document.getElementById(loginId).style.color = 'red';
+        document.getElementById(loginId).style.backgroundColor = 'DarkSalmon';
         loginChecked = false;
     } else {
-        document.getElementById(loginId).style.color = 'green';
+        document.getElementById(loginId).style.backgroundColor = 'GreenYellow';
         loginChecked = true;
     }
     submitChange();

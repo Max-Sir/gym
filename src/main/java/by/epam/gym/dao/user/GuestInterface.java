@@ -8,6 +8,7 @@ import by.epam.gym.exceptions.DAOException;
  *
  * @author Eugene Makarenko
  * @see User
+ * @see UserDAO
  */
 public interface GuestInterface {
 
