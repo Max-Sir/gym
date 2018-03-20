@@ -37,22 +37,22 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return List of found objects.
      * @throws DAOException object if execution of query is failed.
      */
-    public List<T> findAll() throws DAOException{
+    public List<T> findAll() throws DAOException {
         String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName();
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
 
             List<T> entities = new ArrayList<T>();
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 T entity = createEntity(resultSet);
                 entities.add(entity);
             }
 
             return entities;
         } catch (SQLException exception) {
-           throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException("SQL exception detected. " + exception);
         }
     }
 
@@ -63,16 +63,16 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    public T findEntityById(int id) throws DAOException{
+    public T findEntityById(int id) throws DAOException {
         String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1,id);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, id);
 
             T entity = null;
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 entity = createEntity(resultSet);
             }
 
@@ -89,11 +89,11 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return true if entity deleted successfully, else false.
      * @throws DAOException object if execution of query is failed.
      */
-    public boolean deleteById(int id) throws DAOException{
+    public boolean deleteById(int id) throws DAOException {
         String sqlQuery = DELETE_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1,id);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, id);
 
             int queryResult = preparedStatement.executeUpdate();
 

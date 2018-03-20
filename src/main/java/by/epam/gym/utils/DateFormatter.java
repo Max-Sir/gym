@@ -22,7 +22,7 @@ public class DateFormatter {
      * @param date the user's date.
      * @return string value of date.
      */
-    public static String formatDateToString(Date date){
+    public static String formatDateToString(Date date) {
         String result = DATE_FORMATTER.format(date);
 
         return result;

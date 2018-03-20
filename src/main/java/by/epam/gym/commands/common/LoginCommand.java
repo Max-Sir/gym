@@ -7,7 +7,6 @@ import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
 import by.epam.gym.utils.ConfigurationManager;
 import by.epam.gym.utils.MessageManager;
-import by.epam.gym.utils.PasswordEncoder;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import static by.epam.gym.utils.ConfigurationManager.*;
 import static by.epam.gym.utils.MessageManager.ERROR_MESSAGE_PATH;
+import static by.epam.gym.utils.MessageManager.LOGIN_ERROR_ATTRIBUTE;
 
 /**
  * Command for user log in.
@@ -31,7 +31,6 @@ public class LoginCommand implements ActionCommand {
     private static final String PARAM_NAME_PASSWORD = "password";
 
     private static final String USER_SESSION_ATTRIBUTE = "user";
-    private static final String ERROR_LOGIN_ATTRIBUTE = "errorLoginPassMessage";
 
     /**
      * Implementation of command that user use to log in.
@@ -55,7 +54,7 @@ public class LoginCommand implements ActionCommand {
                 page = userRoleRedirect(user);
             } else {
                 String errorMessage = MessageManager.getProperty(ERROR_MESSAGE_PATH);
-                request.setAttribute(ERROR_LOGIN_ATTRIBUTE, errorMessage);
+                request.setAttribute(LOGIN_ERROR_ATTRIBUTE, errorMessage);
 
                 page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
@@ -68,20 +67,20 @@ public class LoginCommand implements ActionCommand {
         return page;
     }
 
-    private String userRoleRedirect(User user){
+    private String userRoleRedirect(User user) {
         UserRole userRole = user.getUserRole();
 
-        switch (userRole){
+        switch (userRole) {
             case ADMIN: {
                 return ConfigurationManager.getProperty(ADMIN_PAGE_PATH);
             }
-            case CLIENT:{
+            case CLIENT: {
                 return ConfigurationManager.getProperty(CLIENT_PAGE_PATH);
             }
-            case TRAINER:{
+            case TRAINER: {
                 return ConfigurationManager.getProperty(TRAINER_PAGE_PATH);
             }
-            default:{
+            default: {
                 return ConfigurationManager.getProperty(MAIN_PAGE_PATH);
             }
         }

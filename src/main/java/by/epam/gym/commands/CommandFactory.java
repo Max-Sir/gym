@@ -18,6 +18,7 @@ public class CommandFactory {
     private static final String COMMAND_PARAMETER = "command";
 
     private static final String WRONG_ACTION_ATTRIBUTE = "wrongAction";
+
     /**
      * This method define command and return it's instance.
      *

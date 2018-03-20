@@ -20,10 +20,11 @@ public interface GuestInterface {
      * SQL query to database for searching user's login.
      */
     String CHECK_LOGIN_FOR_UNIQUE = "SELECT * FROM users WHERE login=?";
+
     /**
      * Finds user in database by it's login and password.
      *
-     * @param login the user's login.
+     * @param login    the user's login.
      * @param password the user's password.
      * @return the User object.
      * @throws DAOException object if execution of query is failed.

@@ -8,18 +8,16 @@ import by.epam.gym.service.UserService;
 import by.epam.gym.utils.ConfigurationManager;
 import by.epam.gym.utils.MessageManager;
 import by.epam.gym.utils.PasswordEncoder;
-import by.epam.gym.utils.UserDataMatcher;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.LOGIN_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.REGISTER_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
 /**
  * Command for user registration.
@@ -37,11 +35,7 @@ public class RegisterCommand implements ActionCommand {
     private static final String FIRST_NAME_PARAMETER = "first_name";
     private static final String LAST_NAME_PARAMETER = "last_name";
 
-    private static final String LOGIN_ERROR_ATTRIBUTE = "loginError";
-    private static final String PASS_ERROR_ATTRIBUTE = "passError";
-    private static final String FIRST_NAME_ERROR_ATTRIBUTE = "firstNameError";
-    private static final String LAST_NAME_ERROR_ATTRIBUTE = "lastNameError";
-    private static final String RESULT_ATTRIBUTE = "result";
+    private static final int EMPTY_MAP_SIZE = 0;
 
     /**
      * Implementation of command that user register.
@@ -61,8 +55,8 @@ public class RegisterCommand implements ActionCommand {
             String lastName = request.getParameter(LAST_NAME_PARAMETER);
             UserRole userRole = UserRole.CLIENT;
 
-            HashMap<String, String> errors = errorMessagesInRegistration(userService,login,password,firstName,lastName);
-            if (errors.size() == 0){
+            HashMap<String, String> errors = userService.checkUserRegisterData(login, password, firstName, lastName);
+            if (errors.size() == EMPTY_MAP_SIZE) {
                 password = PasswordEncoder.encode(password);
 
                 User user = new User();
@@ -72,9 +66,9 @@ public class RegisterCommand implements ActionCommand {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
 
-                if (userService.register(user)){
+                if (userService.register(user)) {
                     page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
-                    request.setAttribute(RESULT_ATTRIBUTE,MessageManager.getProperty(MessageManager.REGISTRATION_SUCCESS_MESSAGE_PATH));
+                    request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.REGISTRATION_SUCCESS_MESSAGE_PATH));
                 } else {
                     page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
                     request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.REGISTRATION_FAILED_MESSAGE_PATH));
@@ -86,7 +80,7 @@ public class RegisterCommand implements ActionCommand {
                     String attribute = error.getKey();
                     String errorMessage = error.getValue();
 
-                    request.setAttribute(attribute,errorMessage);
+                    request.setAttribute(attribute, errorMessage);
                 }
             }
 
@@ -96,39 +90,5 @@ public class RegisterCommand implements ActionCommand {
         }
 
         return page;
-    }
-
-    private HashMap<String, String> errorMessagesInRegistration(UserService userService, String login, String password, String firstName, String lastName) throws ServiceException {
-        HashMap<String, String> messages = new HashMap<>();
-
-        boolean isLoginUnique = userService.checkUserLoginForUnique(login);
-        boolean isLoginValid = UserDataMatcher.match(login, UserDataMatcher.LOGIN_PATTERN);
-        boolean isPasswordValid = UserDataMatcher.match(password,UserDataMatcher.PASSWORD_PATTERN);
-        boolean isFirstNameValid = UserDataMatcher.match(firstName,UserDataMatcher.NAME_PATTERN);
-        boolean isLastNameValid = UserDataMatcher.match(lastName,UserDataMatcher.NAME_PATTERN);
-
-        if (!isLoginValid){
-            String errorMessage = MessageManager.getProperty(MessageManager.LOGIN_ERROR_MESSAGE_PATH);
-            messages.put(LOGIN_ERROR_ATTRIBUTE,errorMessage);
-        } else {
-            if (isLoginUnique){
-                String errorMessage = MessageManager.getProperty(MessageManager.LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH);
-                messages.put(LOGIN_ERROR_ATTRIBUTE,errorMessage);
-            }
-        }
-        if (!isPasswordValid){
-            String errorMessage = MessageManager.getProperty(MessageManager.PASSWORD_ERROR_MESSAGE_PATH);
-            messages.put(PASS_ERROR_ATTRIBUTE,errorMessage);
-        }
-        if (!isFirstNameValid){
-            String errorMessage = MessageManager.getProperty(MessageManager.NAME_ERROR_MESSAGE_PATH);
-            messages.put(FIRST_NAME_ERROR_ATTRIBUTE,errorMessage);
-        }
-        if (!isLastNameValid){
-            String errorMessage = MessageManager.getProperty(MessageManager.NAME_ERROR_MESSAGE_PATH);
-            messages.put(LAST_NAME_ERROR_ATTRIBUTE,errorMessage);
-        }
-
-        return messages;
     }
 }

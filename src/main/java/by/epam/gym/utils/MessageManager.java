@@ -12,6 +12,12 @@ import java.util.ResourceBundle;
  */
 public class MessageManager {
 
+    public static final String LOGIN_ERROR_ATTRIBUTE = "loginError";
+    public static final String PASS_ERROR_ATTRIBUTE = "passError";
+    public static final String FIRST_NAME_ERROR_ATTRIBUTE = "firstNameError";
+    public static final String LAST_NAME_ERROR_ATTRIBUTE = "lastNameError";
+    public static final String RESULT_ATTRIBUTE = "result";
+
     public static final String ERROR_MESSAGE_PATH = "message.loginError";
     public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
     public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";

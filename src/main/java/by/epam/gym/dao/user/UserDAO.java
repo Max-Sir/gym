@@ -1,7 +1,6 @@
 package by.epam.gym.dao.user;
 
 import by.epam.gym.dao.AbstractDAO;
-import by.epam.gym.dao.user.GuestInterface;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.DAOException;
@@ -43,21 +42,21 @@ public class UserDAO extends AbstractDAO<User> implements GuestInterface {
     /**
      * This method finds user in database by it's login and password.
      *
-     * @param login the user's login.
+     * @param login    the user's login.
      * @param password the user's password.
      * @return the User object.
      * @throws DAOException object if execution of query is failed.
      */
     @Override
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY)) {
-            preparedStatement.setString(1,login);
-            preparedStatement.setString(2,password);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY)) {
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             User user = null;
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 user = createEntity(resultSet);
             }
 
@@ -76,11 +75,11 @@ public class UserDAO extends AbstractDAO<User> implements GuestInterface {
      */
     @Override
     public boolean checkLoginForUnique(String login) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(CHECK_LOGIN_FOR_UNIQUE)) {
-            preparedStatement.setString(1,login);
-            
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_LOGIN_FOR_UNIQUE)) {
+            preparedStatement.setString(1, login);
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            
+
             return resultSet.next();
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
@@ -96,7 +95,7 @@ public class UserDAO extends AbstractDAO<User> implements GuestInterface {
      */
     @Override
     public boolean insert(User entity) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL_QUERY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL_QUERY)) {
             UserRole userRole = entity.getUserRole();
 
             String login = entity.getLogin();
@@ -105,11 +104,11 @@ public class UserDAO extends AbstractDAO<User> implements GuestInterface {
             String firstName = entity.getFirstName();
             String lastName = entity.getLastName();
 
-            preparedStatement.setString(1,login);
-            preparedStatement.setString(2,password);
-            preparedStatement.setString(3,roleValue);
-            preparedStatement.setString(4,firstName);
-            preparedStatement.setString(5,lastName);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, roleValue);
+            preparedStatement.setString(4, firstName);
+            preparedStatement.setString(5, lastName);
 
             int queryResult = preparedStatement.executeUpdate();
 

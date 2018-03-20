@@ -3,84 +3,74 @@ var firstNameChecked = false;
 var lastNameChecked = false;
 var loginChecked = false;
 
+var logRegEx = /\W/;
+var passwordRegEx = /\d\W/;
+var punct = /[.,!?()\\|\[\]`@$^*-+=:;№#"'_]+/;
+var digigt =/[0-9]+/;
+
+var minPasswordLength = 4;
+var notFoundIndex = -1;
+
+var passwordId = "password";
+var confirmPasswordId = "confirm_password";
+var submitId = "submit";
+var loginId = "login";
+var firstNameId = "first_name";
+var lastNameId = "last_name";
+
+var submitChange = function () {
+    if (firstNameChecked && lastNameChecked && passChecked && loginChecked){
+        document.getElementById(submitId).disabled = false;
+    } else {
+        document.getElementById(submitId).disabled = true;
+    }
+};
+
 var checkPass = function() {
-    if (document.getElementById('password').value.length < 4){
-        document.getElementById('password').style.color = 'red';
-        document.getElementById('submit').disabled = true;
+    if (document.getElementById(passwordId).value.search(passwordRegEx) > notFoundIndex
+        || document.getElementById(passwordId).value.length < minPasswordLength){
+        document.getElementById(passwordId).style.color = 'red';
     } else {
-        document.getElementById('password').style.color = 'green';
+        document.getElementById(passwordId).style.color = 'green';
     }
-    if (document.getElementById('password').value == document.getElementById('confirm_password').value) {
-
-        document.getElementById('confirm_password').style.color = 'green';
+    if (document.getElementById(passwordId).value == document.getElementById(confirmPasswordId).value) {
+        document.getElementById(confirmPasswordId).style.color = 'green';
         passChecked = true;
-        enableSubmit()
-
     } else {
-        document.getElementById('confirm_password').style.color = 'red';
-        document.getElementById('submit').disabled = true;
+        document.getElementById(confirmPasswordId).style.color = 'red';
     }
-
-}
-
-var punct = /\W|_/;
-var digigt =/\d/;
+    submitChange();
+};
 
 var checkName = function () {
-    if (document.getElementById('first_name').value.search(punct) > -1
-        || document.getElementById('first_name').value.search(digigt) > -1
-        || document.getElementById('first_name').value.length < 1){
-
-        document.getElementById('first_name').style.color = 'red';
+    if (document.getElementById(firstNameId).value.search(punct) > notFoundIndex
+        || document.getElementById(firstNameId).value.search(digigt) > notFoundIndex
+        || document.getElementById(firstNameId).value.length < 1){
+        document.getElementById(firstNameId).style.color = 'red';
         firstNameChecked = false;
-        document.getElementById('submit').disabled = true;
-
     } else {
-
-        document.getElementById('first_name').style.color = 'green';
+        document.getElementById(firstNameId).style.color = 'green';
         firstNameChecked = true;
-        enableSubmit()
-
     }
-    if (document.getElementById('last_name').value.search(punct) > -1
-        || document.getElementById('last_name').value.search(digigt) > -1
-        || document.getElementById('last_name').value.length < 1){
-
-        document.getElementById('last_name').style.color = 'red';
+    if (document.getElementById(lastNameId).value.search(punct) > notFoundIndex
+        || document.getElementById(lastNameId).value.search(digigt) > notFoundIndex
+        || document.getElementById(lastNameId).value.length < 1){
+        document.getElementById(lastNameId).style.color = 'red';
         lastNameChecked = false;
-        document.getElementById('submit').disabled = true;
-
     } else {
-
-        document.getElementById('last_name').style.color = 'green';
+        document.getElementById(lastNameId).style.color = 'green';
         lastNameChecked = true;
-        enableSubmit()
-
     }
-
-}
-
-var logRegEx = /\W/;
+    submitChange();
+};
 
 var checkLoginForPattern = function(){
-    if (document.getElementById('login').value.search(logRegEx) > -1){
-
-        document.getElementById('login').style.color = 'red';
-        document.getElementById('submit').disabled = true;
+    if (document.getElementById(loginId).value.search(logRegEx) > notFoundIndex){
+        document.getElementById(loginId).style.color = 'red';
         loginChecked = false;
-
     } else {
-
-        document.getElementById('login').style.color = 'green';
+        document.getElementById(loginId).style.color = 'green';
         loginChecked = true;
-        enableSubmit()
-
     }
-
-}
-
-var enableSubmit = function () {
-    if (firstNameChecked && lastNameChecked && passChecked && loginChecked){
-        document.getElementById('submit').disabled = false;
-    }
-}
+    submitChange();
+};

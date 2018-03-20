@@ -17,24 +17,24 @@
 </script>
 <form id="reg" name="RegisterForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="register"/>
-         <br/>Login:<br/>
-             <input id="login" type="text" name="login" value="" onkeyup=checkLoginForPattern(); /> ${loginError}
-        <br/>Password:<br/>
-            <input id="password" type="password" name="password" value="" onkeyup=checkPass(); /> ${passError}
-        <br/>Repeat password<br/>
-            <input id="confirm_password" type="password" value="" onkeyup=checkPass(); />
-        <br/>First name:<br/>
-             <input id="first_name" type="text" name="first_name" value="" onkeyup=checkName(); /> ${firstNameError}
-        <br/>Last name:<br/>
-             <input id="last_name" type="text" name="last_name" value="" onkeyup=checkName(); /> ${lastNameError}
-        <br/>
-            <input id="submit" type="submit" value="Register" disabled/>
-        <br/>
+    <br/>Login:<br/>
+    <input id="login" type="text" name="login" value="" onkeyup=checkLoginForPattern(); /> ${loginError}
+    <br/>Password:<br/>
+    <input id="password" type="password" name="password" value="" onkeyup=checkPass(); /> ${passError}
+    <br/>Repeat password<br/>
+    <input id="confirm_password" type="password" value="" onkeyup=checkPass(); />
+    <br/>First name:<br/>
+    <input id="first_name" type="text" name="first_name" value="" onkeyup=checkName(); /> ${firstNameError}
+    <br/>Last name:<br/>
+    <input id="last_name" type="text" name="last_name" value="" onkeyup=checkName(); /> ${lastNameError}
+    <br/>
+    <input id="submit" type="submit" value="Register" disabled/>
+    <br/>
     ${result}
-        <br/>
+    <br/>
 </form>
-    <br/>
-        <a href="/jsp/common/login.jsp">Login</a>
-    <br/>
+<br/>
+<a href="/jsp/common/login.jsp">Login</a>
+<br/>
 </body>
 </html>

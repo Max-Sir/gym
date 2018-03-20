@@ -60,7 +60,7 @@ public class Exercise extends Entity {
     }
 
     /**
-     *Gets exercise's description.
+     * Gets exercise's description.
      *
      * @return the exercise's description.
      */

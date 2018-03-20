@@ -23,7 +23,7 @@ public enum CommandType {
             this.command = new LogoutCommand();
         }
     },
-    REGISTER{
+    REGISTER {
         {
             command = new RegisterCommand();
         }

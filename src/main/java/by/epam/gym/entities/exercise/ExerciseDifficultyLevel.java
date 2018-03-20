@@ -6,5 +6,5 @@ package by.epam.gym.entities.exercise;
  * @author Eugene Makarenko
  * @see Exercise
  */
-public enum  ExerciseDifficultyLevel {
+public enum ExerciseDifficultyLevel {
 }

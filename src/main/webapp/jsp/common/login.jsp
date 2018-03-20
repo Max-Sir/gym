@@ -9,11 +9,7 @@
     <br/>Password:<br/>
     <input type="password" name="password" value=""/>
     <br/>
-    ${errorLoginPassMessage}
-    <br/>
-    ${wrongAction}
-    <br/>
-    ${nullPage}
+    ${loginError}
     <br/>
     <input type="submit" value="Log in"/>
 </form>

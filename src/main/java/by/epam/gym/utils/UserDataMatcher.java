@@ -19,11 +19,11 @@ public class UserDataMatcher {
     /**
      * This method checks user's data for matching with chosen pattern.
      *
-     * @param data the user's data.
+     * @param data           the user's data.
      * @param currentPattern the pattern.
      * @return true if data is valid and false if not.
      */
-    public static boolean match(String data, String currentPattern){
+    public static boolean match(String data, String currentPattern) {
         Pattern pattern = Pattern.compile(currentPattern);
         Matcher matcher = pattern.matcher(data);
 

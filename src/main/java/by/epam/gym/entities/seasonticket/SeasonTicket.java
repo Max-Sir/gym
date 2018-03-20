@@ -23,7 +23,7 @@ public class SeasonTicket extends Entity {
     /**
      * Instantiates a new SeasonTicket.
      */
-    public SeasonTicket(){
+    public SeasonTicket() {
 
     }
 
