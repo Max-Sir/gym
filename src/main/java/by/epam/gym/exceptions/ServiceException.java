@@ -10,13 +10,13 @@ public class ServiceException extends Exception {
 
 
     /**
-     * Instantiates a new service exception.
+     * Instantiates a new ServiceException.
      */
     public ServiceException() {
     }
 
     /**
-     * Instantiates a new service exception.
+     * Instantiates a new ServiceException.
      *
      * @param message the message.
      */
@@ -25,7 +25,7 @@ public class ServiceException extends Exception {
     }
 
     /**
-     * Instantiates a new service exception.
+     * Instantiates a new ServiceException.
      *
      * @param message the message.
      * @param cause   the cause.
@@ -35,7 +35,7 @@ public class ServiceException extends Exception {
     }
 
     /**
-     * Instantiates a new service exception.
+     * Instantiates a new ServiceException.
      *
      * @param cause the cause.
      */
@@ -44,7 +44,7 @@ public class ServiceException extends Exception {
     }
 
     /**
-     * Instantiates a new service exception.
+     * Instantiates a new ServiceException.
      *
      * @param message            the message.
      * @param cause              the cause.

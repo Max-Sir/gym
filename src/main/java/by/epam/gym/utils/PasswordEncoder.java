@@ -11,8 +11,6 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class PasswordEncoder {
 
-    private static final String PASSWORD_PREFIX = "Salt_";
-
     /**
      * Encode password using sha256 algorithm.
      *
@@ -20,10 +18,8 @@ public class PasswordEncoder {
      * @return the encoded user's password.
      */
     public static String encode(String password) {
-        password = PASSWORD_PREFIX + password;
-        password = DigestUtils.sha256Hex(password);
 
-        return password;
+        return DigestUtils.sha256Hex(password);
     }
 
 }

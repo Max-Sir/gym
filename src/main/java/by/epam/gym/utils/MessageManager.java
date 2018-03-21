@@ -13,20 +13,15 @@ import java.util.ResourceBundle;
 public class MessageManager {
 
     public static final String LOGIN_ERROR_ATTRIBUTE = "loginError";
-    public static final String PASS_ERROR_ATTRIBUTE = "passError";
-    public static final String FIRST_NAME_ERROR_ATTRIBUTE = "firstNameError";
-    public static final String LAST_NAME_ERROR_ATTRIBUTE = "lastNameError";
     public static final String RESULT_ATTRIBUTE = "result";
 
     public static final String ERROR_MESSAGE_PATH = "message.loginError";
     public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
     public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";
-    public static final String LOGIN_ERROR_MESSAGE_PATH = "message.checkLogin";
     public static final String LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH = "message.notUniqueLogin";
-    public static final String PASSWORD_ERROR_MESSAGE_PATH = "message.checkPass";
-    public static final String NAME_ERROR_MESSAGE_PATH = "message.checkName";
     public static final String REGISTRATION_SUCCESS_MESSAGE_PATH = "message.regSuccessful";
     public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
+    public static final String DATA_NOT_VALID_MESSAGE_PATH = "message.notValid";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";

@@ -1,12 +1,15 @@
 package by.epam.gym.pool;
 
+import by.epam.gym.exceptions.ConnectionException;
 import org.apache.log4j.Logger;
 
+import java.rmi.ConnectException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,8 +28,10 @@ public class ConnectionPool {
     private static final String POOL_SIZE_PROPERTY_VALUE = "db.poolSize";
 
     private final static Logger LOGGER = Logger.getLogger(ConnectionPool.class);
-    private final static ConnectionCreator CONNECTION_CREATOR = new ConnectionCreator();
-    private final static Lock LOCK = new ReentrantLock();
+
+    private static ConnectionCreator connectionCreator = new ConnectionCreator();
+    private static Lock locker = new ReentrantLock();
+    private static Condition poolCondition = locker.newCondition();
 
     private static ConnectionPool instance = null;
     private static AtomicBoolean isInstanceAvailable = new AtomicBoolean(true);
@@ -40,7 +45,7 @@ public class ConnectionPool {
         int currentPoolSize = Integer.parseInt(poolSizeValue);
 
         for (int listIndex = 0; listIndex < currentPoolSize; listIndex++) {
-            Connection currentConnection = CONNECTION_CREATOR.create();
+            Connection currentConnection = connectionCreator.create();
 
             pool.addLast(currentConnection);
         }
@@ -55,7 +60,7 @@ public class ConnectionPool {
     public static ConnectionPool getInstance() {
 
         if (isInstanceAvailable.get()) {
-            LOCK.lock();
+            locker.lock();
             try {
                 boolean isInstanceAvailableNow = instance == null;
                 if (isInstanceAvailableNow) {
@@ -63,7 +68,7 @@ public class ConnectionPool {
                     isInstanceAvailable.set(false);
                 }
             } finally {
-                LOCK.unlock();
+                locker.unlock();
             }
         }
 
@@ -75,14 +80,22 @@ public class ConnectionPool {
      *
      * @return first connection from pool.
      */
-    public Connection getConnection() {
+    public Connection getConnection() throws ConnectionException {
         Connection connection;
-        LOCK.lock();
+        locker.lock();
 
         try {
+
+            if (pool.isEmpty()){
+                poolCondition.await();
+            }
+
             connection = pool.poll();
+        } catch (InterruptedException exception) {
+            LOGGER.warn("Interrupted exception detected. ", exception);
+            throw new ConnectionException("Can't get connection. ", exception);
         } finally {
-            LOCK.unlock();
+            locker.unlock();
         }
 
         return connection;
@@ -94,12 +107,14 @@ public class ConnectionPool {
      * @param connection to database, that was get from pool.
      */
     public void returnConnection(Connection connection) {
-        LOCK.lock();
+        locker.lock();
 
         try {
             pool.addLast(connection);
+
+            poolCondition.signal();
         } finally {
-            LOCK.unlock();
+            locker.unlock();
         }
     }
 

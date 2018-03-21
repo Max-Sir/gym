@@ -1,56 +1,56 @@
 package by.epam.gym.exceptions;
 
 /**
- * The type of checked exception that thrown from DAO-level.
+ *
  *
  * @author Eugene Makarenko
- * @see Exception
+ * @see by.epam.gym.pool.ConnectionPool
  */
-public class DAOException extends Exception {
+public class ConnectionException extends Exception {
 
     /**
-     * Instantiates a new DAOException.
+     * Instantiates a new ConnectionException.
      */
-    public DAOException() {
+    public ConnectionException() {
     }
 
     /**
-     * Instantiates a new DAOException.
+     * Instantiates a new ConnectionException.
      *
      * @param message the message.
      */
-    public DAOException(String message) {
+    public ConnectionException(String message) {
         super(message);
     }
 
     /**
-     * Instantiates a new DAOException.
+     * Instantiates a new ConnectionException.
      *
      * @param message the message.
      * @param cause   the cause.
      */
-    public DAOException(String message, Throwable cause) {
+    public ConnectionException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Instantiates a new DAOException.
+     * Instantiates a new ConnectionException.
      *
      * @param cause the cause.
      */
-    public DAOException(Throwable cause) {
+    public ConnectionException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * Instantiates a new DAOException.
+     * Instantiates a new ConnectionException.
      *
      * @param message            the message.
      * @param cause              the cause.
      * @param enableSuppression  the enable suppression.
      * @param writableStackTrace the writable stack trace.
      */
-    public DAOException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ConnectionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
