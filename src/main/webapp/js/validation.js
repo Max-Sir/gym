@@ -5,9 +5,10 @@ var loginChecked = false;
 
 var logRegEx = /\W/;
 var passwordRegEx = /\d\W/;
-var punct = /[^в]*[.,!?()\\|\[\]`@$^*-+=:;№#"'_]+/;
-var digigt =/[0-9]+/;
+var punct = /[.,!?()\\|\[\]`@$^*-+=:;№#"'_\s]+/;
+var digit =/[0-9]+/;
 
+var minLoginLength = 5;
 var minPasswordLength = 4;
 var notFoundIndex = -1;
 
@@ -26,7 +27,7 @@ var submitChange = function () {
     }
 };
 
-var checkPass = function() {
+var checkPassword = function() {
     if (document.getElementById(passwordId).value.search(passwordRegEx) > notFoundIndex
         || document.getElementById(passwordId).value.length < minPasswordLength){
         document.getElementById(passwordId).style.backgroundColor = 'DarkSalmon';
@@ -44,7 +45,7 @@ var checkPass = function() {
 
 var checkName = function () {
     if (document.getElementById(firstNameId).value.search(punct) > notFoundIndex
-        || document.getElementById(firstNameId).value.search(digigt) > notFoundIndex
+        || document.getElementById(firstNameId).value.search(digit) > notFoundIndex
         || document.getElementById(firstNameId).value.length < 1){
         document.getElementById(firstNameId).style.backgroundColor = 'DarkSalmon';
         firstNameChecked = false;
@@ -53,7 +54,7 @@ var checkName = function () {
         firstNameChecked = true;
     }
     if (document.getElementById(lastNameId).value.search(punct) > notFoundIndex
-        || document.getElementById(lastNameId).value.search(digigt) > notFoundIndex
+        || document.getElementById(lastNameId).value.search(digit) > notFoundIndex
         || document.getElementById(lastNameId).value.length < 1){
         document.getElementById(lastNameId).style.backgroundColor = 'DarkSalmon';
         lastNameChecked = false;
@@ -64,8 +65,9 @@ var checkName = function () {
     submitChange();
 };
 
-var checkLoginForPattern = function(){
-    if (document.getElementById(loginId).value.search(logRegEx) > notFoundIndex){
+var checkLogin = function(){
+    if (document.getElementById(loginId).value.search(logRegEx) > notFoundIndex
+        ||  document.getElementById(loginId).value.length <= minLoginLength){
         document.getElementById(loginId).style.backgroundColor = 'DarkSalmon';
         loginChecked = false;
     } else {

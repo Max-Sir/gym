@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class UserDataValidator {
 
-    private static final String LOGIN_PATTERN = "[a-zA-Z0-9_]+";
+    private static final String LOGIN_PATTERN = "[a-zA-Z0-9_]+{6,}";
     private static final String PASSWORD_PATTERN = "[a-zA-Z0-9_]+{4,}";
     private static final String NAME_PATTERN = "[A-Za-zА-Яа-я]+";
 

@@ -19,6 +19,10 @@ import static by.epam.gym.utils.MessageManager.NULL_PAGE_MESSAGE_PATH;
  * MVC pattern controller class.
  *
  * @author Eugene Makarenko
+ * @see Page
+ * @see ActionCommand
+ * @see HttpServletResponse
+ * @see HttpServletRequest
  */
 public class Controller extends HttpServlet {
 

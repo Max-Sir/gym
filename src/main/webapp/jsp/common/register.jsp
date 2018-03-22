@@ -10,19 +10,17 @@
 <html>
 <head>
     <title>Registration</title>
+    <script src="/js/validation.js"></script>
 </head>
 <body>
-<script type="text/javascript">
-    <jsp:include page="/js/reg.js"/>
-</script>
 <form id="reg" name="RegisterForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="register"/>
     <br/>Login:<br/>
-    <input id="login" type="text" name="login" value="" onkeyup=checkLoginForPattern(); /> ${loginError}
+    <input id="login" type="text" name="login" value="" onkeyup=checkLogin(); /> ${loginError}
     <br/>Password:<br/>
-    <input id="password" type="password" name="password" value="" onkeyup=checkPass(); />
+    <input id="password" type="password" name="password" value="" onkeyup=checkPassword(); />
     <br/>Repeat password<br/>
-    <input id="confirm_password" type="password" value="" onkeyup=checkPass(); />
+    <input id="confirm_password" type="password" value="" onkeyup=checkPassword(); />
     <br/>First name:<br/>
     <input id="first_name" type="text" name="first_name" value="" onkeyup=checkName(); />
     <br/>Last name:<br/>
