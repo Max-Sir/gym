@@ -1,13 +1,12 @@
 package by.epam.gym.service;
 
-import by.epam.gym.dao.AbstractDAO;
+import by.epam.gym.dao.AbstractDAOImpl;
 import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.pool.ConnectionPool;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -17,10 +16,10 @@ import java.sql.SQLException;
  * @author Eugene Makarenko
  * @see Connection
  * @see ConnectionPool
- * @see AbstractDAO
+ * @see AbstractDAOImpl
  * @param <T> type of DAO class.
  */
-public class ConnectionManager<T extends AbstractDAO> implements AutoCloseable {
+public class ConnectionManager<T extends AbstractDAOImpl> implements AutoCloseable {
 
     private Class<T> classDAO;
     private ConnectionPool connectionPool;

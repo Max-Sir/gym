@@ -1,14 +1,9 @@
 package by.epam.gym.service;
 
-import by.epam.gym.dao.user.UserDAO;
-import by.epam.gym.dao.user.UserDAOImpl;
+import by.epam.gym.dao.UserDAOImpl;
 import by.epam.gym.entities.user.User;
-import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
-import by.epam.gym.pool.ConnectionPool;
 import by.epam.gym.utils.PasswordEncoder;
-
-import java.sql.Connection;
 
 /**
  * Service class for User entity.
@@ -33,7 +28,7 @@ public class UserService {
         password = PasswordEncoder.encode(password);
 
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAO userDAO = connectionManager.createDAO();
+            UserDAOImpl userDAO = connectionManager.createDAO();
 
             return userDAO.findUserByLoginAndPassword(login, password);
         } catch (Exception exception) {
@@ -45,15 +40,13 @@ public class UserService {
      * The method registers user into data base.
      *
      * @param user the created user.
-     * @return true if registration was successful and false if not.
      * @throws ServiceException object if execution of method is failed.
      */
-    public boolean register(User user) throws ServiceException {
+    public void register(User user) throws ServiceException {
 
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
             UserDAOImpl userDAO = connectionManager.createDAO();
-
-            return userDAO.insert(user);
+            userDAO.insert(user);
         }  catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
@@ -69,7 +62,7 @@ public class UserService {
     public boolean checkUserLoginForUnique(String login) throws ServiceException {
 
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAO userDAO = connectionManager.createDAO();
+            UserDAOImpl userDAO = connectionManager.createDAO();
 
             return userDAO.checkLoginForUnique(login);
         }  catch (Exception exception) {

@@ -18,5 +18,6 @@
 <p>Role: ${user.userRole}</p>
 <hr/>
 <a href="controller?command=logout">Logout</a>
+<input type="button" value="Clients" onClick='location.href="/jsp/admin/find_user.jsp"'>
 </body>
 </html>

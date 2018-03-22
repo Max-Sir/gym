@@ -1,6 +1,7 @@
 package by.epam.gym.commands.common;
 
 import by.epam.gym.commands.ActionCommand;
+import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ public class EmptyCommand implements ActionCommand {
      * @param request HttpServletRequest object.
      * @return redirect page.
      */
-    public String execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty("path.page.index");
+    public Page execute(HttpServletRequest request) {
+        String pageUrl = ConfigurationManager.getProperty("path.page.index");
+
+        Page page = new Page(pageUrl, false);
 
         return page;
     }

@@ -1,6 +1,7 @@
 package by.epam.gym.commands.common;
 
 import by.epam.gym.commands.ActionCommand;
+import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +24,12 @@ public class LogoutCommand implements ActionCommand {
      * @param request HttpServletRequest object
      * @return redirect page
      */
-    public String execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
+    public Page execute(HttpServletRequest request) {
+        String pageUrl = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
         HttpSession session = request.getSession();
         session.invalidate();
+
+        Page page = new Page(pageUrl,false);
 
         return page;
     }

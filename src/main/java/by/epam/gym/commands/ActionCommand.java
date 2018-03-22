@@ -1,5 +1,7 @@
 package by.epam.gym.commands;
 
+import by.epam.gym.servlet.Page;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -16,5 +18,5 @@ public interface ActionCommand {
      * @return redirect page.
      * @see HttpServletRequest
      */
-    String execute(HttpServletRequest request);
+    Page execute(HttpServletRequest request);
 }

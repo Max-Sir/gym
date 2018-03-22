@@ -33,8 +33,5 @@
     ${result}
     <br/>
 </form>
-<br/>
-<a href="/jsp/common/login.jsp">Login</a>
-<br/>
 </body>
 </html>

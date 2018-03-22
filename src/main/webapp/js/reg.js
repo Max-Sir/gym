@@ -5,7 +5,7 @@ var loginChecked = false;
 
 var logRegEx = /\W/;
 var passwordRegEx = /\d\W/;
-var punct = /[.,!?()\\|\[\]`@$^*-+=:;№#"'_]+/;
+var punct = /[^в]*[.,!?()\\|\[\]`@$^*-+=:;№#"'_]+/;
 var digigt =/[0-9]+/;
 
 var minPasswordLength = 4;

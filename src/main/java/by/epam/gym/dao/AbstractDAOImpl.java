@@ -19,15 +19,15 @@ import java.util.List;
  * @see Entity
  * @see DAOException
  */
-public abstract class AbstractDAO<T extends Entity> {
+public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
-    private static final String SELECT_FROM_SQL_QUERY = "SELECT * FROM ";
-    private static final String DELETE_SQL_QUERY = "DELETE FROM ";
-    private static final String WHERE_SQL_QUERY = " WHERE id=?";
+    private static final String SELECT_FROM_SQL_QUERY_PART = "SELECT * FROM ";
+    private static final String DELETE_SQL_QUERY_PART = "DELETE FROM ";
+    private static final String WHERE_SQL_QUERY_PART = " WHERE id=?";
 
     protected Connection connection;
 
-    public AbstractDAO(Connection connection) {
+    public AbstractDAOImpl(Connection connection) {
         this.connection = connection;
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public List<T> findAll() throws DAOException {
-        String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName();
+        String sqlQuery = SELECT_FROM_SQL_QUERY_PART + getTableName();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
 
@@ -46,7 +46,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                T entity = createEntity(resultSet);
+                T entity = buildEntity(resultSet);
                 entities.add(entity);
             }
 
@@ -64,7 +64,7 @@ public abstract class AbstractDAO<T extends Entity> {
      * @throws DAOException object if execution of query is failed.
      */
     public T findEntityById(int id) throws DAOException {
-        String sqlQuery = SELECT_FROM_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
+        String sqlQuery = SELECT_FROM_SQL_QUERY_PART + getTableName() + WHERE_SQL_QUERY_PART;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setInt(1, id);
@@ -73,7 +73,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                entity = createEntity(resultSet);
+                entity = buildEntity(resultSet);
             }
 
             return entity;
@@ -86,18 +86,19 @@ public abstract class AbstractDAO<T extends Entity> {
      * This method deletes entity from database by id.
      *
      * @param id entity id.
-     * @return true if entity deleted successfully, else false.
      * @throws DAOException object if execution of query is failed.
      */
-    public boolean deleteById(int id) throws DAOException {
-        String sqlQuery = DELETE_SQL_QUERY + getTableName() + WHERE_SQL_QUERY;
+    public void deleteById(int id) throws DAOException {
+        String sqlQuery = DELETE_SQL_QUERY_PART + getTableName() + WHERE_SQL_QUERY_PART;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setInt(1, id);
 
             int queryResult = preparedStatement.executeUpdate();
+            if (queryResult != 1){
+                throw new DAOException("On delete modify more then 1 record: " + queryResult);
+            }
 
-            return queryResult > 0;
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
@@ -110,7 +111,9 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract boolean insert(T entity) throws DAOException;
+    public abstract void insert(T entity) throws DAOException;
+
+    public abstract void update(T entity) throws DAOException;
 
     /**
      * Factory method creates entity.
@@ -119,7 +122,7 @@ public abstract class AbstractDAO<T extends Entity> {
      * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract T createEntity(ResultSet resultSet) throws DAOException;
+    public abstract T buildEntity(ResultSet resultSet) throws DAOException;
 
     /**
      * Gets table name for current DAO.

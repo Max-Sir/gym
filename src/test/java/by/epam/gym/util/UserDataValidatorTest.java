@@ -16,10 +16,10 @@ public class UserDataValidatorTest {
 
     @Test
     public void shouldUserDataBeValid(){
-        String login = "admin1";
-        String password = "admin_sad1992";
-        String firstName = "Alex";
-        String lastName = "Ivanov";
+        String login = "client7";
+        String password = "client7";
+        String firstName = "Валя";
+        String lastName = "Иванова";
 
         boolean result = userDataValidator.checkData(login,password,firstName,lastName);
 

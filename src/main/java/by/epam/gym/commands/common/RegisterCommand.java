@@ -5,6 +5,7 @@ import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
+import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
 import by.epam.gym.utils.MessageManager;
 import by.epam.gym.utils.PasswordEncoder;
@@ -12,12 +13,10 @@ import by.epam.gym.utils.UserDataValidator;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.REGISTER_PAGE_PATH;
+import static by.epam.gym.utils.ConfigurationManager.REGISTRATION_SUCCESSFUL_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH;
 import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
@@ -44,9 +43,8 @@ public class RegisterCommand implements ActionCommand {
      * @return registered page.
      */
     @Override
-    public String execute(HttpServletRequest request) {
-        String page;
-        UserService userService = new UserService();
+    public Page execute(HttpServletRequest request) {
+        Page page = new Page();
 
         try {
             String login = request.getParameter(LOGIN_PARAMETER);
@@ -55,17 +53,18 @@ public class RegisterCommand implements ActionCommand {
             String lastName = request.getParameter(LAST_NAME_PARAMETER);
             UserRole userRole = UserRole.CLIENT;
 
+            UserService userService = new UserService();
             boolean isLoginNotUnique = userService.checkUserLoginForUnique(login);
 
             if (isLoginNotUnique) {
-                page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
-                request.setAttribute(MessageManager.LOGIN_ERROR_ATTRIBUTE,MessageManager.getProperty(LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH));
+                page.setPageUrl(ConfigurationManager.getProperty(REGISTER_PAGE_PATH));
+                page.setRedirect(false);
+                request.setAttribute(MessageManager.LOGIN_ERROR_ATTRIBUTE, MessageManager.getProperty(LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH));
             } else {
-
                 UserDataValidator userDataValidator = new UserDataValidator();
-                boolean isUserDataValid = userDataValidator.checkData(login,password,firstName,lastName);
+                boolean isUserDataValid = userDataValidator.checkData(login, password, firstName, lastName);
 
-                if (isUserDataValid){
+                if (isUserDataValid) {
                     password = PasswordEncoder.encode(password);
 
                     User user = new User();
@@ -75,23 +74,19 @@ public class RegisterCommand implements ActionCommand {
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
 
-                    if (userService.register(user)) {
-                        page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
-                        request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.REGISTRATION_SUCCESS_MESSAGE_PATH));
-                    } else {
-                        page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
-                        request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.REGISTRATION_FAILED_MESSAGE_PATH));
-                    }
+                    userService.register(user);
+                    page.setPageUrl(ConfigurationManager.getProperty(REGISTRATION_SUCCESSFUL_PAGE_PATH));
+                    page.setRedirect(true);
                 } else {
-                    page = ConfigurationManager.getProperty(REGISTER_PAGE_PATH);
+                    page.setPageUrl(ConfigurationManager.getProperty(REGISTER_PAGE_PATH));
+                    page.setRedirect(false);
                     request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.DATA_NOT_VALID_MESSAGE_PATH));
                 }
-
             }
-
         } catch (ServiceException exception) {
             LOGGER.error("Service exception detected. ", exception);
-            page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
+            page.setPageUrl(ConfigurationManager.getProperty(ERROR_PAGE_PATH));
+            page.setRedirect(true);
         }
 
         return page;

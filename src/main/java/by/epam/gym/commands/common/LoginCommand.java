@@ -5,6 +5,7 @@ import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
+import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
 import by.epam.gym.utils.MessageManager;
 import org.apache.log4j.Logger;
@@ -39,8 +40,9 @@ public class LoginCommand implements ActionCommand {
      * @return redirect page.
      */
     @Override
-    public String execute(HttpServletRequest request) {
-        String page;
+    public Page execute(HttpServletRequest request) {
+        Page page = new Page();
+        String pageUrl;
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
 
@@ -50,20 +52,21 @@ public class LoginCommand implements ActionCommand {
             if (user != null) {
                 HttpSession currentSession = request.getSession();
                 currentSession.setAttribute(USER_SESSION_ATTRIBUTE, user);
-
-                page = userRoleRedirect(user);
+                pageUrl = userRoleRedirect(user);
             } else {
                 String errorMessage = MessageManager.getProperty(ERROR_MESSAGE_PATH);
                 request.setAttribute(LOGIN_ERROR_ATTRIBUTE, errorMessage);
 
-                page = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
+                pageUrl = ConfigurationManager.getProperty(LOGIN_PAGE_PATH);
             }
-
+            page.setRedirect(false);
         } catch (ServiceException exception) {
             LOGGER.error("Service exception detected. ", exception);
-            page = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
+            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
+            page.setRedirect(true);
         }
 
+        page.setPageUrl(pageUrl);
         return page;
     }
 

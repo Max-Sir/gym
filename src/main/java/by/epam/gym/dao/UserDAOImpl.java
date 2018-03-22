@@ -1,6 +1,5 @@
-package by.epam.gym.dao.user;
+package by.epam.gym.dao;
 
-import by.epam.gym.dao.AbstractDAO;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.DAOException;
@@ -14,11 +13,10 @@ import java.sql.SQLException;
  * Class that provide access to the database and deal with User entity.
  *
  * @author Eugene Makarenko
- * @see AbstractDAO
+ * @see AbstractDAOImpl
  * @see User
- * @see UserDAO
  */
-public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
+public class UserDAOImpl extends AbstractDAOImpl<User> {
 
     private static final String LOGIN_COLUMN_LABEL = "login";
     private static final String PASSWORD_COLUMN_LABEL = "password";
@@ -28,6 +26,8 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
     private static final String TABLE_NAME = "users";
 
+    private static final String FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY = "SELECT * FROM users WHERE login=? AND password=?";
+    private static final String CHECK_LOGIN_FOR_UNIQUE = "SELECT * FROM users WHERE login=?";
     private static final String INSERT_USER_SQL_QUERY = "INSERT INTO users (login, password, role, first_name, last_name) VALUES(?,?,?,?,?)";
 
     /**
@@ -47,7 +47,6 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
      * @return the User object.
      * @throws DAOException object if execution of query is failed.
      */
-    @Override
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY)) {
             preparedStatement.setString(1, login);
@@ -57,7 +56,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
             User user = null;
             if (resultSet.next()) {
-                user = createEntity(resultSet);
+                user = buildEntity(resultSet);
             }
 
             return user;
@@ -73,7 +72,6 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
      * @return true if login is unique, else returns false.
      * @throws DAOException object if execution of query is failed.
      */
-    @Override
     public boolean checkLoginForUnique(String login) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_LOGIN_FOR_UNIQUE)) {
             preparedStatement.setString(1, login);
@@ -94,7 +92,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
      * @throws DAOException object if execution of query is failed.
      */
     @Override
-    public boolean insert(User entity) throws DAOException {
+    public void insert(User entity) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL_QUERY)) {
             UserRole userRole = entity.getUserRole();
 
@@ -112,10 +110,17 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
 
             int queryResult = preparedStatement.executeUpdate();
 
-            return queryResult > 0;
+            if (queryResult != 1){
+                throw new DAOException("Insert failed.");
+            }
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
+    }
+
+    @Override
+    public void update(User entity) throws DAOException {
+
     }
 
     /**
@@ -126,7 +131,7 @@ public class UserDAOImpl extends AbstractDAO<User> implements UserDAO {
      * @throws DAOException
      */
     @Override
-    public User createEntity(ResultSet resultSet) throws DAOException {
+    public User buildEntity(ResultSet resultSet) throws DAOException {
         try {
             User user = new User();
 

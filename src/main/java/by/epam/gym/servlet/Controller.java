@@ -1,4 +1,4 @@
-package by.epam.gym;
+package by.epam.gym.servlet;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.commands.CommandFactory;
@@ -35,18 +35,35 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page;
+        Page page;
         CommandFactory factory = new CommandFactory();
         ActionCommand command = factory.defineCommand(request);
         page = command.execute(request);
+
+        boolean isRedirect = page.isRedirect();
         if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
+            if (isRedirect){
+                redirect(page,response);
+            } else {
+                forward(page,request,response);
+            }
         } else {
-            page = ConfigurationManager.getProperty(ConfigurationManager.MAIN_PAGE_PATH);
+            String pageUrl = ConfigurationManager.getProperty(ConfigurationManager.MAIN_PAGE_PATH);
             HttpSession session = request.getSession();
             session.setAttribute(NULL_ATTRIBUTE, MessageManager.getProperty(NULL_PAGE_MESSAGE_PATH));
-            response.sendRedirect(request.getContextPath() + page);
+            response.sendRedirect(request.getContextPath() + pageUrl);
         }
+    }
+
+    private void redirect(Page page, HttpServletResponse response) throws IOException {
+        String url = page.getPageUrl();
+        response.sendRedirect(url);
+    }
+
+    private void forward(Page page, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String url = page.getPageUrl();
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(url);
+        requestDispatcher.forward(request,response);
     }
 }

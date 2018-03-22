@@ -6,7 +6,7 @@
     <display-name>Old school gym.</display-name>
     <servlet>
         <servlet-name>controller</servlet-name>
-        <servlet-class>by.epam.gym.Controller</servlet-class>
+        <servlet-class>by.epam.gym.servlet.Controller</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>controller</servlet-name>
