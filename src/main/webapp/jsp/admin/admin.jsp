@@ -17,7 +17,21 @@
 <p>Name: ${user.lastName}</p>
 <p>Role: ${user.userRole}</p>
 <hr/>
+<br/>
 <a href="controller?command=logout">Logout</a>
-<input type="button" value="Clients" onClick='location.href="/jsp/admin/find_user.jsp"'>
+<br/>
+<form id="find" name="FindForm" method="GET" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="find_user_by_name"/>
+    <br/>Enter client name:<br/>
+    <input type="text" id="firstName" name="firstName" value=""/>
+    <input type="text" id="lastName" name="lastName" value=""/>
+    <input id="submit" type="submit" value="Find" />
+</form>
+<br/>
+<form id="show" name="ShowAllClients" method="GET" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="show_all_clients"/>
+    <input type="submit" value="Show all clients" onClick='location.href="/jsp/admin/find_client.jsp"'>
+</form>
+<br/>
 </body>
 </html>

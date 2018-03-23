@@ -2,6 +2,7 @@ package by.epam.gym.commands;
 
 
 import by.epam.gym.commands.admin.FindUserByNameCommand;
+import by.epam.gym.commands.admin.ShowAllClientsCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
@@ -32,6 +33,11 @@ public enum CommandType {
     FIND_USER_BY_NAME{
         {
             this.command = new FindUserByNameCommand();
+        }
+    },
+    SHOW_ALL_CLIENTS{
+        {
+            this.command = new ShowAllClientsCommand();
         }
     };
     /**
