@@ -1,7 +1,7 @@
 package by.epam.gym.exceptions;
 
 /**
- *
+ * The type of checked exception that thrown from ConnectionPool.
  *
  * @author Eugene Makarenko
  * @see by.epam.gym.pool.ConnectionPool

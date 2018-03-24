@@ -86,7 +86,7 @@ public class UserService {
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
             UserDAOImpl userDAO = connectionManager.createDAO();
 
-            return userDAO.findUserByName(firstName,lastName);
+            return userDAO.findClientByName(firstName,lastName);
         }  catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }

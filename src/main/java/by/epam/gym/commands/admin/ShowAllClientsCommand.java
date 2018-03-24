@@ -16,6 +16,14 @@ import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.FIND_CLIENT_BY_NAME_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.SHOW_ALL_CLIENTS_PAGE_PATH;
 
+/**
+ * Command to show all clients.
+ *
+ * @author Eugene Makarenko
+ * @see ActionCommand
+ * @see HttpServletRequest
+ * @see UserService
+ */
 public class ShowAllClientsCommand implements ActionCommand {
 
     private static final String LIST_ATTRIBUTE = "list";
@@ -27,6 +35,12 @@ public class ShowAllClientsCommand implements ActionCommand {
     private static final int MAX_RECORDS_PER_PAGE_COUNT = 10;
     private static final int FIRST_PAGE_INDEX = 1;
 
+    /**
+     * Implementation of command to show all clients.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();

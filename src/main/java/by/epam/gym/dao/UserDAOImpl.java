@@ -26,14 +26,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
     private static final int FIRST_COLUMN_INDEX = 1;
 
-    private static final String TABLE_NAME = "users";
-
-    private static final String FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY = "SELECT * FROM users WHERE login=? AND password=?";
-    private static final String CHECK_LOGIN_FOR_UNIQUE = "SELECT * FROM users WHERE login=?";
-    private static final String INSERT_USER_SQL_QUERY = "INSERT INTO users (login, password, role, first_name, last_name) VALUES(?,?,?,?,?)";
-    private static final String FIND_USER_BY_NAME_SQL_QUERY = "SELECT * FROM users WHERE first_name=? AND last_name=?";
-    private static final String FIND_ALL_CLIENTS_BY_PAGES_SQL_QUERY = "SELECT SQL_CALC_FOUND_ROWS * FROM users WHERE role='CLIENT' LIMIT ";
-    private static final String SQL_SELECT_FOUND_ROWS = "SELECT FOUND_ROWS()";
+    private static final String USERS_RESOURCES_FILE_NAME = "users";
 
     private int numberOfRecords;
 
@@ -43,7 +36,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @param connection the connection to database.
      */
     public UserDAOImpl(Connection connection) {
-        super(connection,"users");
+        super(connection,USERS_RESOURCES_FILE_NAME);
     }
 
     /**
@@ -55,7 +48,8 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @throws DAOException object if execution of query is failed.
      */
     public User findUserByLoginAndPassword(String login, String password) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL_QUERY)) {
+        String sqlQuery = resourceBundle.getString("query.find_by_login_and_password");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
 
@@ -80,7 +74,8 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @throws DAOException object if execution of query is failed.
      */
     public boolean checkLoginForUnique(String login) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_LOGIN_FOR_UNIQUE)) {
+        String sqlQuery = resourceBundle.getString("query.check_login_for_unique");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setString(1, login);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -99,8 +94,9 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @return List of found users.
      * @throws DAOException object if execution of query is failed.
      */
-    public List<User> findUserByName(String firstName, String lastName) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_NAME_SQL_QUERY)) {
+    public List<User> findClientByName(String firstName, String lastName) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.find_client_by_name");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,8 +121,10 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @throws DAOException object if execution of query is failed.
      */
     public List<User> findAllClientsByPages(int offSet, int numberOfRecords) throws DAOException {
+        String sqlQueryFirst = resourceBundle.getString("query.find_all_clients_by_pages");
+        String sqlQuerySecond = resourceBundle.getString("query.select_found_rows");
         try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(FIND_ALL_CLIENTS_BY_PAGES_SQL_QUERY + offSet + ", " + numberOfRecords);
+            ResultSet resultSet = statement.executeQuery(sqlQueryFirst + offSet + ", " + numberOfRecords);
 
             List<User> findUsers = new ArrayList<>();
             while (resultSet.next()){
@@ -135,7 +133,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
                 findUsers.add(user);
             }
 
-            resultSet = statement.executeQuery(SQL_SELECT_FOUND_ROWS);
+            resultSet = statement.executeQuery(sqlQuerySecond);
             if (resultSet.next()){
                 this.numberOfRecords = resultSet.getInt(FIRST_COLUMN_INDEX);
             }
@@ -144,45 +142,6 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
         }catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
-    }
-
-    /**
-     * This method inserts user to database.
-     *
-     * @param entity the entity.
-     * @return true if object was inserted successfully and false if didn't.
-     * @throws DAOException object if execution of query is failed.
-     */
-    @Override
-    public void insert(User entity) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL_QUERY)) {
-            UserRole userRole = entity.getUserRole();
-
-            String login = entity.getLogin();
-            String password = entity.getPassword();
-            String roleValue = userRole.toString();
-            String firstName = entity.getFirstName();
-            String lastName = entity.getLastName();
-
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            preparedStatement.setString(3, roleValue);
-            preparedStatement.setString(4, firstName);
-            preparedStatement.setString(5, lastName);
-
-            int queryResult = preparedStatement.executeUpdate();
-
-            if (queryResult != 1){
-                throw new DAOException("Insert failed.");
-            }
-        } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
-        }
-    }
-
-    @Override
-    public void update(User entity) throws DAOException {
-
     }
 
     /**
@@ -217,16 +176,6 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
-    }
-
-    /**
-     * Method gets current table name.
-     *
-     * @return the table name;
-     */
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
     }
 
     /**

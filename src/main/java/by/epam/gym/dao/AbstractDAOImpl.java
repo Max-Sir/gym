@@ -19,17 +19,20 @@ import java.util.ResourceBundle;
  * @author Eugene Makarenko
  * @see Connection
  * @see Entity
+ * @see QueryProcessor
  * @see DAOException
  */
 public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
-    private static final String SELECT_FROM_SQL_QUERY_PART = "SELECT * FROM ";
-    private static final String DELETE_SQL_QUERY_PART = "DELETE FROM ";
-    private static final String WHERE_SQL_QUERY_PART = " WHERE id=?";
-
     protected Connection connection;
     protected ResourceBundle resourceBundle;
 
+    /**
+     * Instantiates a new UserDAOImpl.
+     *
+     * @param connection   the connection to database.
+     * @param resourceName the resource file name.
+     */
     public AbstractDAOImpl(Connection connection, String resourceName) {
         this.connection = connection;
         this.resourceBundle = ResourceBundle.getBundle(resourceName);
@@ -99,7 +102,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
             preparedStatement.setInt(1, id);
 
             int queryResult = preparedStatement.executeUpdate();
-            if (queryResult != 1){
+            if (queryResult != 1) {
                 throw new DAOException("On delete modify more then 1 record: " + queryResult);
             }
 
@@ -109,26 +112,32 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
     }
 
     /**
-     * This method creates entity in database.
+     * This method insert entity in database.
      *
      * @param entity the entity.
      * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public void insert(T entity) throws DAOException{
+    public void insert(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.insert_entity");
-        try(QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery,connection,entity)){
+        try (QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity)) {
 
             queryProcessor.processInsertQuery();
 
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             throw new DAOException("Exception is DAO-level detected. " + exception);
         }
     }
 
-    public void update(T entity) throws DAOException{
+    /**
+     * This method update entity in database.
+     *
+     * @param entity the entity.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public void update(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.update_entity");
-        try(QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery,connection,entity)){
+        try (QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity)) {
 
             queryProcessor.processUpdateQuery();
 
@@ -138,7 +147,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
     }
 
     /**
-     * Factory method creates entity.
+     * This method builds entity from ResultSet object.
      *
      * @param resultSet the result set of statement.
      * @return the entity.
@@ -146,10 +155,4 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      */
     public abstract T buildEntity(ResultSet resultSet) throws DAOException;
 
-    /**
-     * Gets table name for current DAO.
-     *
-     * @return the table name.
-     */
-    public abstract String getTableName();
 }

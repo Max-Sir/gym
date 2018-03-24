@@ -16,6 +16,14 @@ import static by.epam.gym.utils.ConfigurationManager.FIND_CLIENT_BY_NAME_PAGE_PA
 import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 import static by.epam.gym.utils.MessageManager.USER_DID_NOT_FIND_MESSAGE_PATH;
 
+/**
+ * Command to find client by name.
+ *
+ * @author Eugene Makarenko
+ * @see ActionCommand
+ * @see HttpServletRequest
+ * @see UserService
+ */
 public class FindUserByNameCommand implements ActionCommand {
 
     private static final String FIRST_NAME_PARAMETER = "firstName";
@@ -23,6 +31,12 @@ public class FindUserByNameCommand implements ActionCommand {
 
     private static final String LIST_ATTRIBUTE = "list";
 
+    /**
+     * Implementation of command to find user by name.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         String firstName = request.getParameter(FIRST_NAME_PARAMETER);

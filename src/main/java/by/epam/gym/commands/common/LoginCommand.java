@@ -23,6 +23,7 @@ import static by.epam.gym.utils.MessageManager.LOGIN_ERROR_ATTRIBUTE;
  * @author Eugene Makarenko
  * @see ActionCommand
  * @see HttpServletRequest
+ * @see UserService
  */
 public class LoginCommand implements ActionCommand {
 

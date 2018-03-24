@@ -1,5 +1,7 @@
 package by.epam.gym.entities;
 
+import by.epam.gym.dao.processor.ColumnName;
+
 /**
  * The type Entity.
  *
@@ -14,6 +16,7 @@ public abstract class Entity {
      *
      * @return the entity's id.
      */
+    @ColumnName(name = "id")
     public int getId() {
         return id;
     }

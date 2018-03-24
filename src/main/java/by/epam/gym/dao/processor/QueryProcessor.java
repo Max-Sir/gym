@@ -7,10 +7,16 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Util class of DAO-level to work with entity. Make insert and update methods of DAO interface to work with all types of Entity.
+ *
+ * @param <T> Entity type.
+ */
 public class QueryProcessor<T extends Entity> implements AutoCloseable {
 
     private static final String QUERY_SPLIT_REGEX = " ";
@@ -22,16 +28,30 @@ public class QueryProcessor<T extends Entity> implements AutoCloseable {
     private PreparedStatement preparedStatement;
     private T entity;
 
+    /**
+     * Instantiates a new QueryProcessor.
+     *
+     * @param sqlQuery the sql query.
+     * @param connection the connection to database.
+     * @param entity th entity.
+     * @throws SQLException object if execution of query is failed.
+     */
     public QueryProcessor(String sqlQuery, Connection connection, T entity) throws SQLException {
         this.sqlQuery = sqlQuery;
         preparedStatement = connection.prepareStatement(sqlQuery);
         this.entity = entity;
     }
 
+    /**
+     * This method insert entity to database.
+     *
+     * @throws SQLException object if execution of query is failed.
+     * @throws InvocationTargetException object if method invocation is failed.
+     * @throws IllegalAccessException object if access is illegal.
+     */
     public void processInsertQuery() throws SQLException, InvocationTargetException, IllegalAccessException {
         Class<T> clazz = (Class<T>) entity.getClass();
-        EntityMethodsIdentifier entityMethodsIdentifier = new EntityMethodsIdentifier();
-        List<Method> methods = entityMethodsIdentifier.identifyMethodsByType(MethodType.GETTER, clazz);
+        List<Method> methods = findGetterMethods(clazz);
 
         for (Method method : methods) {
             ColumnName annotation = method.getAnnotation(ColumnName.class);
@@ -45,10 +65,16 @@ public class QueryProcessor<T extends Entity> implements AutoCloseable {
         }
     }
 
+    /**
+     * This method update insert in database.
+     *
+     * @throws InvocationTargetException object if method invocation is failed.
+     * @throws IllegalAccessException object if access is illegal.
+     * @throws SQLException object if execution of query is failed.
+     */
     public void processUpdateQuery() throws InvocationTargetException, IllegalAccessException, SQLException {
         Class<T> clazz = (Class<T>) entity.getClass();
-        EntityMethodsIdentifier entityMethodsIdentifier = new EntityMethodsIdentifier();
-        List<Method> methods = entityMethodsIdentifier.identifyMethodsByType(MethodType.GETTER, clazz);
+        List<Method> methods = findGetterMethods(clazz);
 
         String[] parsedQuery = sqlQuery.split(QUERY_SPLIT_REGEX);
         int currentParameterIndex = 1;
@@ -64,6 +90,11 @@ public class QueryProcessor<T extends Entity> implements AutoCloseable {
         }
     }
 
+    /**
+     * This method clothes PreparedStatement object.
+     *
+     * @throws Exception object if close method failed.
+     */
     @Override
     public void close() throws Exception {
         preparedStatement.close();
@@ -96,5 +127,33 @@ public class QueryProcessor<T extends Entity> implements AutoCloseable {
         }
 
         return value;
+    }
+
+    private List<Method> findGetterMethods(Class clazz){
+        Method[] allMethods = clazz.getMethods();
+        List<Method> sortedMethods = new ArrayList<>();
+
+        for (Method method : allMethods) {
+           boolean isGetter = isMethodGetter(method);
+
+           if (isGetter){
+               sortedMethods.add(method);
+           }
+        }
+
+        return sortedMethods;
+    }
+
+    private boolean isMethodGetter(Method method){
+        if (!method.getName().startsWith("get")) {
+            return false;
+        }
+        if (method.getParameterTypes().length != 0) {
+            return false;
+        }
+        if (void.class.equals(method.getReturnType())) {
+            return false;
+        }
+        return true;
     }
 }
