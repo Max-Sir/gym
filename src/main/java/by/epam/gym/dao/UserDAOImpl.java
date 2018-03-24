@@ -43,7 +43,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      * @param connection the connection to database.
      */
     public UserDAOImpl(Connection connection) {
-        super(connection);
+        super(connection,"users");
     }
 
     /**

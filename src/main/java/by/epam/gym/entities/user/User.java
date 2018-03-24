@@ -1,6 +1,9 @@
 package by.epam.gym.entities.user;
 
+import by.epam.gym.dao.processor.ColumnName;
 import by.epam.gym.entities.Entity;
+
+import javax.validation.constraints.Null;
 
 /**
  * This class describes user of application.
@@ -28,6 +31,7 @@ public class User extends Entity {
      *
      * @return the user's login.
      */
+    @ColumnName(name = "login", parameterIndex = 1)
     public String getLogin() {
         return login;
     }
@@ -46,6 +50,7 @@ public class User extends Entity {
      *
      * @return the user's password.
      */
+    @ColumnName(name = "password", parameterIndex = 2)
     public String getPassword() {
         return password;
     }
@@ -64,6 +69,7 @@ public class User extends Entity {
      *
      * @return the user's role.
      */
+    @ColumnName(name = "role", parameterIndex = 3)
     public UserRole getUserRole() {
         return userRole;
     }
@@ -83,6 +89,7 @@ public class User extends Entity {
      *
      * @return the user's first name.
      */
+    @ColumnName(name = "first_name", parameterIndex = 4)
     public String getFirstName() {
         return firstName;
     }
@@ -101,6 +108,7 @@ public class User extends Entity {
      *
      * @return the user's last name.
      */
+    @ColumnName(name = "last_name", parameterIndex = 5)
     public String getLastName() {
         return lastName;
     }

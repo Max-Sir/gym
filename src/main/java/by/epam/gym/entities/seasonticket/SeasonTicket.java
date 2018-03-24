@@ -86,7 +86,7 @@ public class SeasonTicket extends Entity {
      *
      * @return the isPersonalTrainerNeed.
      */
-    public boolean isPersonalTrainerNeed() {
+    public boolean getPersonalTrainerNeed() {
         return isPersonalTrainerNeed;
     }
 

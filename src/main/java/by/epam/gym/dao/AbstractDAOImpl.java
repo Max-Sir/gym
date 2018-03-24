@@ -1,5 +1,6 @@
 package by.epam.gym.dao;
 
+import by.epam.gym.dao.processor.QueryProcessor;
 import by.epam.gym.entities.Entity;
 import by.epam.gym.exceptions.DAOException;
 
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Abstract root class of DAO level that provide access to the database and deal with application entities.
@@ -26,9 +28,11 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
     private static final String WHERE_SQL_QUERY_PART = " WHERE id=?";
 
     protected Connection connection;
+    protected ResourceBundle resourceBundle;
 
-    public AbstractDAOImpl(Connection connection) {
+    public AbstractDAOImpl(Connection connection, String resourceName) {
         this.connection = connection;
+        this.resourceBundle = ResourceBundle.getBundle(resourceName);
     }
 
     /**
@@ -38,7 +42,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @throws DAOException object if execution of query is failed.
      */
     public List<T> findAll() throws DAOException {
-        String sqlQuery = SELECT_FROM_SQL_QUERY_PART + getTableName();
+        String sqlQuery = resourceBundle.getString("query.find_all");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
 
@@ -64,7 +68,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @throws DAOException object if execution of query is failed.
      */
     public T findEntityById(int id) throws DAOException {
-        String sqlQuery = SELECT_FROM_SQL_QUERY_PART + getTableName() + WHERE_SQL_QUERY_PART;
+        String sqlQuery = resourceBundle.getString("query.find_by_id");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setInt(1, id);
@@ -89,7 +93,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @throws DAOException object if execution of query is failed.
      */
     public void deleteById(int id) throws DAOException {
-        String sqlQuery = DELETE_SQL_QUERY_PART + getTableName() + WHERE_SQL_QUERY_PART;
+        String sqlQuery = resourceBundle.getString("query.delete_by_id");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setInt(1, id);
@@ -111,9 +115,27 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract void insert(T entity) throws DAOException;
+    public void insert(T entity) throws DAOException{
+        String sqlQuery = resourceBundle.getString("query.insert_entity");
+        try(QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery,connection,entity)){
 
-    public abstract void update(T entity) throws DAOException;
+            queryProcessor.processInsertQuery();
+
+        }catch (Exception exception) {
+            throw new DAOException("Exception is DAO-level detected. " + exception);
+        }
+    }
+
+    public void update(T entity) throws DAOException{
+        String sqlQuery = resourceBundle.getString("query.update_entity");
+        try(QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery,connection,entity)){
+
+            queryProcessor.processUpdateQuery();
+
+        } catch (Exception exception) {
+            throw new DAOException("Exception is DAO-level detected. " + exception);
+        }
+    }
 
     /**
      * Factory method creates entity.
