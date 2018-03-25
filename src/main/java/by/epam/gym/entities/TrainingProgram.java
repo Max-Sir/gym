@@ -1,6 +1,8 @@
 package by.epam.gym.entities;
 
-import java.util.Date;
+import by.epam.gym.dao.processor.ColumnName;
+
+import java.sql.Date;
 
 /**
  * Class describes training program of user.
@@ -27,6 +29,7 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's author id.
      */
+    @ColumnName(name = "author_id", parameterIndex = 1)
     public int getAuthorId() {
         return authorId;
     }
@@ -45,6 +48,7 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's persona trainer id.
      */
+    @ColumnName(name = "personal_trainer_id", parameterIndex = 2)
     public int getPersonalTrainerId() {
         return personalTrainerId;
     }
@@ -63,6 +67,7 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's client id.
      */
+    @ColumnName(name = "client_id", parameterIndex = 3)
     public int getClientId() {
         return clientId;
     }
@@ -81,6 +86,7 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's start date.
      */
+    @ColumnName(name = "start_date", parameterIndex = 4)
     public Date getStart() {
         return start;
     }
@@ -99,6 +105,7 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's end date.
      */
+    @ColumnName(name = "end_date", parameterIndex = 5)
     public Date getEnd() {
         return end;
     }

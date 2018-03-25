@@ -23,6 +23,7 @@ public class MessageManager {
     public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
     public static final String DATA_NOT_VALID_MESSAGE_PATH = "message.notValid";
     public static final String USER_DID_NOT_FIND_MESSAGE_PATH = "message.userNotFound";
+    public static final String EXERCISE_ADDED_SUCCESSFULLY = "message.exerciseAdded";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";

@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class UserDAOImpl extends AbstractDAOImpl<User> {
 
-    private static final String ID_COLUMN_LABEL = "id";
     private static final String LOGIN_COLUMN_LABEL = "login";
     private static final String PASSWORD_COLUMN_LABEL = "password";
     private static final String ROLE_COLUMN_LABEL = "role";
@@ -145,11 +144,11 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
     }
 
     /**
-     * Factory method for User entity creation.
+     * This method builds User object from ResultSet object.
      *
      * @param resultSet the result set of statement.
-     * @return
-     * @throws DAOException
+     * @return The User object.
+     * @throws DAOException object if execution of query is failed.
      */
     @Override
     public User buildEntity(ResultSet resultSet) throws DAOException {

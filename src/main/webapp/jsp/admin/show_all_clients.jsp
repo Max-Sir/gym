@@ -29,8 +29,8 @@
         </c:forEach>
     </tr>
 </table>
-<c:if test="${currentPage lt numberOfPages}">
-    <td><a href="controller?command=user_list&page=${currentPage + 1}">Next</a></td>
+<c:if test="${pageIndex lt numberOfPages}">
+    <td><a href="controller?command=show_all_clients&page=${pageIndex + 1}">Next</a></td>
 </c:if>
 ${result}
 </body>

@@ -56,7 +56,7 @@ public class FindUserByNameCommand implements ActionCommand {
 
             pageUrl = ConfigurationManager.getProperty(FIND_CLIENT_BY_NAME_PAGE_PATH);
             page.setRedirect(false);
-        } catch (ServiceException e) {
+        } catch (ServiceException exception) {
             pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
             page.setRedirect(true);
         }

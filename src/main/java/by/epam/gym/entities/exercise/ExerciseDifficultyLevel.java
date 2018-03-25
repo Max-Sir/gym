@@ -7,4 +7,7 @@ package by.epam.gym.entities.exercise;
  * @see Exercise
  */
 public enum ExerciseDifficultyLevel {
+
+    BEGINNER, EXPERT, PRO
+
 }

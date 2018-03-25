@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
  */
 public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
+    public static final String ID_COLUMN_LABEL = "id";
+
     protected Connection connection;
     protected ResourceBundle resourceBundle;
 
@@ -115,18 +117,13 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * This method insert entity in database.
      *
      * @param entity the entity.
-     * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
     public void insert(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.insert_entity");
-        try (QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity)) {
+        QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
 
-            queryProcessor.processInsertQuery();
-
-        } catch (Exception exception) {
-            throw new DAOException("Exception is DAO-level detected. " + exception);
-        }
+        queryProcessor.processInsertQuery();
     }
 
     /**
@@ -137,13 +134,9 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      */
     public void update(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.update_entity");
-        try (QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity)) {
+        QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
 
-            queryProcessor.processUpdateQuery();
-
-        } catch (Exception exception) {
-            throw new DAOException("Exception is DAO-level detected. " + exception);
-        }
+        queryProcessor.processUpdateQuery();
     }
 
     /**

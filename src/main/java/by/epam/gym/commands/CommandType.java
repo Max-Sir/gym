@@ -6,6 +6,7 @@ import by.epam.gym.commands.admin.ShowAllClientsCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
+import by.epam.gym.commands.trainer.AddExerciseCommand;
 
 /**
  * Types of commands.
@@ -38,6 +39,11 @@ public enum CommandType {
     SHOW_ALL_CLIENTS{
         {
             this.command = new ShowAllClientsCommand();
+        }
+    },
+    ADD_EXERCISE{
+        {
+            this.command = new AddExerciseCommand();
         }
     };
     /**

@@ -8,7 +8,9 @@ import java.io.IOException;
  *
  * @author Eugene Makarenko
  */
-public class UTF8Filter implements Filter {
+public class CharsetFilter implements Filter {
+
+    private static final String ENCODING_TYPE_PARAMETER = "encodingType";
 
     private String code;
 
@@ -20,7 +22,7 @@ public class UTF8Filter implements Filter {
      */
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
-        code = fConfig.getInitParameter("type");
+        code = fConfig.getInitParameter(ENCODING_TYPE_PARAMETER);
     }
 
     /**
@@ -48,6 +50,5 @@ public class UTF8Filter implements Filter {
      */
     @Override
     public void destroy() {
-        code = null;
     }
 }

@@ -1,9 +1,9 @@
 package by.epam.gym.entities.seasonticket;
 
+import by.epam.gym.dao.processor.ColumnName;
 import by.epam.gym.entities.Entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Class describes season ticket entity.
@@ -17,8 +17,7 @@ public class SeasonTicket extends Entity {
     private Date start;
     private Date end;
     private SeasonTicketDurationType duration;
-    private boolean isPersonalTrainerNeed;
-    private BigDecimal price;
+    private int isPersonalTrainerNeed;
 
     /**
      * Instantiates a new SeasonTicket.
@@ -32,6 +31,7 @@ public class SeasonTicket extends Entity {
      *
      * @return the start date.
      */
+    @ColumnName(name = "start_date", parameterIndex = 1)
     public Date getStart() {
         return start;
     }
@@ -50,6 +50,7 @@ public class SeasonTicket extends Entity {
      *
      * @return the end date.
      */
+    @ColumnName(name = "end_date", parameterIndex = 2)
     public Date getEnd() {
         return end;
     }
@@ -68,6 +69,7 @@ public class SeasonTicket extends Entity {
      *
      * @return the duration of season ticket.
      */
+    @ColumnName(name = "duration", parameterIndex = 3)
     public SeasonTicketDurationType getDuration() {
         return duration;
     }
@@ -82,38 +84,22 @@ public class SeasonTicket extends Entity {
     }
 
     /**
-     * Gets the boolean value of variable isPersonalTrainerNeed.
+     * Gets the int value of boolean variable isPersonalTrainerNeed.
      *
      * @return the isPersonalTrainerNeed.
      */
-    public boolean getPersonalTrainerNeed() {
+    @ColumnName(name = "is_personal_trainer_need", parameterIndex = 4)
+    public int getPersonalTrainerNeed() {
         return isPersonalTrainerNeed;
     }
 
     /**
-     * Sets the boolean value of variable isPersonalTrainerNeed.
+     * Sets the int value of boolean variable isPersonalTrainerNeed.
      *
-     * @param personalTrainerNeed the boolean variable isPersonalTrainerNeed.
+     * @param personalTrainerNeed the int value of boolean variable isPersonalTrainerNeed.
      */
-    public void setPersonalTrainerNeed(boolean personalTrainerNeed) {
+    public void setPersonalTrainerNeed(int personalTrainerNeed) {
         isPersonalTrainerNeed = personalTrainerNeed;
     }
 
-    /**
-     * Gets season ticket's price.
-     *
-     * @return the season ticket's price.
-     */
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    /**
-     * Sets season ticket's price.
-     *
-     * @param price the season ticket's price.
-     */
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

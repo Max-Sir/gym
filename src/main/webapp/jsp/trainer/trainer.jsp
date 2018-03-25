@@ -16,6 +16,10 @@
 <hr/>
 <p>Name: ${user.lastName}</p>
 <p>Role: ${user.userRole}</p>
+
+<br/>
+<a href="/jsp/trainer/add_exercise.jsp">Add exercise.</a>
+<br/>
 <hr/>
 <a href="controller?command=logout">Logout</a>
 </body>

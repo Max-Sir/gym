@@ -21,6 +21,7 @@ public class ConfigurationManager {
     public static final String REGISTRATION_SUCCESSFUL_PAGE_PATH = "path.page.registration_successful";
     public static final String FIND_CLIENT_BY_NAME_PAGE_PATH = "path.page.find_client";
     public static final String SHOW_ALL_CLIENTS_PAGE_PATH = "path.page.show_all_clients";
+    public static final String ADD_EXERCISE_PAGE_PATH = "path.page.add_exercise";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

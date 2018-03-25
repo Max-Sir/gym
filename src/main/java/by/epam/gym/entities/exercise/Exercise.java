@@ -1,5 +1,6 @@
 package by.epam.gym.entities.exercise;
 
+import by.epam.gym.dao.processor.ColumnName;
 import by.epam.gym.entities.Entity;
 
 /**
@@ -28,6 +29,7 @@ public class Exercise extends Entity {
      *
      * @return the exercise's name.
      */
+    @ColumnName(name = "name", parameterIndex = 1)
     public String getName() {
         return name;
     }
@@ -46,6 +48,7 @@ public class Exercise extends Entity {
      *
      * @return the exercise's difficulty level.
      */
+    @ColumnName(name = "level", parameterIndex = 2)
     public ExerciseDifficultyLevel getLevel() {
         return level;
     }
@@ -64,6 +67,7 @@ public class Exercise extends Entity {
      *
      * @return the exercise's description.
      */
+    @ColumnName(name = "description", parameterIndex = 3)
     public String getDescription() {
         return description;
     }
@@ -82,6 +86,7 @@ public class Exercise extends Entity {
      *
      * @return the sets count.
      */
+    @ColumnName(name = "sets_count")
     public int getSetsCount() {
         return setsCount;
     }
@@ -100,6 +105,7 @@ public class Exercise extends Entity {
      *
      * @return the repeats count.
      */
+    @ColumnName(name = "repeats_count")
     public int getRepeatsCount() {
         return repeatsCount;
     }

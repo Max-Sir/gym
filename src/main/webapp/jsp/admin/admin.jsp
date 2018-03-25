@@ -5,7 +5,8 @@
   Time: 18:40
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" language="java" %>
+
 <html>
 <head>
     <title>Title</title>
@@ -20,11 +21,14 @@
 <br/>
 <a href="controller?command=logout">Logout</a>
 <br/>
-<form id="find" name="FindForm" method="GET" action="${pageContext.request.contextPath}/controller">
+<form id="find" name="FindForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="find_user_by_name"/>
     <br/>Enter client name:<br/>
+    <br/>First name:
     <input type="text" id="firstName" name="firstName" value=""/>
+    <br/>Last name:
     <input type="text" id="lastName" name="lastName" value=""/>
+    <br/>
     <input id="submit" type="submit" value="Find" />
 </form>
 <br/>
