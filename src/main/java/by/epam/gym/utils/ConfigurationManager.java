@@ -23,6 +23,7 @@ public class ConfigurationManager {
     public static final String SHOW_ALL_CLIENTS_PAGE_PATH = "path.page.show_all_clients";
     public static final String ADD_EXERCISE_PAGE_PATH = "path.page.add_exercise";
     public static final String PERSONAL_CLIENTS_PAGE_PATH = "path.page.personal_clients";
+    public static final String DESCRIBE_TRAINING_PROGRAM_PAGE_PATH = "path.page.describe_training_program";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

@@ -24,7 +24,9 @@
             <td><c:out value="${findClients.key.id}" default="lol" /></td>
             <td><c:out value="${findClients.key.firstName}" default="lol" /></td>
             <td><c:out value="${findClients.key.lastName}" default="lol" /></td>
-            <td><c:out value="${findClients.value}" default="lol" /></td>
+            <td><c:out value="${findClients.value}" default="lol" />
+                <a href="controller?command=describe_training_program&programId=${findClients.value}">Describe</a>
+            </td>
         </tr>
     </c:forEach>
 </table>

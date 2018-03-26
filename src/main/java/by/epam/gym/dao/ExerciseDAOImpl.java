@@ -5,8 +5,13 @@ import by.epam.gym.entities.exercise.ExerciseDifficultyLevel;
 import by.epam.gym.exceptions.DAOException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class that provide access to the database and deal with Exercise entity.
@@ -20,6 +25,10 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
     private static final String NAME_COLUMN_LABEL = "name";
     private static final String LEVEL_COLUMN_LABEL = "level";
     private static final String DESCRIPTION_COLUMN_LABEL = "description";
+    private static final String SETS_COUNT_COLUMN_LABEL = "sets_count";
+    private static final String REPEATS_COUNT_COLUMN_LABEL = "repeats_count";
+    private static final String DAY_NUMBER_COLUMN_LABEL = "day_number";
+    private static final String EXECUTION_NUMBER_COLUMN_LABEL = "execution_number";
 
     private static final String EXERCISES_RESOURCES_FILE_NAME = "exercises";
 
@@ -30,6 +39,47 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
      */
     public ExerciseDAOImpl(Connection connection) {
         super(connection, EXERCISES_RESOURCES_FILE_NAME);
+    }
+
+    public Map<Integer, List<Exercise>> showExerciseFromTrainingProgram(int trainingProgramId) throws DAOException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(resourceBundle.getString("query.get_exercises_from_training_program"))) {
+            preparedStatement.setInt(1,trainingProgramId);
+
+            Map<Integer, List<Exercise>> exercisesByDays = new HashMap<>();
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Exercise> exercisesByDay = new ArrayList<>();
+            int dayIndex = 1;
+
+            while (resultSet.next()){
+
+                int dayNumber = resultSet.getInt(DAY_NUMBER_COLUMN_LABEL);
+                int setsCount = resultSet.getInt(SETS_COUNT_COLUMN_LABEL);
+                int repeatsCount = resultSet.getInt(REPEATS_COUNT_COLUMN_LABEL);
+                int executionNumber = resultSet.getInt(EXECUTION_NUMBER_COLUMN_LABEL);
+
+                if (dayIndex != dayNumber){
+                    exercisesByDays.put(dayIndex, exercisesByDay);
+                    exercisesByDay = new ArrayList<>();
+                    dayIndex = dayNumber;
+                }
+
+                Exercise exercise = buildEntity(resultSet);
+                exercise.setDayNumber(dayNumber);
+                exercise.setRepeatsCount(repeatsCount);
+                exercise.setSetsCount(setsCount);
+                exercise.setExecutionNumber(executionNumber);
+
+                exercisesByDay.add(exercise);
+            }
+
+            exercisesByDays.put(dayIndex,exercisesByDay);
+
+            return exercisesByDays;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
     }
 
     /**

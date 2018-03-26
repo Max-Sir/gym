@@ -17,6 +17,8 @@ public class Exercise extends Entity {
     private String description;
     private int setsCount;
     private int repeatsCount;
+    private int dayNumber;
+    private int executionNumber;
 
     /**
      * Instantiates a new Exercise.
@@ -117,5 +119,43 @@ public class Exercise extends Entity {
      */
     public void setRepeatsCount(int repeatsCount) {
         this.repeatsCount = repeatsCount;
+    }
+
+    /**
+     * Gets day number.
+     *
+     * @return the day number.
+     */
+    @ColumnName(name = "day_number")
+    public int getDayNumber() {
+        return dayNumber;
+    }
+
+    /**
+     * Sets the day number.
+     *
+     * @param dayNumber the day number.
+     */
+    public void setDayNumber(int dayNumber) {
+        this.dayNumber = dayNumber;
+    }
+
+    /**
+     * Gets execution number.
+     *
+     * @return the execution number.
+     */
+    @ColumnName(name = "execution_number")
+    public int getExecutionNumber() {
+        return executionNumber;
+    }
+
+    /**
+     * Sets the execution number.
+     *
+     * @param executionNumber the execution number.
+     */
+    public void setExecutionNumber(int executionNumber) {
+        this.executionNumber = executionNumber;
     }
 }

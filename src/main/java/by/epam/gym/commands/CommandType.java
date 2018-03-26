@@ -3,6 +3,7 @@ package by.epam.gym.commands;
 
 import by.epam.gym.commands.admin.FindUserByNameCommand;
 import by.epam.gym.commands.admin.ShowAllClientsCommand;
+import by.epam.gym.commands.common.DescribeTrainingProgramCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
@@ -49,6 +50,9 @@ public enum CommandType {
     },
     SHOW_PERSONAL_CLIENTS{
         {this.command = new ShowPersonalClientsCommand();}
+    },
+    DESCRIBE_TRAINING_PROGRAM{
+        {this.command = new DescribeTrainingProgramCommand();}
     };
     /**
      * Current command.
