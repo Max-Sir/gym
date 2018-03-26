@@ -13,15 +13,28 @@ import javax.servlet.http.HttpServletRequest;
 
 import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY;
+import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH;
 import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
+/**
+ * Command to add exercise in database.
+ *
+ * @author Eugene Makarenko
+ * @see Exercise
+ * @see ActionCommand
+ */
 public class AddExerciseCommand implements ActionCommand {
 
     private static final String NAME_PARAMETER = "name";
     private static final String LEVEL_PARAMETER = "level";
     private static final String DESCRIPTION_PARAMETER = "description";
 
+    /**
+     * Implementation of command to add exercise in database.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();
@@ -46,7 +59,7 @@ public class AddExerciseCommand implements ActionCommand {
             pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
             page.setRedirect(false);
 
-            String message = MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY);
+            String message = MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH);
 
             request.setAttribute(RESULT_ATTRIBUTE, message);
         } catch (ServiceException exception) {

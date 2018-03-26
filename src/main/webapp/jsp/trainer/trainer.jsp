@@ -20,6 +20,9 @@
 <br/>
 <a href="/jsp/trainer/add_exercise.jsp">Add exercise.</a>
 <br/>
+<br/>
+<a href="controller?command=show_personal_clients">Show personal clients</a>
+<br/>
 <hr/>
 <a href="controller?command=logout">Logout</a>
 </body>

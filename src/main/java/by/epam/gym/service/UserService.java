@@ -2,6 +2,7 @@ package by.epam.gym.service;
 
 import by.epam.gym.dao.UserDAOImpl;
 import by.epam.gym.entities.user.User;
+import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.PasswordEncoder;
 
@@ -109,6 +110,23 @@ public class UserService {
             clients.put(findClient,countOfRecords);
 
             return  clients;
+        } catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method finds all clients of current trainer and their training programs id .
+     *
+     * @param trainerId the trainer id.
+     * @return Map with results.
+     * @throws ServiceException object if execution of method is failed.
+     */
+    public Map<User, Integer> findPersonalClients(int trainerId) throws ServiceException {
+        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
+            UserDAOImpl userDAO = connectionManager.createDAO();
+
+            return userDAO.findPersonalClients(trainerId);
         } catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }

@@ -7,6 +7,7 @@ import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
 import by.epam.gym.commands.trainer.AddExerciseCommand;
+import by.epam.gym.commands.trainer.ShowPersonalClientsCommand;
 
 /**
  * Types of commands.
@@ -45,6 +46,9 @@ public enum CommandType {
         {
             this.command = new AddExerciseCommand();
         }
+    },
+    SHOW_PERSONAL_CLIENTS{
+        {this.command = new ShowPersonalClientsCommand();}
     };
     /**
      * Current command.

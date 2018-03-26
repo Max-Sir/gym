@@ -6,7 +6,9 @@ import by.epam.gym.exceptions.DAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class that provide access to the database and deal with User entity.
@@ -138,6 +140,45 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
             }
 
             return findUsers;
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method finds all clients of current trainer and their training programs id .
+     *
+     * @param trainerId the trainer id.
+     * @return Map with results.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public Map<User, Integer> findPersonalClients(int trainerId) throws DAOException {
+        String sqlQueryFirst = resourceBundle.getString("query.select_personal_clients");
+        String sqlQuerySecond = resourceBundle.getString("query.select_training_program_id");
+
+        try(PreparedStatement findClientsStatement = connection.prepareStatement(sqlQueryFirst);
+            PreparedStatement findTrainingProgramIdStatement = connection.prepareStatement(sqlQuerySecond)){
+
+            Map<User, Integer> clientsAndTrainingProgramId = new HashMap<>();
+
+            findClientsStatement.setInt(1,trainerId);
+
+            ResultSet clients = findClientsStatement.executeQuery();
+
+            while (clients.next()){
+                User user = buildEntity(clients);
+
+                int clientId = user.getId();
+                findTrainingProgramIdStatement.setInt(1,clientId);
+                ResultSet foundTrainingProgramId = findTrainingProgramIdStatement.executeQuery();
+                foundTrainingProgramId.next();
+
+                int trainingProgramId = foundTrainingProgramId.getInt(ID_COLUMN_LABEL);
+
+                clientsAndTrainingProgramId.put(user,trainingProgramId);
+            }
+
+            return clientsAndTrainingProgramId;
         }catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
