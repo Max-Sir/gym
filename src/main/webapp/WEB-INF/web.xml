@@ -26,5 +26,17 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
-</filter-mapping>
+    </filter-mapping>
+    <filter>
+        <filter-name>Sequrity</filter-name>
+        <filter-class>by.epam.gym.filters.PageRedirectSecurityFilter</filter-class>
+        <init-param>
+            <param-name>MAIN_PATH</param-name>
+            <param-value>/jsp/common/main.jsp</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Sequrity</filter-name>
+        <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
 </web-app>
