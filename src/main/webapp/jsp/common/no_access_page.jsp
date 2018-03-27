@@ -1,22 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: Eugene
-  Date: 18.03.2018
-  Time: 18:41
+  Date: 27.03.2018
+  Time: 22:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>You haven't acess!</title>
 </head>
 <body>
-<h1>Client page</h1>
-<h3>Welcome</h3>
-<hr/>
-<p>Name: ${user.lastName}</p>
-<p>Role: ${user.userRole}</p>
-<hr/>
-<a href="controller?command=common_logout">Logout</a>
+<h1>
+    <strong>
+        You haven't access!
+    </strong>
+</h1>
 </body>
 </html>

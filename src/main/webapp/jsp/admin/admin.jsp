@@ -19,10 +19,10 @@
 <p>Role: ${user.userRole}</p>
 <hr/>
 <br/>
-<a href="controller?command=logout">Logout</a>
+<a href="controller?command=common_logout">Logout</a>
 <br/>
 <form id="find" name="FindForm" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="find_user_by_name"/>
+    <input type="hidden" name="command" value="admin_find_user_by_name"/>
     <br/>Enter client name:<br/>
     <br/>First name:
     <input type="text" id="firstName" name="firstName" value=""/>
@@ -33,8 +33,8 @@
 </form>
 <br/>
 <form id="show" name="ShowAllClients" method="GET" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="show_all_clients"/>
-    <input type="submit" value="Show all clients" onClick='location.href="/jsp/admin/find_client.jsp"'>
+    <input type="hidden" name="command" value="admin_show_all_clients"/>
+    <input type="submit" value="Show all clients" onClick='location.href="/jsp/admin/admin_find_client.jsp"'>
 </form>
 <br/>
 </body>

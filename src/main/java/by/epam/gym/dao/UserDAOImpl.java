@@ -185,6 +185,34 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
     }
 
     /**
+     * This method finds training program author.
+     *
+     * @param trainingProgramId the training program id.
+     * @return the name of author.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public String findTrainingProgramAuthorName(int trainingProgramId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.select_training_program_author_name");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1,trainingProgramId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String firstName = resultSet.getString(FIRST_NAME_COLUMN_LABEL);
+                String lastName = resultSet.getString(LAST_NAME_COLUMN_LABEL);
+
+                String result = firstName + " " + lastName;
+
+                return result;
+            } else {
+                throw new DAOException("Trainer didn't find.");
+            }
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
      * This method builds User object from ResultSet object.
      *
      * @param resultSet the result set of statement.

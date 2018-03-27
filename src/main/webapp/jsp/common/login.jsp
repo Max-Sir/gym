@@ -3,7 +3,7 @@
 <head><title>Login</title></head>
 <body>
 <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="login"/>
+    <input type="hidden" name="command" value="common_login"/>
     Login:<br/>
     <input type="text" name="login" value=""/>
     <br/>Password:<br/>

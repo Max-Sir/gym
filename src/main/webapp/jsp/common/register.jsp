@@ -14,7 +14,7 @@
 </head>
 <body>
 <form id="reg" name="RegisterForm" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="register"/>
+    <input type="hidden" name="command" value="common_register"/>
     <br/>Login:<br/>
     <input id="login" type="text" name="login" value="" onkeyup=checkLogin(); /> ${loginError}
     <br/>Password:<br/>

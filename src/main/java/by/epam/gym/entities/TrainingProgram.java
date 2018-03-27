@@ -17,6 +17,7 @@ public class TrainingProgram extends Entity {
     private int clientId;
     private Date start;
     private Date end;
+    private String diet;
 
     /**
      * Instantiates a new TrainingProgram.
@@ -117,5 +118,24 @@ public class TrainingProgram extends Entity {
      */
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    /**
+     * Gets training program's diet.
+     *
+     * @return the diet.
+     */
+    @ColumnName(name = "diet", parameterIndex = 6)
+    public String getDiet() {
+        return diet;
+    }
+
+    /**
+     * Sets training program's diet.
+     *
+     * @param diet the diet.
+     */
+    public void setDiet(String diet) {
+        this.diet = diet;
     }
 }

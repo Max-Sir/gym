@@ -18,40 +18,40 @@ import by.epam.gym.commands.trainer.ShowPersonalClientsCommand;
  */
 public enum CommandType {
 
-    LOGIN {
+    COMMON_LOGIN {
         {
             this.command = new LoginCommand();
         }
     },
-    LOGOUT {
+    COMMON_LOGOUT {
         {
             this.command = new LogoutCommand();
         }
     },
-    REGISTER {
+    COMMON_REGISTER {
         {
             command = new RegisterCommand();
         }
     },
-    FIND_USER_BY_NAME{
+    ADMIN_FIND_USER_BY_NAME{
         {
             this.command = new FindUserByNameCommand();
         }
     },
-    SHOW_ALL_CLIENTS{
+    ADMIN_SHOW_ALL_CLIENTS{
         {
             this.command = new ShowAllClientsCommand();
         }
     },
-    ADD_EXERCISE{
+    TRAINER_ADD_EXERCISE{
         {
             this.command = new AddExerciseCommand();
         }
     },
-    SHOW_PERSONAL_CLIENTS{
+    TRAINER_SHOW_PERSONAL_CLIENTS{
         {this.command = new ShowPersonalClientsCommand();}
     },
-    DESCRIBE_TRAINING_PROGRAM{
+    COMMON_DESCRIBE_TRAINING_PROGRAM{
         {this.command = new DescribeTrainingProgramCommand();}
     };
     /**

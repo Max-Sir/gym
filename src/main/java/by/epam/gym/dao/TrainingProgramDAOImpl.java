@@ -22,6 +22,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
     private static final String CLIENT_ID_COLUMN_LABEL = "client_id";
     private static final String START_DATE_COLUMN_LABEL = "start_date";
     private static final String END_DATE_COLUMN_LABEL = "end_date";
+    private static final String DIET_COLUMN_LABEL = "diet";
 
     private static final String TRAINING_PROGRAMS_RESOURCES_FILE_NAME = "training_programs";
 
@@ -52,6 +53,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
             int clientId = resultSet.getInt(CLIENT_ID_COLUMN_LABEL);
             Date startDate = resultSet.getDate(START_DATE_COLUMN_LABEL);
             Date endDate = resultSet.getDate(END_DATE_COLUMN_LABEL);
+            String diet = resultSet.getString(DIET_COLUMN_LABEL);
 
             trainingProgram.setId(id);
             trainingProgram.setAuthorId(authorId);
@@ -59,6 +61,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
             trainingProgram.setClientId(clientId);
             trainingProgram.setStart(startDate);
             trainingProgram.setEnd(endDate);
+            trainingProgram.setDiet(diet);
 
             return trainingProgram;
         } catch (SQLException exception) {

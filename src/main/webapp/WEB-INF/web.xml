@@ -3,6 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
+    <welcome-file-list>
+        <welcome-file>/jsp/common/main.jsp</welcome-file>
+    </welcome-file-list>
     <display-name>Old school gym.</display-name>
     <servlet>
         <servlet-name>controller</servlet-name>
@@ -28,15 +31,27 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
     <filter>
-        <filter-name>Sequrity</filter-name>
+        <filter-name>SecurityPageRedirect</filter-name>
         <filter-class>by.epam.gym.filters.PageRedirectSecurityFilter</filter-class>
         <init-param>
-            <param-name>MAIN_PATH</param-name>
+            <param-name>MAIN_PAGE</param-name>
             <param-value>/jsp/common/main.jsp</param-value>
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>Sequrity</filter-name>
-        <url-pattern>/jsp/*</url-pattern>
+        <filter-name>SecurityPageRedirect</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>SecurityCommand</filter-name>
+        <filter-class>by.epam.gym.filters.CommandSecurityFilter</filter-class>
+        <init-param>
+            <param-name>ERROR_PAGE</param-name>
+            <param-value>/jsp/common/no_access_page.jsp</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SecurityCommand</filter-name>
+        <url-pattern>/controller</url-pattern>
     </filter-mapping>
 </web-app>

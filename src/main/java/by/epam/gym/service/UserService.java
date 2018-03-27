@@ -48,7 +48,6 @@ public class UserService {
      * @throws ServiceException object if execution of method is failed.
      */
     public void register(User user) throws ServiceException {
-
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
             UserDAOImpl userDAO = connectionManager.createDAO();
             userDAO.insert(user);
@@ -128,6 +127,23 @@ public class UserService {
 
             return userDAO.findPersonalClients(trainerId);
         } catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method finds training program author.
+     *
+     * @param trainingProgramId the training program id.
+     * @return the name of author.
+     * @throws ServiceException object if execution of method is failed.
+     */
+    public String findTrainingProgramAuthorName(int trainingProgramId) throws ServiceException {
+        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
+            UserDAOImpl userDAO = connectionManager.createDAO();
+
+            return userDAO.findTrainingProgramAuthorName(trainingProgramId);
+        }  catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
     }

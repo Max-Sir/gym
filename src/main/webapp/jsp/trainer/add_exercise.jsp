@@ -11,7 +11,7 @@
 </head>
 <body>
 <form id="addExercise" name="addExercise" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="add_exercise"/>
+    <input type="hidden" name="command" value="trainer_add_exercise"/>
     <br/>Name:<br/>
     <input id="name" type="text" name="name" value="" />
     <br/>Select level:<br/>
