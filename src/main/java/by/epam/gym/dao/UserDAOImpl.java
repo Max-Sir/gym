@@ -24,8 +24,11 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
     private static final String ROLE_COLUMN_LABEL = "role";
     private static final String FIRST_NAME_COLUMN_LABEL = "first_name";
     private static final String LAST_NAME_COLUMN_LABEL = "last_name";
+    private static final String IS_PERSONAL_TRAINER_NEED_COLUMN_LABEL = "is_personal_trainer_need";
 
     private static final int FIRST_COLUMN_INDEX = 1;
+
+    private static final String SPACE = " ";
 
     private static final String USERS_RESOURCES_FILE_NAME = "users";
 
@@ -201,12 +204,65 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
                 String firstName = resultSet.getString(FIRST_NAME_COLUMN_LABEL);
                 String lastName = resultSet.getString(LAST_NAME_COLUMN_LABEL);
 
-                String result = firstName + " " + lastName;
+                String result = firstName + SPACE + lastName;
 
                 return result;
             } else {
                 throw new DAOException("Trainer didn't find.");
             }
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method finds clients ids and names.
+     *
+     * @return Map with id and name.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public Map<Integer, String> findClientsIdAndName() throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.select_client_id_and_name");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Map<Integer, String> clientsIdAndName = new HashMap<>();
+
+            while (resultSet.next()){
+
+                int id = resultSet.getInt(ID_COLUMN_LABEL);
+                String firstName = resultSet.getString(FIRST_NAME_COLUMN_LABEL);
+                String lastName = resultSet.getString(LAST_NAME_COLUMN_LABEL);
+                String fullName = firstName + SPACE + lastName;
+
+                clientsIdAndName.put(id,fullName);
+            }
+
+            return clientsIdAndName;
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    public boolean isClientNeedPersonalTrainer(int clientId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.is_personal_trainer_need");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1,clientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                int value = resultSet.getInt(IS_PERSONAL_TRAINER_NEED_COLUMN_LABEL);
+
+                if (value == 1){
+                    return true;
+                } else if (value == 0){
+                    return false;
+                } else {
+                    throw new DAOException(String.format("Unexpected result from query - %s.",sqlQuery));
+                }
+            } else {
+                throw new DAOException(String.format("Unexpected result from query - %s.",sqlQuery));
+            }
+
         }catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }

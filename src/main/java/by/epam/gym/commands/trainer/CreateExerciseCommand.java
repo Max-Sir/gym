@@ -17,20 +17,20 @@ import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSA
 import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
 /**
- * Command to add exercise in database.
+ * Command to create exercise in database.
  *
  * @author Eugene Makarenko
  * @see Exercise
  * @see ActionCommand
  */
-public class AddExerciseCommand implements ActionCommand {
+public class CreateExerciseCommand implements ActionCommand {
 
     private static final String NAME_PARAMETER = "name";
     private static final String LEVEL_PARAMETER = "level";
     private static final String DESCRIPTION_PARAMETER = "description";
 
     /**
-     * Implementation of command to add exercise in database.
+     * Implementation of command to create exercise in database.
      *
      * @param request HttpServletRequest object.
      * @return redirect page.

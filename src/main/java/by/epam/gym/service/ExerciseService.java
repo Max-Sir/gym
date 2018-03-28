@@ -50,4 +50,35 @@ public class ExerciseService {
         }
     }
 
+    public Map<Integer, String> findAllExercisesIdAndName() throws ServiceException {
+        try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
+            ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
+
+            return exerciseDAO.findAllExercisesIdAndName();
+        }  catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    public void addExerciseToProgram(int programId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws ServiceException {
+        try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
+            ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
+
+            exerciseDAO.addExerciseToProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
+
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+
+    }
+
+    public Exercise findExerciseById(int id) throws ServiceException {
+        try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
+            ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
+
+            return exerciseDAO.findEntityById(id);
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
 }

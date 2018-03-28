@@ -82,6 +82,45 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
         }
     }
 
+    public Map<Integer, String> findAllExercisesIdAndName() throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.get_id_and_name_all_exercises");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Map<Integer, String> exercisesIdAndName = new HashMap<>();
+
+            while (resultSet.next()){
+                int id = resultSet.getInt(ID_COLUMN_LABEL);
+                String name = resultSet.getString(NAME_COLUMN_LABEL);
+
+                exercisesIdAndName.put(id,name);
+            }
+
+            return exercisesIdAndName;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    public void addExerciseToProgram(int programId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.add_exercise_to_program");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1,programId);
+            preparedStatement.setInt(2,exerciseId);
+            preparedStatement.setInt(3,dayNumber);
+            preparedStatement.setInt(4,setsCount);
+            preparedStatement.setInt(5,repeatsCount);
+            preparedStatement.setInt(6,numberOfExecution);
+
+            int result = preparedStatement.executeUpdate();
+
+            if (result != 1){
+                throw new DAOException(String.format("Unexpected result from query - %s.",sqlQuery));
+            }
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
     /**
      * This method builds Exercise object from ResultSet object.
      *

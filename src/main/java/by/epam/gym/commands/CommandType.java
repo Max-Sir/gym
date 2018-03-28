@@ -7,8 +7,7 @@ import by.epam.gym.commands.common.DescribeTrainingProgramCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
-import by.epam.gym.commands.trainer.AddExerciseCommand;
-import by.epam.gym.commands.trainer.ShowPersonalClientsCommand;
+import by.epam.gym.commands.trainer.*;
 
 /**
  * Types of commands.
@@ -43,9 +42,9 @@ public enum CommandType {
             this.command = new ShowAllClientsCommand();
         }
     },
-    TRAINER_ADD_EXERCISE{
+    TRAINER_CREATE_EXERCISE {
         {
-            this.command = new AddExerciseCommand();
+            this.command = new CreateExerciseCommand();
         }
     },
     TRAINER_SHOW_PERSONAL_CLIENTS{
@@ -53,6 +52,24 @@ public enum CommandType {
     },
     COMMON_DESCRIBE_TRAINING_PROGRAM{
         {this.command = new DescribeTrainingProgramCommand();}
+    },
+    TRAINER_PREPARE_TRAINING_PROGRAM_CREATION{
+        {
+            this.command = new PrepareTrainingProgramCreationCommand();
+        }
+    },
+    TRAINER_CREATE_TRAINING_PROGRAM{
+        {this.command = new CreateTrainingProgramCommand();}
+    },
+    TRAINER_PREPARE_ADD_EXERCISE_TO_TRAINING_PROGRAM{
+        {
+            this.command = new PrepareAddExerciseToTrainingProgramCommand();
+        }
+    },
+    TRAINER_ADD_EXERCISE_TO_TRAINING_PROGRAM{
+        {
+            this.command = new AddExerciseToTrainingProgramCommand();
+        }
     };
     /**
      * Current command.

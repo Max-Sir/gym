@@ -3,10 +3,7 @@ package by.epam.gym.dao;
 import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.exceptions.DAOException;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Class that provide access to the database and deal with TrainingProgram entity.
@@ -33,6 +30,26 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
      */
     public TrainingProgramDAOImpl(Connection connection) {
         super(connection, TRAINING_PROGRAMS_RESOURCES_FILE_NAME);
+    }
+
+    public int findLastTrainingProgram(int authorId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.get_last_training_program_of_trainer");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1,authorId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                int id = resultSet.getInt(ID_COLUMN_LABEL);
+
+                return id;
+            } else {
+                throw new DAOException(String.format("Unexpected result for query - %s.",sqlQuery));
+            }
+
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
     }
 
     /**

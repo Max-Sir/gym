@@ -24,6 +24,8 @@ public class ConfigurationManager {
     public static final String ADD_EXERCISE_PAGE_PATH = "path.page.add_exercise";
     public static final String PERSONAL_CLIENTS_PAGE_PATH = "path.page.personal_clients";
     public static final String DESCRIBE_TRAINING_PROGRAM_PAGE_PATH = "path.page.describe_training_program";
+    public static final String CREATE_TRAINING_PROGRAM_PAGE_PATH = "path.page.create_training_program";
+    public static final String SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH = "path.page.success_training_program_creation";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

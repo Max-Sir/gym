@@ -50,6 +50,9 @@ public class ShowPersonalClientsCommand implements ActionCommand {
             if (clientsAndTrainingProgramsId.isEmpty()){
                 request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(NO_PERSONAL_CLIENTS_MESSAGE_PATH));
             } else {
+                for (User user : clientsAndTrainingProgramsId.keySet()) {
+                    System.out.println(user.getId());
+                }
                 request.setAttribute(LIST_ATTRIBUTE, clientsAndTrainingProgramsId);
             }
             pageUrl = ConfigurationManager.getProperty(PERSONAL_CLIENTS_PAGE_PATH);

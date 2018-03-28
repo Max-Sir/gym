@@ -13,7 +13,7 @@ import java.sql.Date;
 public class TrainingProgram extends Entity {
 
     private int authorId;
-    private int personalTrainerId;
+    private Integer personalTrainerId;
     private int clientId;
     private Date start;
     private Date end;
@@ -50,7 +50,7 @@ public class TrainingProgram extends Entity {
      * @return the training program's persona trainer id.
      */
     @ColumnName(name = "personal_trainer_id", parameterIndex = 2)
-    public int getPersonalTrainerId() {
+    public Integer getPersonalTrainerId() {
         return personalTrainerId;
     }
 
@@ -59,7 +59,7 @@ public class TrainingProgram extends Entity {
      *
      * @param personalTrainerId the training program's personal trainer id.
      */
-    public void setPersonalTrainerId(int personalTrainerId) {
+    public void setPersonalTrainerId(Integer personalTrainerId) {
         this.personalTrainerId = personalTrainerId;
     }
 

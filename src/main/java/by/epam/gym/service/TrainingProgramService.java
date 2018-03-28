@@ -24,8 +24,26 @@ public class TrainingProgramService {
         } catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
+    }
 
+    public int lastTrainingProgramId(int authorId) throws ServiceException {
+        try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)) {
+            TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
 
+            return trainingProgramDAO.findLastTrainingProgram(authorId);
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    public void createTrainingProgram(TrainingProgram trainingProgram) throws ServiceException {
+        try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)){
+            TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
+
+            trainingProgramDAO.insert(trainingProgram);
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
     }
 
 }

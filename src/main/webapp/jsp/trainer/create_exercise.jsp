@@ -10,8 +10,8 @@
 <head>
 </head>
 <body>
-<form id="addExercise" name="addExercise" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="trainer_add_exercise"/>
+<form id="createExercise" name="createExercise" method="POST" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="trainer_create_exercise"/>
     <br/>Name:<br/>
     <input id="name" type="text" name="name" value="" />
     <br/>Select level:<br/>

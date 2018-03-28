@@ -147,4 +147,25 @@ public class UserService {
             throw new ServiceException("Exception detected. " + exception);
         }
     }
+
+    public Map<Integer, String> findClientsIdAndName() throws ServiceException {
+        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)){
+            UserDAOImpl userDAO = connectionManager.createDAO();
+
+            return userDAO.findClientsIdAndName();
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    public boolean isClientNeedPersonalTrainer(int clientId) throws ServiceException {
+        try (ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
+            UserDAOImpl userDAO = connectionManager.createDAO();
+
+            return userDAO.isClientNeedPersonalTrainer(clientId);
+        } catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
 }

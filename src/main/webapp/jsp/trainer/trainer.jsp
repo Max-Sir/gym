@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Trainer page.</title>
 </head>
 <body>
 <h1>Trainer page</h1>
@@ -18,8 +18,9 @@
 <p>Role: ${user.userRole}</p>
 
 <br/>
-<a href="/jsp/trainer/add_exercise.jsp">Add exercise.</a>
+<a href="/jsp/trainer/create_exercise.jsp">Create exercise.</a>
 <br/>
+<a href="controller?command=trainer_prepare_training_program_creation">Create training program.</a>
 <br/>
 <a href="controller?command=trainer_show_personal_clients">Show personal clients</a>
 <br/>
