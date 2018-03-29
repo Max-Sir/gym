@@ -4,10 +4,9 @@ import by.epam.gym.entities.Order;
 import by.epam.gym.exceptions.DAOException;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that provide access to the database and deal with Order entity.
@@ -35,6 +34,25 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order>{
         super(connection, ORDERS_RESOURCES_FILE_NAME);
     }
 
+    public List<Order> findAllClientOrder(int clientId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.find_all_client_orders");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, clientId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+
+            while (resultSet.next()){
+                Order order = buildEntity(resultSet);
+
+                orders.add(order);
+            }
+
+            return orders;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
 
     /**
      * This method builds Order object from ResultSet object.

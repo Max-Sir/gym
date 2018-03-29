@@ -29,7 +29,7 @@
         </c:forEach>
     </tr>
 </table>
-<c:if test="${pageIndex lt numberOfPages}">
+<c:if test="${pageIndex < numberOfPages}">
     <td><a href="controller?command=admin_show_all_clients&page=${pageIndex + 1}">Next</a></td>
 </c:if>
 ${result}

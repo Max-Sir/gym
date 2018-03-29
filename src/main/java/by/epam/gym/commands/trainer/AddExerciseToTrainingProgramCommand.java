@@ -76,13 +76,6 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             exercise.setRepeatsCount(repeatsCount);
             exercises.add(exercise);
 
-            boolean isOperationSuccessful = exerciseService.addExerciseToTrainingProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
-
-            if (isOperationSuccessful) {
-                request.setAttribute(RESULT_ATTRIBUTE,MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH));
-            } else {
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
-            }
             pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
             page.setRedirect(false);
 

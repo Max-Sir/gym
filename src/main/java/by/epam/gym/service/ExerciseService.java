@@ -4,8 +4,10 @@ import by.epam.gym.dao.ExerciseDAOImpl;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.exceptions.ServiceException;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Service class for Exercise entity.
@@ -71,23 +73,37 @@ public class ExerciseService {
      * This method adds exercise to training program.
      *
      * @param trainingProgramId the training program id.
-     * @param exerciseId the exercise id.
-     * @param dayNumber the day number.
-     * @param setsCount the sets count.
-     * @param repeatsCount the repeats count.
-     * @param numberOfExecution the number of execution.
+     * @param daysAndExercises the Map with day numbers and exercises.
      * @return true if operation was made successfully and false otherwise.
      * @throws ServiceException object if execution of method is failed.
      */
-    public boolean addExerciseToTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws ServiceException {
+    public boolean addExercisesToTrainingProgram(int trainingProgramId, Map<Integer, List<Exercise>> daysAndExercises) throws ServiceException {
         try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
             ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
 
-            return exerciseDAO.addExerciseToTrainingProgram(trainingProgramId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
+            Set<Map.Entry<Integer, List<Exercise>>> entrySet = daysAndExercises.entrySet();
+            for (Map.Entry<Integer, List<Exercise>> entry : entrySet) {
+                int dayNumber = entry.getKey();
+                List<Exercise> exercises = entry.getValue();
+                for (Exercise exercise : exercises) {
+                    int setsCount = exercise.getSetsCount();
+                    int repeatsCount = exercise.getRepeatsCount();
+                    int numberOfExecution = exercises.indexOf(exercise) + 1;
+                    int exerciseId = exercise.getId();
+
+                   boolean isResultSuccessful = exerciseDAO.addExerciseToTrainingProgram(trainingProgramId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
+                   if (!isResultSuccessful){
+                       return false;
+                   }
+                }
+            }
+
+
         }catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
 
+        return true;
     }
 
     /**

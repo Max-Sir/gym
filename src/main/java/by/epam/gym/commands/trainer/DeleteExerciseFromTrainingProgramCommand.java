@@ -2,23 +2,17 @@ package by.epam.gym.commands.trainer;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
-import by.epam.gym.exceptions.ServiceException;
-import by.epam.gym.service.ExerciseService;
-import by.epam.gym.service.TrainingProgramService;
 import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.EXERCISE_DELETE_FAILED_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
 /**
  * Command to delete exercise from training program.
@@ -46,38 +40,37 @@ public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();
-        String pageUrl;
 
-        try {
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 
-            int trainingProgramId = (int) session.getAttribute(TRAINING_PROGRAM_ID_PARAMETER);
+        String exerciseIdValue = request.getParameter(EXERCISE_ID_PARAMETER);
+        int exerciseId = Integer.parseInt(exerciseIdValue);
 
-            String exerciseIdValue = request.getParameter(EXERCISE_ID_PARAMETER);
-            int exerciseId = Integer.parseInt(exerciseIdValue);
+        String dayNumberValue = request.getParameter(DAY_NUMBER_PARAMETER);
+        int dayNumber = Integer.parseInt(dayNumberValue);
 
-            String dayNumberValue = request.getParameter(DAY_NUMBER_PARAMETER);
-            int dayNumber = Integer.parseInt(dayNumberValue);
+        String pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
+        page.setPageUrl(pageUrl);
 
-            ExerciseService exerciseService = new ExerciseService();
-            boolean isOperationSuccessful = exerciseService.deleteExerciseFromTrainingProgram(trainingProgramId,exerciseId,dayNumber);
+        Map<Integer, List<Exercise>> exercisesIdAndName = (Map<Integer, List<Exercise>>) session.getAttribute(DAYS_ATTRIBUTE);
 
-            if (isOperationSuccessful){
-                pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
-                Map<Integer, String> exercisesIdAndName = exerciseService.findAllExercisesIdAndName();
-                session.setAttribute(DAYS_ATTRIBUTE,exercisesIdAndName);
-            } else {
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(EXERCISE_DELETE_FAILED_MESSAGE_PATH));
-                pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
+        Set<Map.Entry<Integer, List<Exercise>>> entrySet = exercisesIdAndName.entrySet();
+        for (Map.Entry<Integer, List<Exercise>> entry : entrySet) {
+            int day = entry.getKey();
+            if (day == dayNumber) {
+                List<Exercise> exercises = entry.getValue();
+                Iterator<Exercise> iterator = exercises.iterator();
+                while (iterator.hasNext()) {
+                    Exercise exercise = iterator.next();
+                    int currentExerciseId = exercise.getId();
+
+                    if (exerciseId == currentExerciseId) {
+                        iterator.remove();
+                    }
+                }
             }
-
-            page.setRedirect(false);
-        }catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
         }
 
-        page.setPageUrl(pageUrl);
         return page;
     }
 }

@@ -17,6 +17,9 @@
 <p>Name: ${user.lastName}</p>
 <p>Role: ${user.userRole}</p>
 <hr/>
+<br/>
+<a href="controller?command=client_show_orders">Orders history.</a>
+<br/>
 <a href="controller?command=common_logout">Logout</a>
 </body>
 </html>

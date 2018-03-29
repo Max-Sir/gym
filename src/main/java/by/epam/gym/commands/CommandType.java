@@ -3,6 +3,7 @@ package by.epam.gym.commands;
 
 import by.epam.gym.commands.admin.FindUserByNameCommand;
 import by.epam.gym.commands.admin.ShowAllClientsCommand;
+import by.epam.gym.commands.client.ShowOrdersCommand;
 import by.epam.gym.commands.common.DescribeTrainingProgramCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
@@ -78,6 +79,11 @@ public enum CommandType {
     },
     TRAINER_DELETE_EXERCISE_FROM_TRAINING_PROGRAM{
         {this.command = new DeleteExerciseFromTrainingProgramCommand();}
+    },
+    CLIENT_SHOW_ORDERS{
+        {
+            this.command = new ShowOrdersCommand();
+        }
     };
     /**
      * Current command.
