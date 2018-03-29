@@ -75,6 +75,9 @@ public enum CommandType {
         {
             this.command = new FinishTrainingProgramCreationCommand();
         }
+    },
+    TRAINER_DELETE_EXERCISE_FROM_TRAINING_PROGRAM{
+        {this.command = new DeleteExerciseFromTrainingProgramCommand();}
     };
     /**
      * Current command.

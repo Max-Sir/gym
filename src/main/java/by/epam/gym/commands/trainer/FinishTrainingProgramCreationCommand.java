@@ -18,6 +18,7 @@ public class FinishTrainingProgramCreationCommand implements ActionCommand {
 
     private static final String DAYS_ATTRIBUTE = "days";
     private static final String EXERCISES_ATTRIBUTE = "exercises";
+    private static final String PROGRAM_ID_ATTRIBUTE = "programId";
 
     /**
      * Implementation of command to finish training program creation.
@@ -33,6 +34,7 @@ public class FinishTrainingProgramCreationCommand implements ActionCommand {
         HttpSession session = request.getSession();
         session.removeAttribute(DAYS_ATTRIBUTE);
         session.removeAttribute(EXERCISES_ATTRIBUTE);
+        session.removeAttribute(PROGRAM_ID_ATTRIBUTE);
 
         page.setRedirect(true);
         page.setPageUrl(pageUrl);

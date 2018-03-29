@@ -49,7 +49,7 @@ public class CommandSecurityFilter implements Filter {
                     RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(errorPage);
                     requestDispatcher.forward(servletRequest,servletResponse);
                 }
-            } else {
+            } else if (!currentCommand.startsWith(COMMON_COMMAND_PATTER)){
                 LOGGER.warn(String.format("Unexpected action from guest, command=%s.",currentCommand));
 
                 RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(errorPage);

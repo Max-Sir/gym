@@ -30,17 +30,15 @@ import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSA
  */
 public class AddExerciseToTrainingProgramCommand implements ActionCommand {
 
-    private static final String PROGRAM_ID_PARAMETER = "programId";
+
     private static final String EXERCISE_ID_PARAMETER = "exerciseId";
     private static final String DAY_NUMBER_PARAMETER = "dayNumber";
     private static final String SETS_COUNT_PARAMETER = "setsCount";
     private static final String REPEATS_COUNT_PARAMETER = "repeatsCount";
 
     private static final String DAYS_ATTRIBUTE = "days";
-    private static final String EXERCISES_ATTRIBUTE = "exercises";
-    private static final String PROGRAM_ID_ATTRIBUTE = "programId";
     private static final String RESULT_ATTRIBUTE = "result";
-
+    private static final String PROGRAM_ID_PARAMETER = "programId";
     /**
      * Implementation of command to add exercise to training program.
      *
@@ -65,10 +63,8 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             int exerciseId = Integer.parseInt(exerciseIdValue);
             Exercise exercise = exerciseService.findExerciseById(exerciseId);
 
-            int numberOfExecution = exercises.indexOf(exercise)+1;
-
-            String programIdValue = request.getParameter(PROGRAM_ID_PARAMETER);
-            int programId = Integer.parseInt(programIdValue);
+            int numberOfExecution = exercises.size()+1;
+            int programId = (int) session.getAttribute(PROGRAM_ID_PARAMETER);
 
             String setsCountValue = request.getParameter(SETS_COUNT_PARAMETER);
             int setsCount = Integer.parseInt(setsCountValue);
@@ -83,11 +79,6 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             boolean isOperationSuccessful = exerciseService.addExerciseToTrainingProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
 
             if (isOperationSuccessful) {
-                Map<Integer, String> exercisesIdAndName = (Map<Integer, String>) session.getAttribute(EXERCISES_ATTRIBUTE);
-
-                request.setAttribute(EXERCISES_ATTRIBUTE, exercisesIdAndName);
-                request.setAttribute(PROGRAM_ID_ATTRIBUTE, programId);
-                request.setAttribute(DAYS_ATTRIBUTE, daysAndExercises);
                 request.setAttribute(RESULT_ATTRIBUTE,MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH));
             } else {
                 request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));

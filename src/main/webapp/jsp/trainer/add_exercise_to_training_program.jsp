@@ -12,7 +12,7 @@
     <title>Add exercise to training program.</title>
 </head>
 <body>
-<c:forEach var="day" items="${days}">
+<c:forEach var="day" items="${sessionScope.days}">
     Day${day.key}
     <ol>
          <c:forEach var="exercise" items="${day.value}">
@@ -20,16 +20,21 @@
                     ${exercise.name}
                 Подходы: ${exercise.setsCount}
                 Повторения: ${exercise.repeatsCount}
+                        <form method="POST" action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="trainer_delete_exercise_from_training_program"/>
+                            <input type="hidden" name="dayNumber" value="${day.key}" />
+                            <input type="hidden" name="exerciseId" value="${exercise.id}"/>
+                            <input type="submit" value="Delete exercise"/>
+                        </form>
             </li>
          </c:forEach>
     </ol>
     <form method="POST" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="trainer_add_exercise_to_training_program"/>
         <input type="hidden" name="dayNumber" value="${day.key}" />
-        <input type="hidden" name="programId" value="${programId}" />
         <br/>
         <select name="exerciseId" title="Exercise name.">
-            <c:forEach var="chooseExercise" items="${exercises}">
+            <c:forEach var="chooseExercise" items="${sessionScope.exercises}">
                 <option value="${chooseExercise.key}">${chooseExercise.value}</option>
             </c:forEach>
         </select>

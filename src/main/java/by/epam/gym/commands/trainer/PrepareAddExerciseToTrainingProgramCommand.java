@@ -27,7 +27,6 @@ import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
  */
 public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand {
 
-    private static final String DAYS_ATTRIBUTE = "days";
     private static final String EXERCISES_ATTRIBUTE = "exercises";
     private static final String PROGRAM_ID_ATTRIBUTE = "programId";
     private static final String USER_ATTRIBUTE = "user";
@@ -45,12 +44,10 @@ public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand
 
         try {
             HttpSession session = request.getSession();
-            Map<Integer, List<Exercise>> daysAndExercises = (Map<Integer, List<Exercise>>) session.getAttribute(DAYS_ATTRIBUTE);
-            request.setAttribute(DAYS_ATTRIBUTE, daysAndExercises);
 
             ExerciseService exerciseService = new ExerciseService();
             Map<Integer, String> exercisesIdAndName = exerciseService.findAllExercisesIdAndName();
-            request.setAttribute(EXERCISES_ATTRIBUTE, exercisesIdAndName);
+
             session.setAttribute(EXERCISES_ATTRIBUTE,exercisesIdAndName);
 
             User user = (User) session.getAttribute(USER_ATTRIBUTE);
@@ -59,7 +56,7 @@ public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand
             TrainingProgramService trainingProgramService = new TrainingProgramService();
             int programId = trainingProgramService.lastTrainingProgramId(authorId);
 
-            request.setAttribute(PROGRAM_ID_ATTRIBUTE,programId);
+            session.setAttribute(PROGRAM_ID_ATTRIBUTE,programId);
 
             pageUrl = ConfigurationManager.getProperty(ConfigurationManager.ADD_EXERCISE_PAGE_PATH);
             page.setRedirect(false);
