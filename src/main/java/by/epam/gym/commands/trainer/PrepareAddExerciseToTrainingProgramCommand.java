@@ -16,6 +16,15 @@ import java.util.Map;
 
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
 
+/**
+ * Command to prepare page for adding exercise into training program.
+ *
+ * @author Eugene Makarenko
+ * @see Exercise
+ * @see by.epam.gym.entities.TrainingProgram
+ * @see TrainingProgramService
+ * @see ActionCommand
+ */
 public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand {
 
     private static final String DAYS_ATTRIBUTE = "days";
@@ -23,6 +32,12 @@ public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand
     private static final String PROGRAM_ID_ATTRIBUTE = "programId";
     private static final String USER_ATTRIBUTE = "user";
 
+    /**
+     * Implementation of command to prepare page for adding exercise into training program.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();
@@ -38,10 +53,10 @@ public class PrepareAddExerciseToTrainingProgramCommand implements ActionCommand
             request.setAttribute(EXERCISES_ATTRIBUTE, exercisesIdAndName);
             session.setAttribute(EXERCISES_ATTRIBUTE,exercisesIdAndName);
 
-            TrainingProgramService trainingProgramService = new TrainingProgramService();
-
             User user = (User) session.getAttribute(USER_ATTRIBUTE);
             int authorId = user.getId();
+
+            TrainingProgramService trainingProgramService = new TrainingProgramService();
             int programId = trainingProgramService.lastTrainingProgramId(authorId);
 
             request.setAttribute(PROGRAM_ID_ATTRIBUTE,programId);

@@ -243,6 +243,13 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
         }
     }
 
+    /**
+     * This method checks client if he needs personal trainer.
+     *
+     * @param clientId the client's id.
+     * @return true if client needs personal trainer and false otherwise.
+     * @throws DAOException object if execution of query is failed.
+     */
     public boolean isClientNeedPersonalTrainer(int clientId) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.is_personal_trainer_need");
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {

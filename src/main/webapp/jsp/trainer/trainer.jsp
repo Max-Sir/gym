@@ -18,13 +18,14 @@
 <p>Role: ${user.userRole}</p>
 
 <br/>
+${result}
+<br/>
 <a href="/jsp/trainer/create_exercise.jsp">Create exercise.</a>
 <br/>
 <a href="controller?command=trainer_prepare_training_program_creation">Create training program.</a>
 <br/>
 <a href="controller?command=trainer_show_personal_clients">Show personal clients</a>
 <br/>
-<hr/>
 <a href="controller?command=common_logout">Logout</a>
 </body>
 </html>

@@ -8,10 +8,13 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static by.epam.gym.dao.AbstractDAOImpl.SUCCESSFUL_RESULT;
 
 /**
  * Util class of DAO-level to work with entity. Make insert and update methods of DAO interface to work with all types of Entity.
@@ -24,6 +27,8 @@ public class QueryProcessor<T extends Entity>{
     private static final String COLUMN_NAME_REGEX_PART = "=\\?,?";
 
     private static final int DEFAULT_VALUE_OF_PARAMETER_INDEX = -1;
+
+    private static final String NULL_VALUE = "null";
 
     private String sqlQuery;
     private Connection connection;
@@ -45,9 +50,10 @@ public class QueryProcessor<T extends Entity>{
     /**
      * This method insert entity to database.
      *
+     * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public void processInsertQuery() throws DAOException {
+    public boolean processInsertQuery() throws DAOException {
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             Class<T> clazz = (Class<T>) entity.getClass();
             List<Method> methods = findGetterMethods(clazz);
@@ -58,17 +64,18 @@ public class QueryProcessor<T extends Entity>{
                     int id = annotation.parameterIndex();
                     if (id != DEFAULT_VALUE_OF_PARAMETER_INDEX) {
                         String value = String.valueOf(method.invoke(entity, null));
+                        if(NULL_VALUE.equals(value)){
+                            preparedStatement.setNull(id, Types.NULL);
+                        } else {
                         preparedStatement.setString(id, value);
+                        }
                     }
                 }
             }
 
             int result = preparedStatement.executeUpdate();
 
-            if (result != 1) {
-                throw new DAOException("Unexpected result during insert query.");
-            }
-
+            return result == SUCCESSFUL_RESULT;
         } catch (IllegalAccessException | SQLException | InvocationTargetException exception) {
             throw new DAOException("Exception during insert query. ", exception);
         }
@@ -77,9 +84,10 @@ public class QueryProcessor<T extends Entity>{
     /**
      * This method update insert in database.
      *
+     * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public void processUpdateQuery() throws DAOException {
+    public boolean processUpdateQuery() throws DAOException {
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
             Class<T> clazz = (Class<T>) entity.getClass();
             List<Method> methods = findGetterMethods(clazz);
@@ -99,9 +107,7 @@ public class QueryProcessor<T extends Entity>{
 
             int result = preparedStatement.executeUpdate();
 
-            if (result != 1) {
-                throw new DAOException("Unexpected result during update query.");
-            }
+            return result == SUCCESSFUL_RESULT;
         } catch (IllegalAccessException | SQLException | InvocationTargetException exception) {
             throw new DAOException("Exception during update query. ", exception);
         }

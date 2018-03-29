@@ -41,5 +41,9 @@
         <input type="submit" value="Add exercise"/>
     </form>
 </c:forEach>
+<br/>
+${result}
+<br/>
+<a href="controller?command=trainer_finish_training_program_creation">Finish</a>
 </body>
 </html>

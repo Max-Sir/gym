@@ -15,6 +15,13 @@ import by.epam.gym.exceptions.ServiceException;
  */
 public class TrainingProgramService {
 
+    /**
+     * This method finds entity from database by id.
+     *
+     * @param trainingProgramId the entity's id.
+     * @return the entity.
+     * @throws ServiceException object if execution of query is failed.
+     */
     public TrainingProgram findTrainingProgramById(int trainingProgramId) throws ServiceException {
         try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)) {
             TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
@@ -26,6 +33,13 @@ public class TrainingProgramService {
         }
     }
 
+    /**
+     * This method finds last training program of trainer.
+     *
+     * @param authorId the author id.
+     * @return the id of last created training program.
+     * @throws ServiceException object if execution of query is failed.
+     */
     public int lastTrainingProgramId(int authorId) throws ServiceException {
         try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)) {
             TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
@@ -36,11 +50,18 @@ public class TrainingProgramService {
         }
     }
 
-    public void createTrainingProgram(TrainingProgram trainingProgram) throws ServiceException {
+    /**
+     * This method inserts training program in database.
+     *
+     * @param trainingProgram the entity.
+     * @return true if operation was made successfully and false otherwise.
+     * @throws ServiceException object if execution of query is failed.
+     */
+    public boolean createTrainingProgram(TrainingProgram trainingProgram) throws ServiceException {
         try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)){
             TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
 
-            trainingProgramDAO.insert(trainingProgram);
+           return trainingProgramDAO.insert(trainingProgram);
         }catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }

@@ -35,7 +35,7 @@ public interface DAO <T extends Entity> {
      * @param id entity id.
      * @throws DAOException object if execution of query is failed.
      */
-    void deleteById(int id) throws DAOException;
+    boolean deleteById(int id) throws DAOException;
 
     /**
      * This method insert entity in database.
@@ -44,7 +44,7 @@ public interface DAO <T extends Entity> {
      * @return boolean true if entity created successfully, otherwise false.
      * @throws DAOException object if execution of query is failed.
      */
-    void insert(T entity) throws DAOException;
+    boolean insert(T entity) throws DAOException;
 
     /**
      * This method update entity in database.
@@ -52,6 +52,6 @@ public interface DAO <T extends Entity> {
      * @param entity the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    void update(T entity) throws DAOException;
+    boolean update(T entity) throws DAOException;
 
 }

@@ -32,6 +32,13 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
         super(connection, TRAINING_PROGRAMS_RESOURCES_FILE_NAME);
     }
 
+    /**
+     * This method finds last training program of trainer.
+     *
+     * @param authorId the author id.
+     * @return the id of last created training program.
+     * @throws DAOException object if execution of query is failed.
+     */
     public int findLastTrainingProgram(int authorId) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.get_last_training_program_of_trainer");
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){

@@ -26,6 +26,8 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
     public static final String ID_COLUMN_LABEL = "id";
 
+    public static final int SUCCESSFUL_RESULT = 1;
+
     protected Connection connection;
     protected ResourceBundle resourceBundle;
 
@@ -95,19 +97,18 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * This method deletes entity from database by id.
      *
      * @param id entity id.
+     * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public void deleteById(int id) throws DAOException {
+    public boolean deleteById(int id) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.delete_by_id");
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
             preparedStatement.setInt(1, id);
 
             int queryResult = preparedStatement.executeUpdate();
-            if (queryResult != 1) {
-                throw new DAOException("On delete modify more then 1 record: " + queryResult);
-            }
 
+            return queryResult == SUCCESSFUL_RESULT;
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
@@ -117,26 +118,28 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * This method insert entity in database.
      *
      * @param entity the entity.
+     * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public void insert(T entity) throws DAOException {
+    public boolean insert(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.insert_entity");
         QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
 
-        queryProcessor.processInsertQuery();
+       return queryProcessor.processInsertQuery();
     }
 
     /**
      * This method update entity in database.
      *
      * @param entity the entity.
+     * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public void update(T entity) throws DAOException {
+    public boolean update(T entity) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.update_entity");
         QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
 
-        queryProcessor.processUpdateQuery();
+       return queryProcessor.processUpdateQuery();
     }
 
     /**

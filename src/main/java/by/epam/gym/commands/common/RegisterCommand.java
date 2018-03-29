@@ -74,9 +74,15 @@ public class RegisterCommand implements ActionCommand {
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
 
-                    userService.register(user);
-                    page.setPageUrl(ConfigurationManager.getProperty(REGISTRATION_SUCCESSFUL_PAGE_PATH));
-                    page.setRedirect(true);
+                   boolean isOperationSuccessful = userService.register(user);
+                   if (isOperationSuccessful) {
+                       page.setPageUrl(ConfigurationManager.getProperty(REGISTRATION_SUCCESSFUL_PAGE_PATH));
+                       page.setRedirect(true);
+                   } else {
+                       page.setPageUrl(ConfigurationManager.getProperty(REGISTER_PAGE_PATH));
+                       page.setRedirect(false);
+                       request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(MessageManager.REGISTRATION_FAILED_MESSAGE_PATH));
+                   }
                 } else {
                     page.setPageUrl(ConfigurationManager.getProperty(REGISTER_PAGE_PATH));
                     page.setRedirect(false);

@@ -70,6 +70,11 @@ public enum CommandType {
         {
             this.command = new AddExerciseToTrainingProgramCommand();
         }
+    },
+    TRAINER_FINISH_TRAINING_PROGRAM_CREATION{
+        {
+            this.command = new FinishTrainingProgramCreationCommand();
+        }
     };
     /**
      * Current command.

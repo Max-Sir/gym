@@ -32,15 +32,24 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
 
     private static final String EXERCISES_RESOURCES_FILE_NAME = "exercises";
 
+    private static final int SUCCESS_RESULT = 1;
+
     /**
      * Instantiates a new UserDAOImpl.
      *
-     * @param connection   the connection to database.
+     * @param connection the connection to database.
      */
     public ExerciseDAOImpl(Connection connection) {
         super(connection, EXERCISES_RESOURCES_FILE_NAME);
     }
 
+    /**
+     * This method finds all exercises from training program.
+     *
+     * @param trainingProgramId the training program id.
+     * @return Map with the day number and exercises.
+     * @throws DAOException object if execution of query is failed.
+     */
     public Map<Integer, List<Exercise>> showExerciseFromTrainingProgram(int trainingProgramId) throws DAOException {
         try(PreparedStatement preparedStatement = connection.prepareStatement(resourceBundle.getString("query.get_exercises_from_training_program"))) {
             preparedStatement.setInt(1,trainingProgramId);
@@ -82,6 +91,12 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
         }
     }
 
+    /**
+     * This method finds all exercises id and name.
+     *
+     * @return Map with ids and names.
+     * @throws DAOException object if execution of query is failed.
+     */
     public Map<Integer, String> findAllExercisesIdAndName() throws DAOException {
         String sqlQuery = resourceBundle.getString("query.get_id_and_name_all_exercises");
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
@@ -101,10 +116,22 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
         }
     }
 
-    public void addExerciseToProgram(int programId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws DAOException {
+    /**
+     * This method adds exercise to training program.
+     *
+     * @param trainingProgramId the training program id.
+     * @param exerciseId the exercise id.
+     * @param dayNumber the day number.
+     * @param setsCount the sets count.
+     * @param repeatsCount the repeats count.
+     * @param numberOfExecution the number of execution.
+     * @return true if operation was made successfully and false otherwise.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public boolean addExerciseToTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws DAOException {
         String sqlQuery = resourceBundle.getString("query.add_exercise_to_program");
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1,programId);
+            preparedStatement.setInt(1,trainingProgramId);
             preparedStatement.setInt(2,exerciseId);
             preparedStatement.setInt(3,dayNumber);
             preparedStatement.setInt(4,setsCount);
@@ -113,10 +140,32 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
 
             int result = preparedStatement.executeUpdate();
 
-            if (result != 1){
-                throw new DAOException(String.format("Unexpected result from query - %s.",sqlQuery));
-            }
+            return result == SUCCESS_RESULT;
         }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method deletes exercise from training program.
+     *
+     * @param trainingProgramId the training program id.
+     * @param exerciseId the exercise id.
+     * @param dayNumber the day number.
+     * @return true if operation was made successfully and false otherwise.
+     * @throws DAOException object if execution of query is failed.
+     */
+    public boolean deleteExerciseFromTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.delete_exercise_from_training_program");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1,trainingProgramId);
+            preparedStatement.setInt(2,exerciseId);
+            preparedStatement.setInt(3,dayNumber);
+
+            int result = preparedStatement.executeUpdate();
+
+            return result == 1;
+        } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
     }

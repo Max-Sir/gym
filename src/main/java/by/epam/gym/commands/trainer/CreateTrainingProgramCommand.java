@@ -9,6 +9,7 @@ import by.epam.gym.service.TrainingProgramService;
 import by.epam.gym.service.UserService;
 import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
+import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,8 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH;
+import static by.epam.gym.utils.ConfigurationManager.*;
+import static by.epam.gym.utils.MessageManager.ADD_EXERCISE_FAILED_MESSAGE_PATH;
+import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
 
 
 /**
@@ -83,20 +85,25 @@ public class CreateTrainingProgramCommand implements ActionCommand {
             trainingProgram.setEnd(endDate);
 
             TrainingProgramService trainingProgramService = new TrainingProgramService();
-            trainingProgramService.createTrainingProgram(trainingProgram);
+            boolean isOperationSuccessful = trainingProgramService.createTrainingProgram(trainingProgram);
 
-            String daysCountValue = request.getParameter(DAYS_COUNT_PARAMETER);
-            int daysCount = Integer.parseInt(daysCountValue);
+            if (isOperationSuccessful) {
+                String daysCountValue = request.getParameter(DAYS_COUNT_PARAMETER);
+                int daysCount = Integer.parseInt(daysCountValue);
 
-            Map<Integer, List<Exercise>> days = new HashMap<>();
-            for (int index = 1; index <= daysCount; index++) {
-                List<Exercise> list = new ArrayList<>();
-                days.put(index,list);
+                Map<Integer, List<Exercise>> days = new HashMap<>();
+                for (int index = 1; index <= daysCount; index++) {
+                    List<Exercise> list = new ArrayList<>();
+                    days.put(index, list);
+                }
+
+                session.setAttribute(DAYS_ATTRIBUTE, days);
+                pageUrl = ConfigurationManager.getProperty(SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH);
+            } else {
+                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
+                pageUrl = ConfigurationManager.getProperty(TRAINER_PAGE_PATH);
             }
 
-            session.setAttribute(DAYS_ATTRIBUTE, days);
-
-            pageUrl = ConfigurationManager.getProperty(SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH);
             page.setRedirect(false);
 
         }catch (ServiceException exception) {

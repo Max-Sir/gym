@@ -18,7 +18,7 @@ import java.util.Map;
 public class ExerciseService {
 
     /**
-     * This metod adds exercise in database.
+     * This method adds exercise in database.
      *
      * @param exercise the exercise.
      * @throws ServiceException object if execution of method is failed.
@@ -39,6 +39,7 @@ public class ExerciseService {
      *
      * @param trainingProgramId the training program id.
      * @return List of exercises.
+     * @throws ServiceException object if execution of method is failed.
      */
     public Map<Integer, List<Exercise>> showExerciseFromTrainingProgram(int trainingProgramId) throws ServiceException {
         try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
@@ -50,6 +51,12 @@ public class ExerciseService {
         }
     }
 
+    /**
+     * This method finds all exercises id and name.
+     *
+     * @return Map with ids and names.
+     * @throws ServiceException object if execution of method is failed.
+     */
     public Map<Integer, String> findAllExercisesIdAndName() throws ServiceException {
         try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
             ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
@@ -60,23 +67,60 @@ public class ExerciseService {
         }
     }
 
-    public void addExerciseToProgram(int programId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws ServiceException {
+    /**
+     * This method adds exercise to training program.
+     *
+     * @param trainingProgramId the training program id.
+     * @param exerciseId the exercise id.
+     * @param dayNumber the day number.
+     * @param setsCount the sets count.
+     * @param repeatsCount the repeats count.
+     * @param numberOfExecution the number of execution.
+     * @return true if operation was made successfully and false otherwise.
+     * @throws ServiceException object if execution of method is failed.
+     */
+    public boolean addExerciseToTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws ServiceException {
         try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
             ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
 
-            exerciseDAO.addExerciseToProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
-
+            return exerciseDAO.addExerciseToTrainingProgram(trainingProgramId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
         }catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
 
     }
 
+    /**
+     * This methods finds exercise by id.
+     *
+     * @param id the exercise id.
+     * @return the Exercise object.
+     * @throws ServiceException object if execution of method is failed.
+     */
     public Exercise findExerciseById(int id) throws ServiceException {
         try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
             ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
 
             return exerciseDAO.findEntityById(id);
+        }catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method deletes exercise from training program.
+     *
+     * @param trainingProgramId the training program id.
+     * @param exerciseId the exercise id.
+     * @param dayNumber the day number.
+     * @return true if operation was made successfully and false otherwise.
+     * @throws ServiceException object if execution of method is failed.
+     */
+    public boolean deleteExerciseFromTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber) throws ServiceException {
+        try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)){
+            ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
+
+            return exerciseDAO.deleteExerciseFromTrainingProgram(trainingProgramId,exerciseId,dayNumber);
         }catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }

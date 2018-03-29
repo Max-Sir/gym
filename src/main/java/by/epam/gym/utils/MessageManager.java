@@ -19,12 +19,12 @@ public class MessageManager {
     public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
     public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";
     public static final String LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH = "message.notUniqueLogin";
-    public static final String REGISTRATION_SUCCESS_MESSAGE_PATH = "message.regSuccessful";
-    public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
     public static final String DATA_NOT_VALID_MESSAGE_PATH = "message.notValid";
     public static final String USER_DID_NOT_FIND_MESSAGE_PATH = "message.userNotFound";
     public static final String EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH = "message.exerciseAdded";
     public static final String NO_PERSONAL_CLIENTS_MESSAGE_PATH = "message.noPersonalClients";
+    public static final String ADD_EXERCISE_FAILED_MESSAGE_PATH = "message.addExerciseFailed";
+    public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";

@@ -6,6 +6,7 @@ import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.ExerciseService;
 import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.ConfigurationManager;
+import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,7 +16,18 @@ import java.util.Map;
 
 import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.ADD_EXERCISE_FAILED_MESSAGE_PATH;
+import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH;
 
+/**
+ * Command to add exercise to training program.
+ *
+ * @author Eugene Makarenko
+ * @see Exercise
+ * @see by.epam.gym.entities.TrainingProgram
+ * @see ActionCommand
+ * @see ExerciseService
+ */
 public class AddExerciseToTrainingProgramCommand implements ActionCommand {
 
     private static final String PROGRAM_ID_PARAMETER = "programId";
@@ -27,7 +39,14 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
     private static final String DAYS_ATTRIBUTE = "days";
     private static final String EXERCISES_ATTRIBUTE = "exercises";
     private static final String PROGRAM_ID_ATTRIBUTE = "programId";
+    private static final String RESULT_ATTRIBUTE = "result";
 
+    /**
+     * Implementation of command to add exercise to training program.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();
@@ -61,14 +80,18 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             exercise.setRepeatsCount(repeatsCount);
             exercises.add(exercise);
 
-            exerciseService.addExerciseToProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
+            boolean isOperationSuccessful = exerciseService.addExerciseToTrainingProgram(programId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
 
-            Map<Integer, String> exercisesIdAndName = (Map<Integer, String>) session.getAttribute(EXERCISES_ATTRIBUTE);
+            if (isOperationSuccessful) {
+                Map<Integer, String> exercisesIdAndName = (Map<Integer, String>) session.getAttribute(EXERCISES_ATTRIBUTE);
 
-            request.setAttribute(EXERCISES_ATTRIBUTE, exercisesIdAndName);
-            request.setAttribute(PROGRAM_ID_ATTRIBUTE, programId);
-            request.setAttribute(DAYS_ATTRIBUTE,daysAndExercises);
-
+                request.setAttribute(EXERCISES_ATTRIBUTE, exercisesIdAndName);
+                request.setAttribute(PROGRAM_ID_ATTRIBUTE, programId);
+                request.setAttribute(DAYS_ATTRIBUTE, daysAndExercises);
+                request.setAttribute(RESULT_ATTRIBUTE,MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH));
+            } else {
+                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
+            }
             pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
             page.setRedirect(false);
 

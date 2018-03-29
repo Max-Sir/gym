@@ -14,7 +14,7 @@ import static by.epam.gym.utils.ConfigurationManager.CREATE_TRAINING_PROGRAM_PAG
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
 
 /**
- * Command to load data for create_training_program.jsp.
+ * Command to prepare page for creation training program.
  *
  * @author Eugene Makarenko
  * @see by.epam.gym.entities.TrainingProgram
@@ -25,6 +25,12 @@ public class PrepareTrainingProgramCreationCommand implements ActionCommand {
 
     private static final String LIST_ATTRIBUTE = "list";
 
+    /**
+     * Implementation of command to prepare page for creation training program.
+     *
+     * @param request HttpServletRequest object.
+     * @return redirect page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
         Page page = new Page();

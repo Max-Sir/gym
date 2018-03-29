@@ -45,12 +45,13 @@ public class UserService {
      * The method registers user into data base.
      *
      * @param user the created user.
+     * @return true if operation was made successful and false otherwise.
      * @throws ServiceException object if execution of method is failed.
      */
-    public void register(User user) throws ServiceException {
+    public boolean register(User user) throws ServiceException {
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
             UserDAOImpl userDAO = connectionManager.createDAO();
-            userDAO.insert(user);
+           return userDAO.insert(user);
         }  catch (Exception exception) {
             throw new ServiceException("Exception detected. " + exception);
         }
@@ -148,6 +149,12 @@ public class UserService {
         }
     }
 
+    /**
+     * This method finds clients ids and names.
+     *
+     * @return Map with id and name.
+     * @throws ServiceException object if execution of method is failed.
+     */
     public Map<Integer, String> findClientsIdAndName() throws ServiceException {
         try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)){
             UserDAOImpl userDAO = connectionManager.createDAO();
@@ -158,6 +165,13 @@ public class UserService {
         }
     }
 
+    /**
+     * This method checks client if he needs personal trainer.
+     *
+     * @param clientId the client's id.
+     * @return true if client needs personal trainer and false otherwise.
+     * @throws ServiceException object if execution of method is failed.
+     */
     public boolean isClientNeedPersonalTrainer(int clientId) throws ServiceException {
         try (ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
             UserDAOImpl userDAO = connectionManager.createDAO();

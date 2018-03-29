@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static by.epam.gym.utils.ConfigurationManager.INDEX_PAGE_PATH;
+import static by.epam.gym.utils.ConfigurationManager.MAIN_PAGE_PATH;
 
 /**
  * Command for user log out.
@@ -25,7 +26,7 @@ public class LogoutCommand implements ActionCommand {
      * @return redirect page
      */
     public Page execute(HttpServletRequest request) {
-        String pageUrl = ConfigurationManager.getProperty(INDEX_PAGE_PATH);
+        String pageUrl = ConfigurationManager.getProperty(MAIN_PAGE_PATH);
         HttpSession session = request.getSession();
         session.invalidate();
 
