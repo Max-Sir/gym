@@ -1,7 +1,7 @@
 package by.epam.gym.commands.client;
 
 import by.epam.gym.commands.ActionCommand;
-import by.epam.gym.entities.Order;
+import by.epam.gym.entities.order.Order;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.OrderService;

@@ -26,6 +26,8 @@ public class MessageManager {
     public static final String ADD_EXERCISE_FAILED_MESSAGE_PATH = "message.addExerciseFailed";
     public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
     public static final String EXERCISE_DELETE_FAILED_MESSAGE_PATH = "message.deleteExerciseFailed";
+    public static final String FEEDBACK_ADDED_MESSAGE_PATH = "message.addFeedbackSuccess";
+    public static final String FEEDBACK_WAS_NOT_ADDED_MESSAGE_PATH = "message.addFeedbackError";
 
     private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";

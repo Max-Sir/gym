@@ -74,7 +74,6 @@ public class ConnectionManager<T extends AbstractDAOImpl> implements AutoCloseab
     public void commitTransaction() throws ServiceException {
         try {
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException exception) {
             throw new ServiceException("SQL exception detected. ", exception);
         }
@@ -93,13 +92,21 @@ public class ConnectionManager<T extends AbstractDAOImpl> implements AutoCloseab
         }
     }
 
+    public void endTransaction() throws ServiceException {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException exception) {
+            throw new ServiceException("SQL exception detected. ", exception);
+        }
+    }
+
     /**
      * Implementation of AutoCloseable interface to work with try().
      *
      * @throws Exception object if execution of method is failed.
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
         connectionPool.returnConnection(connection);
     }
 }

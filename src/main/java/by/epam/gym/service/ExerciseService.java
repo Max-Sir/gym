@@ -78,7 +78,11 @@ public class ExerciseService {
      * @throws ServiceException object if execution of method is failed.
      */
     public boolean addExercisesToTrainingProgram(int trainingProgramId, Map<Integer, List<Exercise>> daysAndExercises) throws ServiceException {
-        try(ConnectionManager<ExerciseDAOImpl> connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class)) {
+
+        ConnectionManager<ExerciseDAOImpl> connectionManager = null;
+        try {
+            connectionManager = new ConnectionManager<>(ExerciseDAOImpl.class);
+            connectionManager.startTransaction();
             ExerciseDAOImpl exerciseDAO = connectionManager.createDAO();
 
             Set<Map.Entry<Integer, List<Exercise>>> entrySet = daysAndExercises.entrySet();
@@ -93,17 +97,25 @@ public class ExerciseService {
 
                    boolean isResultSuccessful = exerciseDAO.addExerciseToTrainingProgram(trainingProgramId,exerciseId,dayNumber,setsCount,repeatsCount,numberOfExecution);
                    if (!isResultSuccessful){
+                       connectionManager.rollbackTransaction();
                        return false;
                    }
                 }
             }
 
-
+            connectionManager.commitTransaction();
+            return true;
         }catch (Exception exception) {
+            if (connectionManager != null){
+                connectionManager.rollbackTransaction();
+            }
             throw new ServiceException("Exception detected. " + exception);
+        } finally {
+            if (connectionManager != null){
+                connectionManager.endTransaction();
+                connectionManager.close();
+            }
         }
-
-        return true;
     }
 
     /**

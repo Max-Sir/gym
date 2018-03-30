@@ -3,6 +3,7 @@ package by.epam.gym.commands;
 
 import by.epam.gym.commands.admin.FindUserByNameCommand;
 import by.epam.gym.commands.admin.ShowAllClientsCommand;
+import by.epam.gym.commands.client.AddFeedbackCommand;
 import by.epam.gym.commands.client.ShowOrdersCommand;
 import by.epam.gym.commands.common.DescribeTrainingProgramCommand;
 import by.epam.gym.commands.common.LoginCommand;
@@ -83,6 +84,11 @@ public enum CommandType {
     CLIENT_SHOW_ORDERS{
         {
             this.command = new ShowOrdersCommand();
+        }
+    },
+    CLIENT_ADD_FEEDBACK{
+        {
+            this.command = new AddFeedbackCommand();
         }
     };
     /**

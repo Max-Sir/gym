@@ -58,8 +58,9 @@ public class FinishTrainingProgramCreationCommand implements ActionCommand {
                 request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
             }
         } catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
+            page.setRedirect(false);
+            request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
         }
 
         page.setPageUrl(pageUrl);
