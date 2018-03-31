@@ -3,9 +3,8 @@ package by.epam.gym.commands;
 
 import by.epam.gym.commands.admin.FindUserByNameCommand;
 import by.epam.gym.commands.admin.ShowAllClientsCommand;
-import by.epam.gym.commands.client.AddFeedbackCommand;
-import by.epam.gym.commands.client.ShowOrdersCommand;
-import by.epam.gym.commands.common.DescribeTrainingProgramCommand;
+import by.epam.gym.commands.client.*;
+import by.epam.gym.commands.common.training.*;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
@@ -68,17 +67,17 @@ public enum CommandType {
             this.command = new PrepareAddExerciseToTrainingProgramCommand();
         }
     },
-    TRAINER_ADD_EXERCISE_TO_TRAINING_PROGRAM{
+    COMMON_ADD_EXERCISE_TO_TRAINING_PROGRAM{
         {
             this.command = new AddExerciseToTrainingProgramCommand();
         }
     },
-    TRAINER_FINISH_TRAINING_PROGRAM_CREATION{
+    COMMON_FINISH_TRAINING_PROGRAM_CREATION{
         {
             this.command = new FinishTrainingProgramCreationCommand();
         }
     },
-    TRAINER_DELETE_EXERCISE_FROM_TRAINING_PROGRAM{
+    COMMON_DELETE_EXERCISE_FROM_TRAINING_PROGRAM{
         {this.command = new DeleteExerciseFromTrainingProgramCommand();}
     },
     CLIENT_SHOW_ORDERS{
@@ -89,6 +88,26 @@ public enum CommandType {
     CLIENT_ADD_FEEDBACK{
         {
             this.command = new AddFeedbackCommand();
+        }
+    },
+    CLIENT_PREPARE_ORDER{
+        {
+            this.command = new PrepareOrderCommand();
+        }
+    },
+    CLIENT_PAY_ORDER{
+        {
+            this.command = new PayOrderCommand();
+        }
+    },
+    CLIENT_SHOW_TRAINING_PROGRAM{
+        {
+            this.command = new ShowTrainingProgramCommand();
+        }
+    },
+    COMMON_EDIT_EXERCISE{
+        {
+            this.command = new EditExerciseCommand();
         }
     };
     /**

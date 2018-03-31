@@ -1,4 +1,4 @@
-package by.epam.gym.commands.trainer;
+package by.epam.gym.commands.common.training;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
@@ -50,18 +50,20 @@ public class FinishTrainingProgramCreationCommand implements ActionCommand {
             boolean isResultSuccessful = exerciseService.addExercisesToTrainingProgram(programId, exercisesIdAndName);
 
             if (isResultSuccessful) {
-                pageUrl = ConfigurationManager.getProperty(ConfigurationManager.TRAINER_PAGE_PATH);
+                pageUrl = ConfigurationManager.getProperty(ConfigurationManager.CLIENT_PAGE_PATH);
                 page.setRedirect(false);
             } else {
                 pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
                 page.setRedirect(false);
                 request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
             }
+            session.removeAttribute(DAYS_ATTRIBUTE);
         } catch (ServiceException exception) {
             pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
             page.setRedirect(false);
             request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
         }
+
 
         page.setPageUrl(pageUrl);
         return page;

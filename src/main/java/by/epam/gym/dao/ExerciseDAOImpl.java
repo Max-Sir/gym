@@ -146,30 +146,18 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
         }
     }
 
-    /**
-     * This method deletes exercise from training program.
-     *
-     * @param trainingProgramId the training program id.
-     * @param exerciseId the exercise id.
-     * @param dayNumber the day number.
-     * @return true if operation was made successfully and false otherwise.
-     * @throws DAOException object if execution of query is failed.
-     */
-    public boolean deleteExerciseFromTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.delete_exercise_from_training_program");
+    public boolean cleanTrainingProgramFromExercises(int programId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.clean_training_program");
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
-            preparedStatement.setInt(1,trainingProgramId);
-            preparedStatement.setInt(2,exerciseId);
-            preparedStatement.setInt(3,dayNumber);
+            preparedStatement.setInt(1,programId);
 
             int result = preparedStatement.executeUpdate();
 
-            return result == 1;
-        } catch (SQLException exception) {
+            return result != 0;
+        }catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
     }
-
     /**
      * This method builds Exercise object from ResultSet object.
      *

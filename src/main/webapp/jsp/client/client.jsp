@@ -18,8 +18,14 @@
 <p>Role: ${user.userRole}</p>
 <hr/>
 <br/>
-<a href="controller?command=client_show_orders">Orders history.</a>
+<a href="${pageContext.request.contextPath}/controller?command=client_show_orders">Orders history.</a>
 <br/>
-<a href="controller?command=common_logout">Logout</a>
+<a href="/jsp/client/prepare_order.jsp">Make order.</a>
+<br/>
+<a href="${pageContext.request.contextPath}/controller?command=common_logout">Logout</a>
+<br/>
+<a href="${pageContext.request.contextPath}/controller?command=client_show_training_program">Training</a>
+<br/>
+${result}
 </body>
 </html>

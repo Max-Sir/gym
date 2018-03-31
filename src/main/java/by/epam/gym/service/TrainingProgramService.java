@@ -67,4 +67,13 @@ public class TrainingProgramService {
         }
     }
 
+    public int findClientTrainingProgramId(int clientId) throws ServiceException {
+        try(ConnectionManager<TrainingProgramDAOImpl> connectionManager = new ConnectionManager<>(TrainingProgramDAOImpl.class)) {
+            TrainingProgramDAOImpl trainingProgramDAO = connectionManager.createDAO();
+
+            return trainingProgramDAO.findClientTrainingProgram(clientId);
+        } catch (Exception exception) {
+            throw new ServiceException("Exception detected. " + exception);
+        }
+    }
 }

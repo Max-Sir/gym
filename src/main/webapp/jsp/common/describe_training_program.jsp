@@ -34,5 +34,7 @@
 <calendar:formatDate value="${endDate}" pattern="yyyy-MM-dd" />
 <br> Автор программы: ${name}
 <br> Диета: ${diet}
+<br/>
+<a href="/jsp/common/edit_training_program.jsp">edit</a>
 </body>
 </html>

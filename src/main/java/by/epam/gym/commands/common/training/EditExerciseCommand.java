@@ -1,4 +1,4 @@
-package by.epam.gym.commands.trainer;
+package by.epam.gym.commands.common.training;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
@@ -13,34 +13,18 @@ import java.util.Map;
 import java.util.Set;
 
 import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
+import static by.epam.gym.utils.ConfigurationManager.EDIT_PROGRAM_PAGE_PATH;
 
-/**
- * Command to delete exercise from training program.
- *
- * @author Eugene Makarenko
- * @see by.epam.gym.entities.TrainingProgram
- * @see by.epam.gym.entities.exercise.Exercise
- * @see by.epam.gym.service.ExerciseService
- * @see ActionCommand
- */
-public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
+public class EditExerciseCommand implements ActionCommand {
 
-    private static final String TRAINING_PROGRAM_ID_PARAMETER = "programId";
     private static final String EXERCISE_ID_PARAMETER = "exerciseId";
     private static final String DAY_NUMBER_PARAMETER = "dayNumber";
-
+    private static final String SETS_COUNT_ATTRIBUTE = "setsCount";
+    private static final String REPEATS_COUNT_ATTRIBUTE = "repeatsCount";
     private static final String DAYS_ATTRIBUTE = "days";
 
-    /**
-     * Implementation of command to delete exercise from training program.
-     *
-     * @param request HttpServletRequest object.
-     * @return redirect page.
-     */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-
         HttpSession session = request.getSession();
 
         String exerciseIdValue = request.getParameter(EXERCISE_ID_PARAMETER);
@@ -49,7 +33,14 @@ public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
         String dayNumberValue = request.getParameter(DAY_NUMBER_PARAMETER);
         int dayNumber = Integer.parseInt(dayNumberValue);
 
-        String pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
+        String setsCountValue = request.getParameter(SETS_COUNT_ATTRIBUTE);
+        int setsCount = Integer.parseInt(setsCountValue);
+
+        String repeatsCountValue = request.getParameter(REPEATS_COUNT_ATTRIBUTE);
+        int repeatsCount = Integer.parseInt(repeatsCountValue);
+
+        Page page = new Page();
+        String pageUrl = ConfigurationManager.getProperty(EDIT_PROGRAM_PAGE_PATH);
         page.setPageUrl(pageUrl);
 
         Map<Integer, List<Exercise>> exercisesIdAndName = (Map<Integer, List<Exercise>>) session.getAttribute(DAYS_ATTRIBUTE);
@@ -65,7 +56,8 @@ public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
                     int currentExerciseId = exercise.getId();
 
                     if (exerciseId == currentExerciseId) {
-                        iterator.remove();
+                        exercise.setSetsCount(setsCount);
+                        exercise.setRepeatsCount(repeatsCount);
                     }
                 }
             }

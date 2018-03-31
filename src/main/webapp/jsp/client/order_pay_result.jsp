@@ -1,19 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: Eugene
-  Date: 30.03.2018
-  Time: 16:17
+  Date: 31.03.2018
+  Time: 13:08
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Order form.</title>
+    <title>Result</title>
 </head>
 <body>
-<form method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="client_make_order"/>
-
-</form>
+<h1>${result}</h1>
+<br/>
+<a href="/jsp/client/client.jsp">Go home.</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package by.epam.gym.commands.common;
+package by.epam.gym.commands.common.training;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.TrainingProgram;

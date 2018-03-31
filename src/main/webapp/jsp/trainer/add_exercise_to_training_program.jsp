@@ -21,7 +21,7 @@
                 Подходы: ${exercise.setsCount}
                 Повторения: ${exercise.repeatsCount}
                         <form method="POST" action="${pageContext.request.contextPath}/controller">
-                            <input type="hidden" name="command" value="trainer_delete_exercise_from_training_program"/>
+                            <input type="hidden" name="command" value="common_delete_exercise_from_training_program"/>
                             <input type="hidden" name="dayNumber" value="${day.key}" />
                             <input type="hidden" name="exerciseId" value="${exercise.id}"/>
                             <input type="submit" value="Delete exercise"/>
@@ -30,7 +30,7 @@
          </c:forEach>
     </ol>
     <form method="POST" action="${pageContext.request.contextPath}/controller">
-        <input type="hidden" name="command" value="trainer_add_exercise_to_training_program"/>
+        <input type="hidden" name="command" value="common_add_exercise_to_training_program"/>
         <input type="hidden" name="dayNumber" value="${day.key}" />
         <br/>
         <select name="exerciseId" title="Exercise name.">

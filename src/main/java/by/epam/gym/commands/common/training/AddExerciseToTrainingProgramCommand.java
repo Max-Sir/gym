@@ -1,4 +1,4 @@
-package by.epam.gym.commands.trainer;
+package by.epam.gym.commands.common.training;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
+import static by.epam.gym.utils.ConfigurationManager.EDIT_PROGRAM_PAGE_PATH;
 import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.ADD_EXERCISE_FAILED_MESSAGE_PATH;
 import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH;
@@ -76,7 +77,7 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             exercise.setRepeatsCount(repeatsCount);
             exercises.add(exercise);
 
-            pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
+            pageUrl = ConfigurationManager.getProperty(EDIT_PROGRAM_PAGE_PATH);
             page.setRedirect(false);
 
         } catch (ServiceException exception) {

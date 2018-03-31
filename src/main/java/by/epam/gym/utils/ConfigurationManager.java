@@ -28,6 +28,9 @@ public class ConfigurationManager {
     public static final String SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH = "path.page.success_training_program_creation";
     public static final String SHOW_CLIENT_ORDERS_PAGE_PATH = "path.page.show_client_orders";
     public static final String ADD_FEEDBACK_PAGE_PATH = "path.page.add_feedback";
+    public static final String PAY_ORDER_PAGE_PATH = "path.page.pay_order";
+    public static final String PAY_ORDER_RESULT_PAGE_PATH = "path.page.pay_order_result";
+    public static final String EDIT_PROGRAM_PAGE_PATH = "path.page.edit_training_program";
 
     private static final String RESOURCE_FILE_NAME = "config";
 

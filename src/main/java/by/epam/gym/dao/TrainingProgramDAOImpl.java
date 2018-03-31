@@ -20,6 +20,9 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
     private static final String START_DATE_COLUMN_LABEL = "start_date";
     private static final String END_DATE_COLUMN_LABEL = "end_date";
     private static final String DIET_COLUMN_LABEL = "diet";
+    private static final String MAX_ID_COLUMN_LABEL = "MAX(id)";
+
+    private static final int EMPTY_TRAINING_PROGRAM_ID_VALUE = 0;
 
     private static final String TRAINING_PROGRAMS_RESOURCES_FILE_NAME = "training_programs";
 
@@ -54,6 +57,23 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
                 throw new DAOException(String.format("Unexpected result for query - %s.",sqlQuery));
             }
 
+        }catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    public int findClientTrainingProgram(int clientId) throws DAOException {
+        String sqlQuery = resourceBundle.getString("query.find_client_training_program");
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1,clientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()){
+                int trainingProgramId = resultSet.getInt(MAX_ID_COLUMN_LABEL);
+                return trainingProgramId;
+            } else {
+                return EMPTY_TRAINING_PROGRAM_ID_VALUE;
+            }
         }catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
