@@ -5,25 +5,21 @@ import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
+import by.epam.gym.service.ExerciseService;
 import by.epam.gym.service.TrainingProgramService;
-import by.epam.gym.service.UserService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
+import by.epam.gym.utils.TrainingProgramDataValidator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-import static by.epam.gym.utils.ConfigurationManager.*;
-import static by.epam.gym.utils.MessageManager.ADD_EXERCISE_FAILED_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
-
+import static by.epam.gym.servlet.Page.CREATE_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.servlet.Page.EDIT_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.INVALID_INPUT_DATA_MESSAGE_KEY;
 
 /**
  * Command to create training program.
@@ -34,84 +30,50 @@ import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
  */
 public class CreateTrainingProgramCommand implements ActionCommand {
 
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String DAYS_ATTRIBUTE = "days";
+    private static final Logger LOGGER = Logger.getLogger(CreateTrainingProgramCommand.class);
 
-    private static final String DATE_START_PARAMETER = "startDate";
-    private static final String DATE_END_PARAMETER = "endDate";
-    private static final String DAYS_COUNT_PARAMETER = "daysCount";
-    private static final String DIET_PARAMETER = "diet";
-    private static final String CLIENT_ID_PARAMETER = "clientId";
     /**
      * Implementation of command to create training program in database.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
 
-        try{
+        try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute(USER_ATTRIBUTE);
             int authorId = user.getId();
 
             String clientIdValue = request.getParameter(CLIENT_ID_PARAMETER);
-            int clientId = Integer.parseInt(clientIdValue);
-
-            Integer personalTrainerId = null;
-            UserService userService = new UserService();
-            boolean isPersonalClientNeed = userService.isClientNeedPersonalTrainer(clientId);
-            if (isPersonalClientNeed){
-                personalTrainerId = authorId;
-            }
-
-            String startDateValue = request.getParameter(DATE_START_PARAMETER);
-            Date startDate = Date.valueOf(startDateValue);
-
-            String endDateVale = request.getParameter(DATE_END_PARAMETER);
-            Date endDate = Date.valueOf(endDateVale);
-
+            String startDateValue = request.getParameter(START_DATE_PARAMETER);
+            String endDateValue = request.getParameter(END_DATE_PARAMETER);
             String diet = request.getParameter(DIET_PARAMETER);
-
-            TrainingProgram trainingProgram = new TrainingProgram();
-            trainingProgram.setAuthorId(authorId);
-            trainingProgram.setClientId(clientId);
-            trainingProgram.setPersonalTrainerId(personalTrainerId);
-            trainingProgram.setDiet(diet);
-            trainingProgram.setStart(startDate);
-            trainingProgram.setEnd(endDate);
+            String daysCountValue = request.getParameter(DAYS_COUNT_PARAMETER);
+            TrainingProgramDataValidator trainingProgramDataValidator = new TrainingProgramDataValidator();
+            boolean isDataValid = trainingProgramDataValidator.checkTrainingProgramData(clientIdValue, startDateValue, endDateValue, diet, daysCountValue);
+            if (!isDataValid) {
+                return new Page(CREATE_TRAINING_PROGRAM_PAGE_PATH, false, INVALID_INPUT_DATA_MESSAGE_KEY);
+            }
 
             TrainingProgramService trainingProgramService = new TrainingProgramService();
-            boolean isOperationSuccessful = trainingProgramService.createTrainingProgram(trainingProgram);
+            TrainingProgram trainingProgram = trainingProgramService.createTrainingProgram(authorId, clientIdValue, diet, startDateValue, endDateValue);
+            session.setAttribute(TRAINING_PROGRAM_ATTRIBUTE, trainingProgram);
 
-            if (isOperationSuccessful) {
-                String daysCountValue = request.getParameter(DAYS_COUNT_PARAMETER);
-                int daysCount = Integer.parseInt(daysCountValue);
+            ExerciseService exerciseService = new ExerciseService();
+            List<Exercise> exercises = exerciseService.findAllExercisesIdAndName();
+            session.setAttribute(EXERCISES_ATTRIBUTE, exercises);
 
-                Map<Integer, List<Exercise>> days = new HashMap<>();
-                for (int index = 1; index <= daysCount; index++) {
-                    List<Exercise> list = new ArrayList<>();
-                    days.put(index, list);
-                }
 
-                session.setAttribute(DAYS_ATTRIBUTE, days);
-                pageUrl = ConfigurationManager.getProperty(SUCCESSFUL_TRAINING_PROGRAM_CREATION_PAGE_PATH);
-            } else {
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ADD_EXERCISE_FAILED_MESSAGE_PATH));
-                pageUrl = ConfigurationManager.getProperty(TRAINER_PAGE_PATH);
-            }
+            TreeMap<Integer, List<Exercise>> daysAndExercises = trainingProgramService.getDaysAndExerciseFromTrainingProgram(daysCountValue);
+            session.setAttribute(DAYS_AND_EXERCISES_ATTRIBUTE, daysAndExercises);
 
-            page.setRedirect(false);
-
-        }catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            LOGGER.info(String.format("Training program for client - %s, was created successful.", clientIdValue));
+            return new Page(EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
         }
-
-        page.setPageUrl(pageUrl);
-        return page;
     }
 }

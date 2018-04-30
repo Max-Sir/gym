@@ -1,9 +1,6 @@
 package by.epam.gym.entities.user;
 
-import by.epam.gym.dao.processor.ColumnName;
 import by.epam.gym.entities.Entity;
-
-import javax.validation.constraints.Null;
 
 /**
  * This class describes user of application.
@@ -31,7 +28,6 @@ public class User extends Entity {
      *
      * @return the user's login.
      */
-    @ColumnName(name = "login", parameterIndex = 1)
     public String getLogin() {
         return login;
     }
@@ -50,7 +46,6 @@ public class User extends Entity {
      *
      * @return the user's password.
      */
-    @ColumnName(name = "password", parameterIndex = 2)
     public String getPassword() {
         return password;
     }
@@ -69,7 +64,6 @@ public class User extends Entity {
      *
      * @return the user's role.
      */
-    @ColumnName(name = "role", parameterIndex = 3)
     public UserRole getUserRole() {
         return userRole;
     }
@@ -89,7 +83,6 @@ public class User extends Entity {
      *
      * @return the user's first name.
      */
-    @ColumnName(name = "first_name", parameterIndex = 4)
     public String getFirstName() {
         return firstName;
     }
@@ -108,7 +101,6 @@ public class User extends Entity {
      *
      * @return the user's last name.
      */
-    @ColumnName(name = "last_name", parameterIndex = 5)
     public String getLastName() {
         return lastName;
     }
@@ -122,4 +114,73 @@ public class User extends Entity {
         this.lastName = lastName;
     }
 
+    /**
+     * This method equals two objects.
+     *
+     * @param object the object.
+     * @return true if objects are equal and false otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        if (!super.equals(object)) {
+            return false;
+        }
+
+        User user = (User) object;
+
+        if (login != null ? !login.equals(user.login) : user.login != null) {
+            return false;
+        }
+        if (password != null ? !password.equals(user.password) : user.password != null) {
+            return false;
+        }
+        if (userRole != user.userRole) {
+            return false;
+        }
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) {
+            return false;
+        }
+        return lastName != null ? lastName.equals(user.lastName) : user.lastName == null;
+    }
+
+    /**
+     * This method calculate object's hashcode.
+     *
+     * @return hashcode of object.
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (userRole != null ? userRole.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        return result;
+    }
+
+    /**
+     * This method builds string information about object.
+     *
+     * @return string information about object.
+     */
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole=" + userRole +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }
+

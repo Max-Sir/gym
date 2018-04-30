@@ -64,9 +64,6 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
             int exerciseId = Integer.parseInt(exerciseIdValue);
             Exercise exercise = exerciseService.findExerciseById(exerciseId);
 
-            int numberOfExecution = exercises.size()+1;
-            int programId = (int) session.getAttribute(PROGRAM_ID_PARAMETER);
-
             String setsCountValue = request.getParameter(SETS_COUNT_PARAMETER);
             int setsCount = Integer.parseInt(setsCountValue);
 

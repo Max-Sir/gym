@@ -1,2 +1,1 @@
-Final epam task.
-Web application - Iron gym.
+Final Epam task: Web application "Gym".

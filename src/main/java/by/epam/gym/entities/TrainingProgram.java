@@ -1,7 +1,5 @@
 package by.epam.gym.entities;
 
-import by.epam.gym.dao.processor.ColumnName;
-
 import java.sql.Date;
 
 /**
@@ -15,8 +13,8 @@ public class TrainingProgram extends Entity {
     private int authorId;
     private Integer personalTrainerId;
     private int clientId;
-    private Date start;
-    private Date end;
+    private Date startDate;
+    private Date endDate;
     private String diet;
 
     /**
@@ -30,7 +28,6 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's author id.
      */
-    @ColumnName(name = "author_id", parameterIndex = 1)
     public int getAuthorId() {
         return authorId;
     }
@@ -45,17 +42,16 @@ public class TrainingProgram extends Entity {
     }
 
     /**
-     * Gets training program's personal trainer id.
+     * Gets training program's personal trainer id. Can be null.
      *
      * @return the training program's persona trainer id.
      */
-    @ColumnName(name = "personal_trainer_id", parameterIndex = 2)
     public Integer getPersonalTrainerId() {
         return personalTrainerId;
     }
 
     /**
-     * Sets training program's personal trainer id.
+     * Sets training program's personal trainer id. Can be null.
      *
      * @param personalTrainerId the training program's personal trainer id.
      */
@@ -68,7 +64,6 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's client id.
      */
-    @ColumnName(name = "client_id", parameterIndex = 3)
     public int getClientId() {
         return clientId;
     }
@@ -87,18 +82,17 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's start date.
      */
-    @ColumnName(name = "start_date", parameterIndex = 4)
-    public Date getStart() {
-        return start;
+    public Date getStartDate() {
+        return startDate;
     }
 
     /**
      * Sets training program's start date.
      *
-     * @param start the training program's start date.
+     * @param startDate the training program's start date.
      */
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     /**
@@ -106,18 +100,17 @@ public class TrainingProgram extends Entity {
      *
      * @return the training program's end date.
      */
-    @ColumnName(name = "end_date", parameterIndex = 5)
-    public Date getEnd() {
-        return end;
+    public Date getEndDate() {
+        return endDate;
     }
 
     /**
      * Sets training program's end date.
      *
-     * @param end the training program's end date.
+     * @param endDate the training program's end date.
      */
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     /**
@@ -125,7 +118,6 @@ public class TrainingProgram extends Entity {
      *
      * @return the diet.
      */
-    @ColumnName(name = "diet", parameterIndex = 6)
     public String getDiet() {
         return diet;
     }
@@ -137,5 +129,77 @@ public class TrainingProgram extends Entity {
      */
     public void setDiet(String diet) {
         this.diet = diet;
+    }
+
+    /**
+     * This method equals two objects.
+     *
+     * @param object the object.
+     * @return true if objects are equal and false otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        if (!super.equals(object)) {
+            return false;
+        }
+
+        TrainingProgram that = (TrainingProgram) object;
+
+        if (authorId != that.authorId) {
+            return false;
+        }
+        if (clientId != that.clientId) {
+            return false;
+        }
+        if (personalTrainerId != null ? !personalTrainerId.equals(that.personalTrainerId) : that.personalTrainerId != null) {
+            return false;
+        }
+        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) {
+            return false;
+        }
+        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) {
+            return false;
+        }
+        return diet != null ? diet.equals(that.diet) : that.diet == null;
+    }
+
+    /**
+     * This method calculate object's hashcode.
+     *
+     * @return hashcode of object.
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + authorId;
+        result = 31 * result + (personalTrainerId != null ? personalTrainerId.hashCode() : 0);
+        result = 31 * result + clientId;
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (diet != null ? diet.hashCode() : 0);
+        return result;
+    }
+
+    /**
+     * This method builds string information about object.
+     *
+     * @return string information about object.
+     */
+    @Override
+    public String toString() {
+        return "TrainingProgram{" +
+                "authorId=" + authorId +
+                ", personalTrainerId=" + personalTrainerId +
+                ", clientId=" + clientId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", diet='" + diet + '\'' +
+                '}';
     }
 }

@@ -1,16 +1,13 @@
 package by.epam.gym.dao;
 
-import by.epam.gym.dao.processor.QueryProcessor;
 import by.epam.gym.entities.Entity;
 import by.epam.gym.exceptions.DAOException;
+import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Map;
 
 /**
  * Abstract root class of DAO level that provide access to the database and deal with application entities.
@@ -19,27 +16,29 @@ import java.util.ResourceBundle;
  * @author Eugene Makarenko
  * @see Connection
  * @see Entity
- * @see QueryProcessor
- * @see DAOException
  */
 public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
     public static final String ID_COLUMN_LABEL = "id";
-
-    public static final int SUCCESSFUL_RESULT = 1;
-
+    public static final int EMPTY_RESULT = 0;
+    public static final String NULL_PARAMETER = "null";
+    public static final String SELECT_ALL_QUERY_KEY = "SELECT_ALL";
+    public static final String SELECT_BY_ID_QUERY_KEY = "SELECT_BY_ID";
+    public static final String DELETE_BY_ID_QUERY_KEY = "DELETE_BY_ID";
+    public static final String INSERT_ENTITY_QUERY_KEY = "INSERT_ENTITY";
+    public static final String UPDATE_ENTITY_QUERY_KEY = "UPDATE_ENTITY";
+    private static final Logger LOGGER = Logger.getLogger(AbstractDAOImpl.class);
+    private final Map<String, String> commonQueries;
     protected Connection connection;
-    protected ResourceBundle resourceBundle;
 
     /**
-     * Instantiates a new UserDAOImpl.
+     * Instantiates a new AbstractDAOImpl.
      *
-     * @param connection   the connection to database.
-     * @param resourceName the resource file name.
+     * @param connection the connection to database.
      */
-    public AbstractDAOImpl(Connection connection, String resourceName) {
+    protected AbstractDAOImpl(Connection connection) {
         this.connection = connection;
-        this.resourceBundle = ResourceBundle.getBundle(resourceName);
+        this.commonQueries = initializeCommonQueries();
     }
 
     /**
@@ -48,14 +47,15 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return List of found objects.
      * @throws DAOException object if execution of query is failed.
      */
-    public List<T> findAll() throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.find_all");
+    @Override
+    public List<T> selectAll() throws DAOException {
+        String sqlQuery = commonQueries.get(SELECT_ALL_QUERY_KEY);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+        try (Statement statement = connection.createStatement()) {
 
             List<T> entities = new ArrayList<T>();
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
             while (resultSet.next()) {
                 T entity = buildEntity(resultSet);
                 entities.add(entity);
@@ -63,6 +63,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return entities;
         } catch (SQLException exception) {
+            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
             throw new DAOException("SQL exception detected. " + exception);
         }
     }
@@ -74,12 +75,11 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    public T findEntityById(int id) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.find_by_id");
+    @Override
+    public T selectEntityById(int id) throws DAOException {
+        String sqlQuery = commonQueries.get(SELECT_BY_ID_QUERY_KEY);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1, id);
-
+        try (PreparedStatement preparedStatement = prepareStatementForQuery(sqlQuery, id)) {
             T entity = null;
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -89,6 +89,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return entity;
         } catch (SQLException exception) {
+            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
             throw new DAOException("SQL exception detected. " + exception);
         }
     }
@@ -100,18 +101,11 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
+    @Override
     public boolean deleteById(int id) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.delete_by_id");
+        String sqlQuery = commonQueries.get(DELETE_BY_ID_QUERY_KEY);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1, id);
-
-            int queryResult = preparedStatement.executeUpdate();
-
-            return queryResult == SUCCESSFUL_RESULT;
-        } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
-        }
+        return executeQuery(sqlQuery, id);
     }
 
     /**
@@ -121,11 +115,12 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
+    @Override
     public boolean insert(T entity) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.insert_entity");
-        QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
+        String sqlQuery = commonQueries.get(INSERT_ENTITY_QUERY_KEY);
+        List<String> parameters = getEntityParameters(entity);
 
-       return queryProcessor.processInsertQuery();
+        return executeQuery(sqlQuery, parameters);
     }
 
     /**
@@ -135,12 +130,125 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
+    @Override
     public boolean update(T entity) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.update_entity");
-        QueryProcessor<T> queryProcessor = new QueryProcessor<T>(sqlQuery, connection, entity);
+        String sqlQuery = commonQueries.get(UPDATE_ENTITY_QUERY_KEY);
+        List<String> parameters = getEntityParameters(entity);
 
-       return queryProcessor.processUpdateQuery();
+        int entityId = entity.getId();
+        String entityIdValue = String.valueOf(entityId);
+        parameters.add(entityIdValue);
+
+        return executeQuery(sqlQuery, parameters);
     }
+
+    /**
+     * This method executes query.
+     *
+     * @param sqlQuery   the sql query.
+     * @param parameters the parameters.
+     * @return true if result is expected and false otherwise.
+     * @throws DAOException object if execution of query is failed.
+     */
+    protected boolean executeQuery(String sqlQuery, Object... parameters) throws DAOException {
+        try (PreparedStatement preparedStatement = prepareStatementForQuery(sqlQuery, parameters)) {
+            int queryResult = preparedStatement.executeUpdate();
+
+            return queryResult != EMPTY_RESULT;
+        } catch (SQLException exception) {
+            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method executes query.
+     *
+     * @param sqlQuery   the sql query.
+     * @param parameters the parameters.
+     * @return true if result is expected and false otherwise.
+     * @throws DAOException object if execution of query is failed.
+     */
+    private boolean executeQuery(String sqlQuery, List<String> parameters) throws DAOException {
+        try (PreparedStatement preparedStatement = preparedStatementForQuery(sqlQuery, parameters)) {
+            int queryResult = preparedStatement.executeUpdate();
+
+            return queryResult != EMPTY_RESULT;
+        } catch (SQLException exception) {
+            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method initialize PreparedStatement object and sets it's parameters.
+     *
+     * @param sqlQuery   the sql query.
+     * @param parameters the sql getEntityParameters.
+     * @return PreparedStatement object.
+     * @throws DAOException object if execution of query is failed.
+     */
+    protected PreparedStatement prepareStatementForQuery(String sqlQuery, Object... parameters) throws DAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+
+            if (parameters != null) {
+                int parameterIndex = 1;
+                for (Object parameter : parameters) {
+                    if (parameter == null) {
+                        preparedStatement.setNull(parameterIndex, Types.NULL);
+                    } else {
+                        preparedStatement.setObject(parameterIndex, parameter);
+                    }
+                    parameterIndex++;
+                }
+            }
+
+            return preparedStatement;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+    }
+
+    /**
+     * This method initialize PreparedStatement object and sets it's parameters.
+     *
+     * @param sqlQuery   the sql query.
+     * @param parameters the sql getEntityParameters.
+     * @return PreparedStatement object.
+     * @throws DAOException object if execution of query is failed.
+     */
+    private PreparedStatement preparedStatementForQuery(String sqlQuery, List<String> parameters) throws DAOException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+
+            if (parameters != null) {
+                int parameterIndex = 1;
+                for (String parameter : parameters) {
+                    if (NULL_PARAMETER.equals(parameter)) {
+                        preparedStatement.setNull(parameterIndex, Types.NULL);
+                    } else {
+                        preparedStatement.setString(parameterIndex, parameter);
+                    }
+                    parameterIndex++;
+                }
+            }
+
+            return preparedStatement;
+        } catch (SQLException exception) {
+            throw new DAOException("SQL exception detected. " + exception);
+        }
+
+    }
+
+    /**
+     * This method gets entity's parameters.
+     *
+     * @param entity the entity.
+     * @return List object with parameters.
+     * @throws DAOException object if execution of query is failed.
+     */
+    protected abstract List<String> getEntityParameters(T entity);
 
     /**
      * This method builds entity from ResultSet object.
@@ -149,6 +257,12 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    public abstract T buildEntity(ResultSet resultSet) throws DAOException;
+    protected abstract T buildEntity(ResultSet resultSet) throws DAOException;
 
+    /**
+     * This method initialize queries for common operations.
+     *
+     * @return Map object with queries.
+     */
+    protected abstract Map<String, String> initializeCommonQueries();
 }

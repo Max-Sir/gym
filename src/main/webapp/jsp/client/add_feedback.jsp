@@ -1,25 +1,35 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Eugene
-  Date: 30.03.2018
-  Time: 15:21
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
+<fmt:bundle basename="page_content">
+    <fmt:message key="add_feedback.title" var="title"/>
+    <fmt:message key="add_feedback.input_message" var="input"/>
+    <fmt:message key="add_feedback.back" var="back"/>
+    <fmt:message key="add_feedback.confirm" var="confirm"/>
+</fmt:bundle>
+
 <html>
 <head>
-    <title>Add feedback</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <title>${pageScope.title}</title>
 </head>
-<body>
-<form method="POST" action="${pageContext.request.contextPath}/controller">
+<body class="page">
+<tag:userMenu/>
+<p class="error">${requestScope.message}</p>
+<div  class="add_feedback">
+    <form method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="client_add_feedback"/>
-    <br/> Write your feedback:
-    <input type="text" name="feedback" value="" />
-    <br/>
-    <input type="submit" value="Confirm">
+    <p>${pageScope.input}</p>
+        <p><textarea id="feedback_id" name="feedback" onkeyup="checkFeedback()" ></textarea></p>
+    <p>
+        <button id="feedback_submit" class="add_feedback_confirm" type="submit" disabled>${pageScope.confirm} <i class="fa fa-check-circle-o" aria-hidden="true"></i></button>
+    </p>
 </form>
-<br/>
-${result}
+    <label><a href="controller?command=special_show_client_orders&client_id=${sessionScope.user.id}">${pageScope.back}</a></label>
+</div>
+<script>
+    <jsp:directive.include file="/js/feedbackValidation.js"/>
+</script>
 </body>
-<a href="controller?command=client_show_orders">Back</a>
 </html>

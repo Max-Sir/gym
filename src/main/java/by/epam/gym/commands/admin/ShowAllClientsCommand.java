@@ -5,16 +5,14 @@ import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.FIND_CLIENT_BY_NAME_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.SHOW_ALL_CLIENTS_PAGE_PATH;
+import static by.epam.gym.servlet.Page.SHOW_ALL_CLIENTS_PAGE_PATH;
 
 /**
  * Command to show all clients.
@@ -26,11 +24,7 @@ import static by.epam.gym.utils.ConfigurationManager.SHOW_ALL_CLIENTS_PAGE_PATH;
  */
 public class ShowAllClientsCommand implements ActionCommand {
 
-    private static final String LIST_ATTRIBUTE = "list";
-    private static final String NUMBER_OF_PAGE_ATTRIBUTE = "numberOfPages";
-    private static final String CURRENT_PAGE_INDEX_ATTRIBUTE = "pageIndex";
-
-    private static final String PAGE_PARAMETER = "page";
+    private static final Logger LOGGER = Logger.getLogger(ShowAllClientsCommand.class);
 
     private static final int MAX_RECORDS_PER_PAGE_COUNT = 10;
     private static final int FIRST_PAGE_INDEX = 1;
@@ -39,23 +33,20 @@ public class ShowAllClientsCommand implements ActionCommand {
      * Implementation of command to show all clients.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
-
-        int pageIndex = FIRST_PAGE_INDEX;
-
-        String pageParameterValue = request.getParameter(PAGE_PARAMETER);
-
-        if (pageParameterValue != null){
-            pageIndex = Integer.parseInt(pageParameterValue);
-        }
 
         try {
-            int currentOffSet = (pageIndex - 1)*MAX_RECORDS_PER_PAGE_COUNT;
+            int pageIndex = FIRST_PAGE_INDEX;
+
+            String pageParameterValue = request.getParameter(PAGE_PARAMETER);
+
+            if (pageParameterValue != null) {
+                pageIndex = Integer.parseInt(pageParameterValue);
+            }
+            int currentOffSet = (pageIndex - 1) * MAX_RECORDS_PER_PAGE_COUNT;
 
             UserService userService = new UserService();
             Map<List<User>, Integer> clients = userService.findAllClientsByPages(currentOffSet, MAX_RECORDS_PER_PAGE_COUNT);
@@ -71,18 +62,15 @@ public class ShowAllClientsCommand implements ActionCommand {
 
             int numberOfPages = (int) Math.ceil(numberOfRecords * 1.0 / MAX_RECORDS_PER_PAGE_COUNT);
 
-            request.setAttribute(NUMBER_OF_PAGE_ATTRIBUTE,numberOfPages);
+            request.setAttribute(NUMBER_OF_PAGE_ATTRIBUTE, numberOfPages);
             request.setAttribute(CURRENT_PAGE_INDEX_ATTRIBUTE, pageIndex);
             request.setAttribute(LIST_ATTRIBUTE, foundClients);
 
-            pageUrl = ConfigurationManager.getProperty(SHOW_ALL_CLIENTS_PAGE_PATH);
-            page.setRedirect(false);
-        }  catch (ServiceException e) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            LOGGER.info("Clients loaded successful.");
+            return new Page(SHOW_ALL_CLIENTS_PAGE_PATH, false);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
         }
-
-        page.setPageUrl(pageUrl);
-        return page;
     }
 }

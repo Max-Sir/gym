@@ -1,7 +1,5 @@
 package by.epam.gym.entities;
 
-import by.epam.gym.dao.processor.ColumnName;
-
 /**
  * The type Entity.
  *
@@ -16,7 +14,6 @@ public abstract class Entity {
      *
      * @return the entity's id.
      */
-    @ColumnName(name = "id")
     public int getId() {
         return id;
     }
@@ -28,5 +25,48 @@ public abstract class Entity {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * This method equals two objects.
+     *
+     * @param object the object.
+     * @return true if objects are equal and false otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        Entity entity = (Entity) object;
+
+        return id == entity.id;
+    }
+
+    /**
+     * This method calculate object's hashcode.
+     *
+     * @return hashcode of object.
+     */
+    @Override
+    public int hashCode() {
+        return 31 * id;
+    }
+
+    /**
+     * This method builds string information about object.
+     *
+     * @return string information about object.
+     */
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "id=" + id +
+                '}';
     }
 }

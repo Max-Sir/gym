@@ -5,46 +5,52 @@ import by.epam.gym.entities.order.Order;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.OrderService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.PAY_ORDER_RESULT_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.ORDER_PAYED_ERROR_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.ORDER_PAYED_SUCCESSFUL_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
+import static by.epam.gym.utils.MessageManager.ORDER_WAS_NOT_PAYED_MESSAGE_KEY;
+import static by.epam.gym.utils.MessageManager.ORDER_WAS_PAYED_MESSAGE_KEY;
 
+/**
+ * Command to pay order.
+ *
+ * @author Eugene Makarenko
+ * @see Order
+ * @see OrderService
+ * @see ActionCommand
+ */
 public class PayOrderCommand implements ActionCommand {
 
-    private static final String ORDER_ATTRIBUTE = "order";
+    private static final Logger LOGGER = Logger.getLogger(PayOrderCommand.class);
 
+    /**
+     * Implementation of command to pay order.
+     *
+     * @param request HttpServletRequest object.
+     * @return page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
 
-        try{
+        try {
             HttpSession session = request.getSession();
             Order order = (Order) session.getAttribute(ORDER_ATTRIBUTE);
             OrderService orderService = new OrderService();
-
             boolean isOperationSuccessful = orderService.payOrder(order);
-            if (isOperationSuccessful){
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(ORDER_PAYED_SUCCESSFUL_MESSAGE_PATH));
-            } else {
-                request.setAttribute(RESULT_ATTRIBUTE,MessageManager.getProperty(ORDER_PAYED_ERROR_MESSAGE_PATH));
+            if (!isOperationSuccessful) {
+                return new Page(Page.MAIN_PAGE_PATH, false, ORDER_WAS_NOT_PAYED_MESSAGE_KEY);
             }
+
             session.removeAttribute(ORDER_ATTRIBUTE);
-            pageUrl = ConfigurationManager.getProperty(PAY_ORDER_RESULT_PAGE_PATH);
-            page.setRedirect(false);
-        }catch (ServiceException exception) {
-        pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-        page.setRedirect(true);
-    }
-        page.setPageUrl(pageUrl);
-        return page;
+            session.setAttribute(IS_RECORD_INSERTED, true);
+
+            LOGGER.info(String.format("Order of user - %d was payed successful", order.getClientId()));
+            return new Page(Page.MAIN_PAGE_PATH, false, ORDER_WAS_PAYED_MESSAGE_KEY);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
+        }
     }
 }

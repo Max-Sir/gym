@@ -8,9 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>You haven't acess!</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700&amp;subset=cyrillic"
+          rel="stylesheet">
+    <title>You haven't access!</title>
 </head>
-<body>
+<body class="page">
+<%@include file="/jsp/common/header.jspf" %>
 <h1>
     <strong>
         You haven't access!

@@ -1,18 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Eugene
-  Date: 28.03.2018
-  Time: 11:59
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Add exercise to training program.</title>
 </head>
 <body>
-<c:forEach var="day" items="${sessionScope.days}">
+<c:forEach var="day" items="${days}">
     Day${day.key}
     <ol>
          <c:forEach var="exercise" items="${day.value}">

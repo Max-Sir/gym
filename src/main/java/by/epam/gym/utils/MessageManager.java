@@ -12,27 +12,31 @@ import java.util.ResourceBundle;
  */
 public class MessageManager {
 
-    public static final String LOGIN_ERROR_ATTRIBUTE = "loginError";
-    public static final String RESULT_ATTRIBUTE = "result";
+    public static final Locale DEFAULT_LOCALE = new Locale("", "");
 
-    public static final String ERROR_MESSAGE_PATH = "message.loginError";
-    public static final String WRONG_ACTION_MESSAGE_PATH = "message.wrongAction";
-    public static final String NULL_PAGE_MESSAGE_PATH = "message.nullPage";
-    public static final String LOGIN_NOT_UNIQUE_ERROR_MESSAGE_PATH = "message.notUniqueLogin";
-    public static final String DATA_NOT_VALID_MESSAGE_PATH = "message.notValid";
-    public static final String USER_DID_NOT_FIND_MESSAGE_PATH = "message.userNotFound";
-    public static final String EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH = "message.exerciseAdded";
-    public static final String NO_PERSONAL_CLIENTS_MESSAGE_PATH = "message.noPersonalClients";
-    public static final String ADD_EXERCISE_FAILED_MESSAGE_PATH = "message.addExerciseFailed";
-    public static final String REGISTRATION_FAILED_MESSAGE_PATH = "message.regError";
-    public static final String EXERCISE_DELETE_FAILED_MESSAGE_PATH = "message.deleteExerciseFailed";
-    public static final String FEEDBACK_ADDED_MESSAGE_PATH = "message.addFeedbackSuccess";
-    public static final String FEEDBACK_WAS_NOT_ADDED_MESSAGE_PATH = "message.addFeedbackError";
-    public static final String ORDER_PAYED_SUCCESSFUL_MESSAGE_PATH = "message.orderPayedSuccessful";
-    public static final String ORDER_PAYED_ERROR_MESSAGE_PATH = "message.orderPayedError";
-    public static final String NO_TRAINING_PROGRAM_MESSAGE_PATH = "message.noTrainingProgramDetected";
+    public static final String NONE_MESSAGE_KEY = "NONE";
+    public static final String COMMAND_ERROR_MESSAGE_KEY = "message.command_error";
+    public static final String LOGIN_ERROR_MESSAGE_KEY = "message.login_error";
+    public static final String LOGIN_NOT_AVAILABLE_MESSAGE_KEY = "message.login_not_available";
+    public static final String INVALID_INPUT_DATA_MESSAGE_KEY = "message.invalid_input_data";
+    public static final String REGISTRATION_FAILED_MESSAGE_KEY = "message.registration_failed";
+    public static final String REGISTRATION_SUCCESSFUL_MESSAGE_KEY = "message.registration_success";
+    public static final String FEEDBACK_WAS_ADDED_MESSAGE_KEY = "message.feedback_was_added";
+    public static final String FEEDBACK_WAS_NOT_ADDED_MESSAGE_KEY = "message.feedback_was_not_added";
+    public static final String ORDER_WAS_PAYED_MESSAGE_KEY = "message.order_was_payed";
+    public static final String ORDER_WAS_NOT_PAYED_MESSAGE_KEY = "message.order_was_not_payed";
+    public static final String REFUSE_TRAINING_PROGRAM_SUCCESS_MESSAGE_KEY = "message.refuse_success";
+    public static final String REFUSE_TRAINING_PROGRAM_FAILED_MESSAGE_KEY = "message.refuse_error";
+    public static final String INFORMATION_NOT_FOUND_MESSAGE_KEY = "message.information_not_found";
+    public static final String TRAINING_PROGRAM_SAVED_SUCCESSFUL_MESSAGE_KEY = "message.training_program_saved";
+    public static final String TRAINING_PROGRAM_NOT_SAVED_MESSAGE_KEY = "message.training_program_not_saved";
+    public static final String TRAINING_PROGRAM_DAYS_AND_EXERCISES_NOT_VALID_MESSAGE_KEY = "message.day_and_exercises_not_valid";
+    public static final String EXERCISE_CREATION_FAILED_MESSAGE_KEY = "message.exercise_creating_failed";
+    public static final String DAY_CAN_NOT_BE_DELETED_MESSAGE_KEY = "message.day_delete_failed";
+    public static final String DAY_ADD_FAILED_MESSAGE_KEY = "message.day_add_failed";
+    public static final String CLIENT_HAS_ALREADY_ORDER_MESSAGE_KEY = "message.client_has_order";
+    public static final String NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY = "message.no_clients";
 
-    private static final Locale DEFAULT_LOCALE = new Locale("", "");
     private static final String RESOURCE_FILE_NAME = "messages";
 
     private static ResourceBundle resourceBundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, DEFAULT_LOCALE);
@@ -58,5 +62,5 @@ public class MessageManager {
     public static void changeLocale(Locale locale) {
         resourceBundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, locale);
     }
-
 }
+

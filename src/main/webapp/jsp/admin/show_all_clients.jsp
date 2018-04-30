@@ -1,37 +1,41 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Eugene
-  Date: 23.03.2018
-  Time: 20:38
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
+<fmt:bundle basename="page_content">
+    <fmt:message key="client.description_title" var="title"/>
+    <fmt:message key="client.next" var="next"/>
+    <fmt:message key="client.previous" var="previous"/>
+</fmt:bundle>
+
 <html>
 <head>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <title>${pageScope.title}</title>
 </head>
-<body>
-<jsp:include page="find_client.jsp" />
- <c:if test="${pageIndex != 1}">
-    <td><a href="controller?command=admin_show_all_clients&page=${pageIndex - 1}">Previous</a></td>
- </c:if>
-<table border="1" cellpadding="10" cellspacing="10">
-    <tr>
-        <c:forEach begin="1" end="${numberOfPages}" var="i">
-            <c:choose>
-                <c:when test="${pageIndex eq i}">
-                    <td>${i}</td>
-                </c:when>
-                <c:otherwise>
-                    <td><a href="controller?command=admin_show_all_clients&page=${i}">${i}</a></td>
-                </c:otherwise>
-            </c:choose>
+<body class="page">
+<tag:userMenu/>
+<tag:clientDescription clients="${requestScope.list}" role="${sessionScope.user.userRole}"/>
+<div class="navigation_buttons">
+    <ul>
+        <c:if test="${requestScope.pageIndex != 1}">
+            <li><a href="controller?command=admin_show_all_clients&page=${requestScope.pageIndex - 1}">${pageScope.previous}</a></li>
+        </c:if>
+        <c:forEach begin="1" end="${requestScope.numberOfPages}" var="i">
+            <li>
+                <c:choose>
+                    <c:when test="${requestScope.pageIndex eq i}">${i}</c:when>
+                    <c:otherwise>
+                        <a href="controller?command=admin_show_all_clients&page=${i}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </li>
         </c:forEach>
-    </tr>
-</table>
-<c:if test="${pageIndex < numberOfPages}">
-    <td><a href="controller?command=admin_show_all_clients&page=${pageIndex + 1}">Next</a></td>
-</c:if>
-${result}
+        <c:if test="${requestScope.pageIndex < requestScope.numberOfPages}">
+            <li><a href="controller?command=admin_show_all_clients&page=${requestScope.pageIndex + 1}">${pageScope.next}</a></li>
+        </c:if>
+    </ul>
+</div>
 </body>
 </html>

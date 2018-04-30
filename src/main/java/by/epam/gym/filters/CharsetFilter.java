@@ -15,23 +15,23 @@ public class CharsetFilter implements Filter {
     private String code;
 
     /**
-     * This method initialize filter object.
+     * This method initialize filters object.
      *
-     * @param fConfig the filter config.
+     * @param filterConfig the filters config.
      * @throws ServletException object if execution of method is failed.
      */
     @Override
-    public void init(FilterConfig fConfig) throws ServletException {
-        code = fConfig.getInitParameter(ENCODING_TYPE_PARAMETER);
+    public void init(FilterConfig filterConfig) throws ServletException {
+        code = filterConfig.getInitParameter(ENCODING_TYPE_PARAMETER);
     }
 
     /**
-     * The method does main logic of filter.
+     * The method does main logic of filters.
      *
-     * @param request the servlet request.
+     * @param request  the servlet request.
      * @param response the servlet response.
-     * @param chain the filter chain of responsibility.
-     * @throws IOException object if execution of method is failed.
+     * @param chain    the filters chain of responsibility.
+     * @throws IOException      object if execution of method is failed.
      * @throws ServletException object if execution of method is failed.
      */
     @Override
@@ -46,7 +46,7 @@ public class CharsetFilter implements Filter {
     }
 
     /**
-     * The method destroys filter.
+     * The method destroys filters.
      */
     @Override
     public void destroy() {

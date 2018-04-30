@@ -1,14 +1,12 @@
 package by.epam.gym.commands.common;
 
 import by.epam.gym.commands.ActionCommand;
+import by.epam.gym.entities.user.User;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import static by.epam.gym.utils.ConfigurationManager.INDEX_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.MAIN_PAGE_PATH;
 
 /**
  * Command for user log out.
@@ -19,19 +17,24 @@ import static by.epam.gym.utils.ConfigurationManager.MAIN_PAGE_PATH;
  */
 public class LogoutCommand implements ActionCommand {
 
+    private static final Logger LOGGER = Logger.getLogger(LogoutCommand.class);
+
     /**
-     * Implementation of command that user use to sign out
+     * Implementation of commands that user use to sign out
      *
      * @param request HttpServletRequest object
-     * @return redirect page
+     * @return page
      */
     public Page execute(HttpServletRequest request) {
-        String pageUrl = ConfigurationManager.getProperty(MAIN_PAGE_PATH);
+
         HttpSession session = request.getSession();
+
+        User user = (User) session.getAttribute(USER_ATTRIBUTE);
+        String login = user.getLogin();
+
         session.invalidate();
 
-        Page page = new Page(pageUrl,false);
-
-        return page;
+        LOGGER.info(String.format("User: login - %s logged out successful.", login));
+        return new Page(Page.MAIN_PAGE_PATH, true);
     }
 }

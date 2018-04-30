@@ -3,15 +3,13 @@ package by.epam.gym.dao;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.entities.exercise.ExerciseDifficultyLevel;
 import by.epam.gym.exceptions.DAOException;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class that provide access to the database and deal with Exercise entity.
@@ -22,6 +20,24 @@ import java.util.Map;
  */
 public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
 
+    private static final Logger LOGGER = Logger.getLogger(ExerciseDAOImpl.class);
+
+    /**
+     * Common queries.
+     */
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM exercises";
+    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM exercises WHERE id=?";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM exercises WHERE id=?";
+    private static final String INSERT_ENTITY_QUERY = "INSERT INTO exercises (name, level, description) VALUES(?,?,?)";
+    private static final String UPDATE_ENTITY_QUERY = "UPDATE exercises SET name=?, level=?, description=? WHERE id=?";
+
+    private static final String SELECT_EXERCISE_FROM_TRAINING_PROGRAM_QUERY = "SELECT id, name, level, description, day_number, sets_count, repeats_count, execution_number" +
+            " FROM exercises LEFT OUTER JOIN training_complexes  " +
+            "ON exercises.id = training_complexes.exercise_id WHERE program_id=? ORDER BY day_number, execution_number ASC";
+
+    private static final String INSERT_EXERCISE_INTO_TRAINING_PROGRAM = "INSERT INTO training_complexes " +
+            "(program_id, exercise_id, day_number, sets_count, repeats_count, execution_number) VALUES (?,?,?,?,?,?)";
+
     private static final String NAME_COLUMN_LABEL = "name";
     private static final String LEVEL_COLUMN_LABEL = "level";
     private static final String DESCRIPTION_COLUMN_LABEL = "description";
@@ -30,45 +46,37 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
     private static final String DAY_NUMBER_COLUMN_LABEL = "day_number";
     private static final String EXECUTION_NUMBER_COLUMN_LABEL = "execution_number";
 
-    private static final String EXERCISES_RESOURCES_FILE_NAME = "exercises";
-
-    private static final int SUCCESS_RESULT = 1;
-
     /**
-     * Instantiates a new UserDAOImpl.
+     * Instantiates a new AbstractDAOImpl.
      *
      * @param connection the connection to database.
      */
     public ExerciseDAOImpl(Connection connection) {
-        super(connection, EXERCISES_RESOURCES_FILE_NAME);
+        super(connection);
     }
 
     /**
-     * This method finds all exercises from training program.
+     * This method select exercises from training program.
      *
      * @param trainingProgramId the training program id.
-     * @return Map with the day number and exercises.
+     * @return TreeMap with the day number and exercises.
      * @throws DAOException object if execution of query is failed.
      */
-    public Map<Integer, List<Exercise>> showExerciseFromTrainingProgram(int trainingProgramId) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(resourceBundle.getString("query.get_exercises_from_training_program"))) {
-            preparedStatement.setInt(1,trainingProgramId);
-
-            Map<Integer, List<Exercise>> exercisesByDays = new HashMap<>();
-
+    public TreeMap<Integer, List<Exercise>> selectExerciseFromTrainingProgram(int trainingProgramId) throws DAOException {
+        try (PreparedStatement preparedStatement = prepareStatementForQuery(SELECT_EXERCISE_FROM_TRAINING_PROGRAM_QUERY, trainingProgramId)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            TreeMap<Integer, List<Exercise>> exercisesByDays = new TreeMap<>();
             List<Exercise> exercisesByDay = new ArrayList<>();
             int dayIndex = 1;
 
-            while (resultSet.next()){
-
+            while (resultSet.next()) {
                 int dayNumber = resultSet.getInt(DAY_NUMBER_COLUMN_LABEL);
                 int setsCount = resultSet.getInt(SETS_COUNT_COLUMN_LABEL);
                 int repeatsCount = resultSet.getInt(REPEATS_COUNT_COLUMN_LABEL);
                 int executionNumber = resultSet.getInt(EXECUTION_NUMBER_COLUMN_LABEL);
 
-                if (dayIndex != dayNumber){
+                if (dayIndex != dayNumber) {
                     exercisesByDays.put(dayIndex, exercisesByDay);
                     exercisesByDay = new ArrayList<>();
                     dayIndex = dayNumber;
@@ -83,81 +91,55 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
                 exercisesByDay.add(exercise);
             }
 
-            exercisesByDays.put(dayIndex,exercisesByDay);
+            exercisesByDays.put(dayIndex, exercisesByDay);
 
             return exercisesByDays;
         } catch (SQLException exception) {
+            LOGGER.warn(String.format("Sql exception during %s.", SELECT_EXERCISE_FROM_TRAINING_PROGRAM_QUERY));
             throw new DAOException("SQL exception detected. " + exception);
         }
     }
 
     /**
-     * This method finds all exercises id and name.
-     *
-     * @return Map with ids and names.
-     * @throws DAOException object if execution of query is failed.
-     */
-    public Map<Integer, String> findAllExercisesIdAndName() throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.get_id_and_name_all_exercises");
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Map<Integer, String> exercisesIdAndName = new HashMap<>();
-
-            while (resultSet.next()){
-                int id = resultSet.getInt(ID_COLUMN_LABEL);
-                String name = resultSet.getString(NAME_COLUMN_LABEL);
-
-                exercisesIdAndName.put(id,name);
-            }
-
-            return exercisesIdAndName;
-        } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
-        }
-    }
-
-    /**
-     * This method adds exercise to training program.
+     * This method insert exercise to training program.
      *
      * @param trainingProgramId the training program id.
-     * @param exerciseId the exercise id.
-     * @param dayNumber the day number.
-     * @param setsCount the sets count.
-     * @param repeatsCount the repeats count.
+     * @param exerciseId        the exercise id.
+     * @param dayNumber         the day number.
+     * @param setsCount         the sets count.
+     * @param repeatsCount      the repeats count.
      * @param numberOfExecution the number of execution.
      * @return true if operation was made successfully and false otherwise.
      * @throws DAOException object if execution of query is failed.
      */
-    public boolean addExerciseToTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.add_exercise_to_program");
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
-            preparedStatement.setInt(1,trainingProgramId);
-            preparedStatement.setInt(2,exerciseId);
-            preparedStatement.setInt(3,dayNumber);
-            preparedStatement.setInt(4,setsCount);
-            preparedStatement.setInt(5,repeatsCount);
-            preparedStatement.setInt(6,numberOfExecution);
-
-            int result = preparedStatement.executeUpdate();
-
-            return result == SUCCESS_RESULT;
-        }catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
-        }
+    public boolean insertExerciseIntoTrainingProgram(int trainingProgramId, int exerciseId, int dayNumber, int setsCount, int repeatsCount, int numberOfExecution) throws DAOException {
+        return executeQuery(INSERT_EXERCISE_INTO_TRAINING_PROGRAM, trainingProgramId, exerciseId, dayNumber, setsCount, repeatsCount, numberOfExecution);
     }
 
-    public boolean cleanTrainingProgramFromExercises(int programId) throws DAOException {
-        String sqlQuery = resourceBundle.getString("query.clean_training_program");
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
-            preparedStatement.setInt(1,programId);
+    /**
+     * This method gets entity's parameters.
+     *
+     * @param entity the entity.
+     * @return List object with parameters.
+     * @throws DAOException object if execution of query is failed.
+     */
+    @Override
+    protected List<String> getEntityParameters(Exercise entity) {
+        List<String> parameters = new ArrayList<>();
 
-            int result = preparedStatement.executeUpdate();
+        String name = entity.getName();
+        parameters.add(name);
 
-            return result != 0;
-        }catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
-        }
+        ExerciseDifficultyLevel level = entity.getLevel();
+        String levelValue = String.valueOf(level);
+        parameters.add(levelValue);
+
+        String description = entity.getDescription();
+        parameters.add(description);
+
+        return parameters;
     }
+
     /**
      * This method builds Exercise object from ResultSet object.
      *
@@ -166,25 +148,44 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
      * @throws DAOException object if execution of query is failed.
      */
     @Override
-    public Exercise buildEntity(ResultSet resultSet) throws DAOException {
+    protected Exercise buildEntity(ResultSet resultSet) throws DAOException {
         try {
             Exercise exercise = new Exercise();
 
-            String levelValue = resultSet.getString(LEVEL_COLUMN_LABEL);
-
             int id = resultSet.getInt(ID_COLUMN_LABEL);
-            String name = resultSet.getString(NAME_COLUMN_LABEL);
-            ExerciseDifficultyLevel level = ExerciseDifficultyLevel.valueOf(levelValue);
-            String description = resultSet.getString(DESCRIPTION_COLUMN_LABEL);
-
             exercise.setId(id);
+
+            String name = resultSet.getString(NAME_COLUMN_LABEL);
             exercise.setName(name);
+
+            String levelValue = resultSet.getString(LEVEL_COLUMN_LABEL);
+            ExerciseDifficultyLevel level = ExerciseDifficultyLevel.valueOf(levelValue);
             exercise.setLevel(level);
+
+            String description = resultSet.getString(DESCRIPTION_COLUMN_LABEL);
             exercise.setDescription(description);
 
             return exercise;
         } catch (SQLException exception) {
             throw new DAOException("SQL exception detected. " + exception);
         }
+    }
+
+    /**
+     * This method initialize queries for common operations.
+     *
+     * @return Map object with queries.
+     */
+    @Override
+    protected Map<String, String> initializeCommonQueries() {
+        Map<String, String> commonQueries = new HashMap<>();
+
+        commonQueries.put(SELECT_ALL_QUERY_KEY, SELECT_ALL_QUERY);
+        commonQueries.put(SELECT_BY_ID_QUERY_KEY, SELECT_BY_ID_QUERY);
+        commonQueries.put(DELETE_BY_ID_QUERY_KEY, DELETE_BY_ID_QUERY);
+        commonQueries.put(INSERT_ENTITY_QUERY_KEY, INSERT_ENTITY_QUERY);
+        commonQueries.put(UPDATE_ENTITY_QUERY_KEY, UPDATE_ENTITY_QUERY);
+
+        return commonQueries;
     }
 }

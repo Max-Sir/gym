@@ -4,53 +4,54 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.OrderService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static by.epam.gym.utils.ConfigurationManager.ADD_FEEDBACK_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.FEEDBACK_ADDED_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.FEEDBACK_WAS_NOT_ADDED_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
+import static by.epam.gym.servlet.Page.ADD_FEEDBACK_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.FEEDBACK_WAS_ADDED_MESSAGE_KEY;
+import static by.epam.gym.utils.MessageManager.FEEDBACK_WAS_NOT_ADDED_MESSAGE_KEY;
 
+/**
+ * Command to add feedback about order.
+ *
+ * @author Eugene Makarenko
+ * @see by.epam.gym.entities.order.Order
+ * @see OrderService
+ */
 public class AddFeedbackCommand implements ActionCommand {
 
-    private static final String ORDER_ID_ATTRIBUTE = "orderId";
+    private static final Logger LOGGER = Logger.getLogger(AddFeedbackCommand.class);
 
-    private static final String FEEDBACK_PARAMETER = "feedback";
-
+    /**
+     * Implementation of command to add feedback about order.
+     *
+     * @param request HttpServletRequest object.
+     * @return page.
+     */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
 
-        try{
+        try {
             HttpSession session = request.getSession();
             int orderId = (int) session.getAttribute(ORDER_ID_ATTRIBUTE);
-
-            OrderService orderService = new OrderService();
             String feedback = request.getParameter(FEEDBACK_PARAMETER);
 
-            boolean isOperationSuccessful = orderService.addFeedback(orderId,feedback);
+            OrderService orderService = new OrderService();
+            boolean isOperationSuccessful = orderService.addFeedback(feedback, orderId);
 
-            if (isOperationSuccessful){
-                pageUrl = ConfigurationManager.getProperty(ADD_FEEDBACK_PAGE_PATH);
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(FEEDBACK_ADDED_MESSAGE_PATH));
-            } else {
-                pageUrl = ConfigurationManager.getProperty(ADD_FEEDBACK_PAGE_PATH);
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(FEEDBACK_WAS_NOT_ADDED_MESSAGE_PATH));
+            if (!isOperationSuccessful) {
+                return new Page(ADD_FEEDBACK_PAGE_PATH, false, FEEDBACK_WAS_NOT_ADDED_MESSAGE_KEY);
             }
 
-            page.setRedirect(false);
-        }catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
-        }
+            session.setAttribute(IS_RECORD_INSERTED, true);
 
-        page.setPageUrl(pageUrl);
-        return page;
+            LOGGER.info(String.format("Feedback fo order id - %d was added successful.", orderId));
+            return new Page(Page.MAIN_PAGE_PATH, false, FEEDBACK_WAS_ADDED_MESSAGE_KEY);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
+        }
     }
 }

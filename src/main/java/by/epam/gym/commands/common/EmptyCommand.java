@@ -2,31 +2,30 @@ package by.epam.gym.commands.common;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Empty command. Redirect to index page.
+ * Empty command is using for stab. Redirect to main page if command wasn't identify.
  *
  * @author Eugene Makarenko
  * @see ActionCommand
  * @see HttpServletRequest
- * @see ConfigurationManager
  */
 public class EmptyCommand implements ActionCommand {
 
+    private static final Logger LOGGER = Logger.getLogger(EmptyCommand.class);
+
     /**
-     * Implementation of command. Redirect to index page.
+     * Implementation of commands. Redirect to main page.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     public Page execute(HttpServletRequest request) {
-        String pageUrl = ConfigurationManager.getProperty("path.page.index");
 
-        Page page = new Page(pageUrl, false);
-
-        return page;
+        LOGGER.info("Empty command was used. Check log for errors.");
+        return new Page(Page.MAIN_PAGE_PATH, false);
     }
 }

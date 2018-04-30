@@ -2,19 +2,19 @@ package by.epam.gym.commands.trainer;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
-import by.epam.gym.entities.exercise.ExerciseDifficultyLevel;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.ExerciseService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
+import by.epam.gym.utils.ExerciseDataValidator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import static by.epam.gym.utils.ConfigurationManager.ADD_EXERCISE_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
+import static by.epam.gym.servlet.Page.CREATE_EXERCISE_PAGE_PATH;
+import static by.epam.gym.servlet.Page.SHOW_EXERCISE;
+import static by.epam.gym.utils.MessageManager.EXERCISE_CREATION_FAILED_MESSAGE_KEY;
+import static by.epam.gym.utils.MessageManager.INVALID_INPUT_DATA_MESSAGE_KEY;
 
 /**
  * Command to create exercise in database.
@@ -25,49 +25,44 @@ import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
  */
 public class CreateExerciseCommand implements ActionCommand {
 
-    private static final String NAME_PARAMETER = "name";
-    private static final String LEVEL_PARAMETER = "level";
-    private static final String DESCRIPTION_PARAMETER = "description";
+    private static final Logger LOGGER = Logger.getLogger(CreateExerciseCommand.class);
 
     /**
      * Implementation of command to create exercise in database.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
-
-        String name = request.getParameter(NAME_PARAMETER);
-        String levelValue = request.getParameter(LEVEL_PARAMETER);
-        String description = request.getParameter(DESCRIPTION_PARAMETER);
 
         try {
+            String name = request.getParameter(NAME_PARAMETER);
+            String levelValue = request.getParameter(LEVEL_PARAMETER);
+            String description = request.getParameter(DESCRIPTION_PARAMETER);
+            ExerciseDataValidator exerciseDataValidator = new ExerciseDataValidator();
+            boolean isDataValid = exerciseDataValidator.checkData(name, levelValue, description);
+
+            if (!isDataValid) {
+                return new Page(CREATE_EXERCISE_PAGE_PATH, false, INVALID_INPUT_DATA_MESSAGE_KEY);
+            }
+
             ExerciseService exerciseService = new ExerciseService();
+            Exercise exercise = exerciseService.createExercise(name, levelValue, description);
+            boolean isOperationSuccessful = exerciseService.saveExercise(exercise);
+            if (!isOperationSuccessful) {
+                return new Page(CREATE_EXERCISE_PAGE_PATH, false, EXERCISE_CREATION_FAILED_MESSAGE_KEY);
+            }
 
-            ExerciseDifficultyLevel level = ExerciseDifficultyLevel.valueOf(levelValue);
-            Exercise exercise = new Exercise();
+            HttpSession session = request.getSession();
+            session.setAttribute(IS_RECORD_INSERTED, true);
+            request.setAttribute(EXERCISE_ATTRIBUTE, exercise);
 
-            exercise.setName(name);
-            exercise.setLevel(level);
-            exercise.setDescription(description);
-
-            exerciseService.addExerciseToDatabase(exercise);
-
-            pageUrl = ConfigurationManager.getProperty(ADD_EXERCISE_PAGE_PATH);
-            page.setRedirect(false);
-
-            String message = MessageManager.getProperty(EXERCISE_ADDED_SUCCESSFULLY_MESSAGE_PATH);
-
-            request.setAttribute(RESULT_ATTRIBUTE, message);
+            LOGGER.info("Exercise was created successful.");
+            return new Page(SHOW_EXERCISE, false);
         } catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
         }
-
-        page.setPageUrl(pageUrl);
-        return page;
     }
 }

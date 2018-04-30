@@ -5,18 +5,14 @@ import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
-import by.epam.gym.utils.MessageManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
-import java.util.Map;
-
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.PERSONAL_CLIENTS_PAGE_PATH;
-import static by.epam.gym.utils.MessageManager.NO_PERSONAL_CLIENTS_MESSAGE_PATH;
-import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
+import static by.epam.gym.servlet.Page.PERSONAL_CLIENTS_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.INFORMATION_NOT_FOUND_MESSAGE_KEY;
 
 /**
  * Command to show all personal clients.
@@ -27,42 +23,35 @@ import static by.epam.gym.utils.MessageManager.RESULT_ATTRIBUTE;
  */
 public class ShowPersonalClientsCommand implements ActionCommand {
 
-    private static final String USER_SESSION_ATTRIBUTE = "user";
-    private static final String LIST_ATTRIBUTE = "list";
+    private static final Logger LOGGER = Logger.getLogger(ShowPersonalClientsCommand.class);
+
     /**
      * Implementation of command to show all personal clients.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
 
-        try{
+        try {
             HttpSession session = request.getSession();
-            User trainer = (User) session.getAttribute(USER_SESSION_ATTRIBUTE);
+            User trainer = (User) session.getAttribute(USER_ATTRIBUTE);
             int trainerId = trainer.getId();
 
             UserService userService = new UserService();
-            Map<User, Integer> clientsAndTrainingProgramsId = userService.findPersonalClients(trainerId);
-            if (clientsAndTrainingProgramsId.isEmpty()){
-                request.setAttribute(RESULT_ATTRIBUTE, MessageManager.getProperty(NO_PERSONAL_CLIENTS_MESSAGE_PATH));
-            } else {
-                request.setAttribute(LIST_ATTRIBUTE, clientsAndTrainingProgramsId);
+            List<User> clients = userService.findPersonalClients(trainerId);
+            if (clients.isEmpty()) {
+                return new Page(Page.MAIN_PAGE_PATH, false, INFORMATION_NOT_FOUND_MESSAGE_KEY);
             }
-            pageUrl = ConfigurationManager.getProperty(PERSONAL_CLIENTS_PAGE_PATH);
-            page.setPageUrl(pageUrl);
-            page.setRedirect(false);
 
-        }catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            request.setAttribute(LIST_ATTRIBUTE, clients);
+
+            LOGGER.info("List of clients was loaded successful.");
+            return new Page(PERSONAL_CLIENTS_PAGE_PATH, false);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
         }
-
-
-        page.setPageUrl(pageUrl);
-        return page;
     }
 }

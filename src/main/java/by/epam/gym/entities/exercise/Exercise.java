@@ -1,6 +1,5 @@
 package by.epam.gym.entities.exercise;
 
-import by.epam.gym.dao.processor.ColumnName;
 import by.epam.gym.entities.Entity;
 
 /**
@@ -11,6 +10,7 @@ import by.epam.gym.entities.Entity;
  * @see Entity
  */
 public class Exercise extends Entity {
+
 
     private String name;
     private ExerciseDifficultyLevel level;
@@ -31,7 +31,6 @@ public class Exercise extends Entity {
      *
      * @return the exercise's name.
      */
-    @ColumnName(name = "name", parameterIndex = 1)
     public String getName() {
         return name;
     }
@@ -50,7 +49,6 @@ public class Exercise extends Entity {
      *
      * @return the exercise's difficulty level.
      */
-    @ColumnName(name = "level", parameterIndex = 2)
     public ExerciseDifficultyLevel getLevel() {
         return level;
     }
@@ -69,7 +67,6 @@ public class Exercise extends Entity {
      *
      * @return the exercise's description.
      */
-    @ColumnName(name = "description", parameterIndex = 3)
     public String getDescription() {
         return description;
     }
@@ -88,7 +85,6 @@ public class Exercise extends Entity {
      *
      * @return the sets count.
      */
-    @ColumnName(name = "sets_count")
     public int getSetsCount() {
         return setsCount;
     }
@@ -107,7 +103,6 @@ public class Exercise extends Entity {
      *
      * @return the repeats count.
      */
-    @ColumnName(name = "repeats_count")
     public int getRepeatsCount() {
         return repeatsCount;
     }
@@ -126,7 +121,6 @@ public class Exercise extends Entity {
      *
      * @return the day number.
      */
-    @ColumnName(name = "day_number")
     public int getDayNumber() {
         return dayNumber;
     }
@@ -145,7 +139,6 @@ public class Exercise extends Entity {
      *
      * @return the execution number.
      */
-    @ColumnName(name = "execution_number")
     public int getExecutionNumber() {
         return executionNumber;
     }
@@ -157,5 +150,82 @@ public class Exercise extends Entity {
      */
     public void setExecutionNumber(int executionNumber) {
         this.executionNumber = executionNumber;
+    }
+
+    /**
+     * This method equals two objects.
+     *
+     * @param object the object.
+     * @return true if objects are equal and false otherwise.
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        if (!super.equals(object)) {
+            return false;
+        }
+
+        Exercise exercise = (Exercise) object;
+
+        if (setsCount != exercise.setsCount) {
+            return false;
+        }
+        if (repeatsCount != exercise.repeatsCount) {
+            return false;
+        }
+        if (dayNumber != exercise.dayNumber) {
+            return false;
+        }
+        if (executionNumber != exercise.executionNumber) {
+            return false;
+        }
+        if (name != null ? !name.equals(exercise.name) : exercise.name != null) {
+            return false;
+        }
+        if (level != exercise.level) {
+            return false;
+        }
+        return description != null ? description.equals(exercise.description) : exercise.description == null;
+    }
+
+    /**
+     * This method calculate object's hashcode.
+     *
+     * @return hashcode of object.
+     */
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (level != null ? level.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + setsCount;
+        result = 31 * result + repeatsCount;
+        result = 31 * result + dayNumber;
+        result = 31 * result + executionNumber;
+        return result;
+    }
+
+    /**
+     * This method builds string information about object.
+     *
+     * @return string information about object.
+     */
+    @Override
+    public String toString() {
+        return "Exercise{" +
+                "name='" + name + '\'' +
+                ", level=" + level +
+                ", description='" + description + '\'' +
+                ", setsCount=" + setsCount +
+                ", repeatsCount=" + repeatsCount +
+                ", dayNumber=" + dayNumber +
+                ", executionNumber=" + executionNumber +
+                '}';
     }
 }

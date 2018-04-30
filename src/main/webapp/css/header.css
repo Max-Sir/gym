@@ -1,0 +1,120 @@
+.header {
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 10px 0 10px 0;
+    background-color: rgba(120, 120, 120, 0.7);
+    text-align: center;
+    width: 98%;
+    color: white;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.top {
+    display: block;
+    margin-top: 0px;
+}
+
+.hello_message {
+    margin-top: -20px;
+    float: right;
+}
+
+.register_login_a {
+    color: #de81df;
+    text-decoration: none;
+}
+
+.logout_a {
+    color: #90d9d3;
+    text-decoration: none;
+}
+
+.hello_message a:hover {
+    text-decoration: underline;
+}
+
+.hello_text {
+    margin-right: 5px;
+}
+
+.user_menu {
+    box-sizing: border-box;
+    padding-right: 20px;
+    margin: 0 auto;
+    width: 98%;
+    border-radius: 8px;
+    background-color: rgba(120, 120, 120, 0.7);
+    margin-bottom: 50px;
+}
+
+.user_menu ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+}
+
+.user_menu a {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+.user_menu a:hover {
+    color: #de81df;
+}
+
+.user_menu a .fa {
+    color: white;
+}
+
+.user_menu a .fa:hover {
+    text-decoration: underline;
+}
+
+.user_menu form {
+    font-size: 20px;
+    color: white;
+    border-color: white;
+    border: 2px;
+    margin: 0;
+}
+
+.user_menu label:hover {
+    color: #de81df;
+}
+
+.user_menu input {
+    border-color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Caviar';
+}
+
+.user_menu button .fa:hover {
+    color: #de81df;
+}
+
+.change_level {
+  float: left;
+  margin-top: -3%;
+}
+
+.change_level ul {
+  list-style: none;
+}
+
+.change_level li {
+  display: inline-block;
+}
+
+.change_level a {
+  color: white;
+  text-decoration: none;
+}
+
+.change_level a:hover{
+    color: #de81df;
+}

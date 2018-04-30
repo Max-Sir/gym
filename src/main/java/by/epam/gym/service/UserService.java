@@ -1,10 +1,15 @@
 package by.epam.gym.service;
 
+import by.epam.gym.dao.ConnectionManager;
 import by.epam.gym.dao.UserDAOImpl;
 import by.epam.gym.entities.user.User;
+import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.ConnectionException;
+import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.PasswordEncoder;
+import by.epam.gym.utils.UserDataValidator;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +26,13 @@ import java.util.Map;
  */
 public class UserService {
 
+    private static final Logger LOGGER = Logger.getLogger(UserService.class);
+
+    private static final String NAME_SPLIT_SYMBOL = " ";
+
+    private static final int FIRST_NAME_INDEX = 0;
+    private static final int LAST_NAME_INDEX = 1;
+
     /**
      * The method returns authorized user.
      *
@@ -30,13 +42,13 @@ public class UserService {
      * @throws ServiceException object if execution of method is failed.
      */
     public User login(String login, String password) throws ServiceException {
-        password = PasswordEncoder.encode(password);
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
+            password = PasswordEncoder.encode(password);
 
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
-
-            return userDAO.findUserByLoginAndPassword(login, password);
-        } catch (Exception exception) {
+            return userDAO.selectUserByLoginAndPassword(login, password);
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <login> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -44,15 +56,28 @@ public class UserService {
     /**
      * The method registers user into data base.
      *
-     * @param user the created user.
+     * @param login     the user's login.
+     * @param password  the user's password.
+     * @param firstName the user's first name.
+     * @param lastName  the user's last name.
      * @return true if operation was made successful and false otherwise.
      * @throws ServiceException object if execution of method is failed.
      */
-    public boolean register(User user) throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
-           return userDAO.insert(user);
-        }  catch (Exception exception) {
+    public boolean register(String login, String password, String firstName, String lastName) throws ServiceException {
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
+
+            User user = new User();
+            user.setLogin(login);
+            user.setPassword(password);
+            UserRole userRole = UserRole.CLIENT;
+            user.setUserRole(userRole);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+
+            return userDAO.insert(user);
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <register> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -65,12 +90,12 @@ public class UserService {
      * @throws ServiceException object if execution of method is failed.
      */
     public boolean checkUserLoginForUnique(String login) throws ServiceException {
-
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
             return userDAO.checkLoginForUnique(login);
-        }  catch (Exception exception) {
+        } catch (DAOException | ConnectionException exception) {
+            LOGGER.warn("Exception during <check login for unique> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -78,17 +103,26 @@ public class UserService {
     /**
      * This method finds user by first name and last name.
      *
-     * @param firstName the user's first name.
-     * @param lastName the user's last name.
+     * @param name the user's first name.
      * @return List of users.
      * @throws ServiceException object if execution of method is failed.
      */
-    public List<User> findClientByName(String firstName, String lastName) throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
+    public List<User> findClientByName(String name) throws ServiceException {
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDataValidator userDataValidator = new UserDataValidator();
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
+            boolean isNameFull = userDataValidator.isNameFull(name);
+            if (isNameFull) {
+                String[] names = name.split(NAME_SPLIT_SYMBOL);
+                String firstName = names[FIRST_NAME_INDEX];
+                String lastName = names[LAST_NAME_INDEX];
 
-            return userDAO.findClientByName(firstName,lastName);
-        }  catch (Exception exception) {
+                return userDAO.selectClientByFullName(firstName, lastName);
+            } else {
+                return userDAO.selectClientByNamePart(name);
+            }
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <find client by name> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -100,17 +134,19 @@ public class UserService {
      * @throws ServiceException object if execution of method is failed.
      */
     public Map<List<User>, Integer> findAllClientsByPages(int offSet, int numberOfRecords) throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
+            ;
             Map<List<User>, Integer> clients = new HashMap<>();
 
-            List<User> findClient = userDAO.findAllClientsByPages(offSet, numberOfRecords);
+            List<User> findClient = userDAO.selectAllClientsByFoundRows(offSet, numberOfRecords);
             Integer countOfRecords = userDAO.getNumberOfRecords();
 
-            clients.put(findClient,countOfRecords);
+            clients.put(findClient, countOfRecords);
 
-            return  clients;
-        } catch (Exception exception) {
+            return clients;
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <find all clients by pages> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -119,32 +155,16 @@ public class UserService {
      * This method finds all clients of current trainer and their training programs id .
      *
      * @param trainerId the trainer id.
-     * @return Map with results.
+     * @return List with results.
      * @throws ServiceException object if execution of method is failed.
      */
-    public Map<User, Integer> findPersonalClients(int trainerId) throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
+    public List<User> findPersonalClients(int trainerId) throws ServiceException {
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
-            return userDAO.findPersonalClients(trainerId);
-        } catch (Exception exception) {
-            throw new ServiceException("Exception detected. " + exception);
-        }
-    }
-
-    /**
-     * This method finds training program author.
-     *
-     * @param trainingProgramId the training program id.
-     * @return the name of author.
-     * @throws ServiceException object if execution of method is failed.
-     */
-    public String findTrainingProgramAuthorName(int trainingProgramId) throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
-
-            return userDAO.findTrainingProgramAuthorName(trainingProgramId);
-        }  catch (Exception exception) {
+            return userDAO.selectPersonalClients(trainerId);
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <find personal clients> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }
@@ -156,28 +176,12 @@ public class UserService {
      * @throws ServiceException object if execution of method is failed.
      */
     public Map<Integer, String> findClientsIdAndName() throws ServiceException {
-        try(ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)){
-            UserDAOImpl userDAO = connectionManager.createDAO();
+        try (ConnectionManager connectionManager = new ConnectionManager()) {
+            UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
-            return userDAO.findClientsIdAndName();
-        }catch (Exception exception) {
-            throw new ServiceException("Exception detected. " + exception);
-        }
-    }
-
-    /**
-     * This method checks client if he needs personal trainer.
-     *
-     * @param clientId the client's id.
-     * @return true if client needs personal trainer and false otherwise.
-     * @throws ServiceException object if execution of method is failed.
-     */
-    public boolean isClientNeedPersonalTrainer(int clientId) throws ServiceException {
-        try (ConnectionManager<UserDAOImpl> connectionManager = new ConnectionManager<>(UserDAOImpl.class)) {
-            UserDAOImpl userDAO = connectionManager.createDAO();
-
-            return userDAO.isClientNeedPersonalTrainer(clientId);
-        } catch (Exception exception) {
+            return userDAO.selectClientIdAndNameForTrainingProgramCreation();
+        } catch (ConnectionException | DAOException exception) {
+            LOGGER.warn("Exception during <find clients id and name> operation.");
             throw new ServiceException("Exception detected. " + exception);
         }
     }

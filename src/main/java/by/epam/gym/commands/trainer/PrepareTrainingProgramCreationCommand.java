@@ -4,14 +4,15 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
 import by.epam.gym.servlet.Page;
-import by.epam.gym.utils.ConfigurationManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-import static by.epam.gym.utils.ConfigurationManager.CREATE_TRAINING_PROGRAM_PAGE_PATH;
-import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
+import static by.epam.gym.servlet.Page.CREATE_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.servlet.Page.MAIN_PAGE_PATH;
+import static by.epam.gym.utils.MessageManager.NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY;
 
 /**
  * Command to prepare page for creation training program.
@@ -23,33 +24,32 @@ import static by.epam.gym.utils.ConfigurationManager.ERROR_PAGE_PATH;
  */
 public class PrepareTrainingProgramCreationCommand implements ActionCommand {
 
-    private static final String LIST_ATTRIBUTE = "list";
+    private static final Logger LOGGER = Logger.getLogger(PrepareTrainingProgramCreationCommand.class);
 
     /**
      * Implementation of command to prepare page for creation training program.
      *
      * @param request HttpServletRequest object.
-     * @return redirect page.
+     * @return page.
      */
     @Override
     public Page execute(HttpServletRequest request) {
-        Page page = new Page();
-        String pageUrl;
 
-        try{
+        try {
             UserService userService = new UserService();
-            Map<Integer,String> clientsIdAndName = userService.findClientsIdAndName();
+            Map<Integer, String> clientsIdAndName = userService.findClientsIdAndName();
+            if (clientsIdAndName.isEmpty()){
+                return new Page(MAIN_PAGE_PATH,false,NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY);
+            }
 
-            request.setAttribute(LIST_ATTRIBUTE, clientsIdAndName);
-            pageUrl = ConfigurationManager.getProperty(CREATE_TRAINING_PROGRAM_PAGE_PATH);
-            page.setRedirect(false);
+            HttpSession session = request.getSession();
+            session.setAttribute(LIST_ATTRIBUTE, clientsIdAndName);
 
-        }catch (ServiceException exception) {
-            pageUrl = ConfigurationManager.getProperty(ERROR_PAGE_PATH);
-            page.setRedirect(true);
+            LOGGER.info("List of clients was loaded successful.");
+            return new Page(CREATE_TRAINING_PROGRAM_PAGE_PATH, false);
+        } catch (ServiceException exception) {
+            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            return new Page(Page.ERROR_PAGE_PATH, true);
         }
-
-        page.setPageUrl(pageUrl);
-        return page;
     }
 }

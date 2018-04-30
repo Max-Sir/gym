@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @param <T> The entity.
  */
-public interface DAO <T extends Entity> {
+public interface DAO<T extends Entity> {
 
     /**
      * This method finds all entities.
@@ -18,7 +18,7 @@ public interface DAO <T extends Entity> {
      * @return List of found objects.
      * @throws DAOException object if execution of query is failed.
      */
-    List<T> findAll() throws DAOException;
+    List<T> selectAll() throws DAOException;
 
     /**
      * This method finds entity from database by id.
@@ -27,7 +27,7 @@ public interface DAO <T extends Entity> {
      * @return the entity.
      * @throws DAOException object if execution of query is failed.
      */
-    T findEntityById(int id) throws DAOException;
+    T selectEntityById(int id) throws DAOException;
 
     /**
      * This method deletes entity from database by id.

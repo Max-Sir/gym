@@ -1,13 +1,14 @@
 package by.epam.gym.commands;
 
 
-import by.epam.gym.commands.admin.FindUserByNameCommand;
+import by.epam.gym.commands.admin.FindClientByNameCommand;
 import by.epam.gym.commands.admin.ShowAllClientsCommand;
 import by.epam.gym.commands.client.*;
-import by.epam.gym.commands.common.training.*;
+import by.epam.gym.commands.common.ChangeLanguageCommand;
 import by.epam.gym.commands.common.LoginCommand;
 import by.epam.gym.commands.common.LogoutCommand;
 import by.epam.gym.commands.common.RegisterCommand;
+import by.epam.gym.commands.special.*;
 import by.epam.gym.commands.trainer.*;
 
 /**
@@ -18,6 +19,9 @@ import by.epam.gym.commands.trainer.*;
  */
 public enum CommandType {
 
+    /**
+     * Common commands.
+     */
     COMMON_LOGIN {
         {
             this.command = new LoginCommand();
@@ -30,17 +34,124 @@ public enum CommandType {
     },
     COMMON_REGISTER {
         {
-            command = new RegisterCommand();
+            this.command = new RegisterCommand();
         }
     },
-    ADMIN_FIND_USER_BY_NAME{
+    COMMON_CHANGE_LANGUAGE {
         {
-            this.command = new FindUserByNameCommand();
+            this.command = new ChangeLanguageCommand();
         }
     },
-    ADMIN_SHOW_ALL_CLIENTS{
+
+    /**
+     * Special commands.
+     */
+    SPECIAL_SHOW_CLIENT_ORDERS {
+        {
+            this.command = new ShowClientOrdersCommand();
+        }
+    },
+    SPECIAL_SHOW_CLIENT_TRAINING_PROGRAM {
+        {
+            this.command = new ShowClientTrainingProgramCommand();
+        }
+    },
+    SPECIAL_EDIT_TRAINING_PROGRAM {
+        {
+            this.command = new EditTrainingProgramCommand();
+        }
+    },
+    SPECIAL_EDIT_EXERCISE_IN_TRAINING_PROGRAM {
+        {
+            this.command = new EditExerciseInTrainingProgramCommand();
+        }
+    },
+    SPECIAL_DELETE_EXERCISE_FROM_TRAINING_PROGRAM {
+        {
+            this.command = new DeleteExerciseFromTrainingProgramCommand();
+        }
+    },
+    SPECIAL_DELETE_DAY_FROM_TRAINING_PROGRAM {
+        {
+            this.command = new DeleteDayFromTrainingProgramCommand();
+        }
+    },
+    SPECIAL_ADD_EXERCISE_TO_TRAINING_PROGRAM {
+        {
+            this.command = new AddExerciseToTrainingProgramCommand();
+        }
+    },
+    SPECIAL_ADD_DAY_TO_TRAINING_PROGRAM {
+        {
+            this.command = new AddDayToTrainingProgramCommand();
+        }
+    },
+    SPECIAL_SAVE_TRAINING_PROGRAM_EDIT {
+        {
+            this.command = new SaveTrainingProgramCommand();
+        }
+    },
+    SPECIAL_EDIT_DIET_IN_TRAINING_PROGRAM {
+        {
+            this.command = new EditDietInTrainingProgramCommand();
+        }
+    },
+
+    /**
+     * Client's commands.
+     */
+    CLIENT_ADD_FEEDBACK {
+        {
+            this.command = new AddFeedbackCommand();
+        }
+    },
+    CLIENT_PREPARE_ORDER {
+        {
+            this.command = new PrepareOrderCommand();
+        }
+    },
+    CLIENT_PAY_ORDER {
+        {
+            this.command = new PayOrderCommand();
+        }
+    },
+    CLIENT_REFUSE_TRAINING_PROGRAM {
+        {
+            this.command = new RefuseTrainingProgramCommand();
+        }
+    },
+
+    CLIENT_CHECK_ACTUAL_ORDER{
+        {
+            this.command = new CheckClientActualOrderCommand();
+        }
+    },
+
+    /**
+     * Admin commands.
+     */
+    ADMIN_FIND_CLIENT_BY_NAME {
+        {
+            this.command = new FindClientByNameCommand();
+        }
+    },
+    ADMIN_SHOW_ALL_CLIENTS {
         {
             this.command = new ShowAllClientsCommand();
+        }
+    },
+
+    /**
+     * Trainer commands.
+     */
+    TRAINER_SHOW_PERSONAL_CLIENTS {
+        {
+            this.command = new ShowPersonalClientsCommand();
+        }
+    },
+    TRAINER_PREPARE_TRAINING_PROGRAM_CREATION {
+        {
+            this.command = new PrepareTrainingProgramCreationCommand();
         }
     },
     TRAINER_CREATE_EXERCISE {
@@ -48,80 +159,28 @@ public enum CommandType {
             this.command = new CreateExerciseCommand();
         }
     },
-    TRAINER_SHOW_PERSONAL_CLIENTS{
-        {this.command = new ShowPersonalClientsCommand();}
-    },
-    COMMON_DESCRIBE_TRAINING_PROGRAM{
-        {this.command = new DescribeTrainingProgramCommand();}
-    },
-    TRAINER_PREPARE_TRAINING_PROGRAM_CREATION{
+    TRAINER_CREATE_TRAINING_PROGRAM {
         {
-            this.command = new PrepareTrainingProgramCreationCommand();
+            this.command = new CreateTrainingProgramCommand();
         }
     },
-    TRAINER_CREATE_TRAINING_PROGRAM{
-        {this.command = new CreateTrainingProgramCommand();}
-    },
-    TRAINER_PREPARE_ADD_EXERCISE_TO_TRAINING_PROGRAM{
-        {
-            this.command = new PrepareAddExerciseToTrainingProgramCommand();
-        }
-    },
-    COMMON_ADD_EXERCISE_TO_TRAINING_PROGRAM{
-        {
-            this.command = new AddExerciseToTrainingProgramCommand();
-        }
-    },
-    COMMON_FINISH_TRAINING_PROGRAM_CREATION{
+    TRAINER_FINISH_TRAINING_PROGRAM_CREATION {
         {
             this.command = new FinishTrainingProgramCreationCommand();
         }
-    },
-    COMMON_DELETE_EXERCISE_FROM_TRAINING_PROGRAM{
-        {this.command = new DeleteExerciseFromTrainingProgramCommand();}
-    },
-    CLIENT_SHOW_ORDERS{
-        {
-            this.command = new ShowOrdersCommand();
-        }
-    },
-    CLIENT_ADD_FEEDBACK{
-        {
-            this.command = new AddFeedbackCommand();
-        }
-    },
-    CLIENT_PREPARE_ORDER{
-        {
-            this.command = new PrepareOrderCommand();
-        }
-    },
-    CLIENT_PAY_ORDER{
-        {
-            this.command = new PayOrderCommand();
-        }
-    },
-    CLIENT_SHOW_TRAINING_PROGRAM{
-        {
-            this.command = new ShowTrainingProgramCommand();
-        }
-    },
-    COMMON_EDIT_EXERCISE{
-        {
-            this.command = new EditExerciseCommand();
-        }
     };
+
     /**
      * Current command.
      */
     ActionCommand command;
 
     /**
-     * Gets current command.
+     * Gets current commands.
      *
-     * @return the current command.
+     * @return the current commands.
      */
     public ActionCommand getCurrentCommand() {
         return command;
     }
-
 }
