@@ -66,10 +66,9 @@ public class ShowAllClientsCommand implements ActionCommand {
             request.setAttribute(CURRENT_PAGE_INDEX_ATTRIBUTE, pageIndex);
             request.setAttribute(LIST_ATTRIBUTE, foundClients);
 
-            LOGGER.info("Clients loaded successful.");
             return new Page(SHOW_ALL_CLIENTS_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

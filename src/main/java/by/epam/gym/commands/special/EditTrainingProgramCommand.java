@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Command to edit training program.
@@ -40,10 +39,10 @@ public class EditTrainingProgramCommand implements ActionCommand {
             HttpSession session = request.getSession();
             session.setAttribute(EXERCISES_ATTRIBUTE, exercises);
 
-            LOGGER.info("Exercises were loaded successful.");
             return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
+            ;
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

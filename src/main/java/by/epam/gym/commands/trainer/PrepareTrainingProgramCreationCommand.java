@@ -37,18 +37,17 @@ public class PrepareTrainingProgramCreationCommand implements ActionCommand {
 
         try {
             UserService userService = new UserService();
-            Map<Integer, String> clientsIdAndName = userService.findClientsIdAndName();
-            if (clientsIdAndName.isEmpty()){
-                return new Page(MAIN_PAGE_PATH,false,NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY);
+            Map<Integer, String> clientsIdAndName = userService.findClientsForTrainingProgramCreation();
+            if (clientsIdAndName.isEmpty()) {
+                return new Page(MAIN_PAGE_PATH, false, NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY);
             }
 
             HttpSession session = request.getSession();
             session.setAttribute(LIST_ATTRIBUTE, clientsIdAndName);
 
-            LOGGER.info("List of clients was loaded successful.");
             return new Page(CREATE_TRAINING_PROGRAM_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

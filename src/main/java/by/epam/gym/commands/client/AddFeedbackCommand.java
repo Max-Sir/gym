@@ -47,10 +47,9 @@ public class AddFeedbackCommand implements ActionCommand {
 
             session.setAttribute(IS_RECORD_INSERTED, true);
 
-            LOGGER.info(String.format("Feedback fo order id - %d was added successful.", orderId));
             return new Page(Page.MAIN_PAGE_PATH, false, FEEDBACK_WAS_ADDED_MESSAGE_KEY);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

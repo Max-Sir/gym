@@ -47,10 +47,9 @@ public class ShowPersonalClientsCommand implements ActionCommand {
 
             request.setAttribute(LIST_ATTRIBUTE, clients);
 
-            LOGGER.info("List of clients was loaded successful.");
             return new Page(PERSONAL_CLIENTS_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

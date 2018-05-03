@@ -3,7 +3,6 @@ package by.epam.gym.dao;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.entities.exercise.ExerciseDifficultyLevel;
 import by.epam.gym.exceptions.DAOException;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +18,6 @@ import java.util.*;
  * @see Exercise
  */
 public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
-
-    private static final Logger LOGGER = Logger.getLogger(ExerciseDAOImpl.class);
 
     /**
      * Common queries.
@@ -95,8 +92,7 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
 
             return exercisesByDays;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_EXERCISE_FROM_TRAINING_PROGRAM_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -121,7 +117,6 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
      *
      * @param entity the entity.
      * @return List object with parameters.
-     * @throws DAOException object if execution of query is failed.
      */
     @Override
     protected List<String> getEntityParameters(Exercise entity) {
@@ -167,7 +162,7 @@ public class ExerciseDAOImpl extends AbstractDAOImpl<Exercise> {
 
             return exercise;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 

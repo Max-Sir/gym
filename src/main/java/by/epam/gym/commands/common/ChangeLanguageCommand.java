@@ -3,7 +3,6 @@ package by.epam.gym.commands.common;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.MessageManager;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.jstl.core.Config;
@@ -17,8 +16,6 @@ import static by.epam.gym.utils.MessageManager.DEFAULT_LOCALE;
  * @author Eugene Makarenko
  */
 public class ChangeLanguageCommand implements ActionCommand {
-
-    private static final Logger LOGGER = Logger.getLogger(ChangeLanguageCommand.class);
 
     private static final String RU_LANGUAGE = "ru";
     private static final String US_LANGUAGE = "en";
@@ -60,7 +57,6 @@ public class ChangeLanguageCommand implements ActionCommand {
         Config.set(request.getSession(), Config.FMT_LOCALE, locale);
         MessageManager.changeLocale(locale);
 
-        LOGGER.info(String.format("Language was changed successful. Current language is - %s.", localeValue));
         return new Page(Page.MAIN_PAGE_PATH, true);
     }
 }

@@ -4,12 +4,10 @@ import by.epam.gym.dao.ConnectionManager;
 import by.epam.gym.dao.UserDAOImpl;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.PasswordEncoder;
 import by.epam.gym.utils.UserDataValidator;
-import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +23,6 @@ import java.util.Map;
  * @see ConnectionManager
  */
 public class UserService {
-
-    private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
     private static final String NAME_SPLIT_SYMBOL = " ";
 
@@ -47,9 +43,8 @@ public class UserService {
             password = PasswordEncoder.encode(password);
 
             return userDAO.selectUserByLoginAndPassword(login, password);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <login> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during login operation.", exception);
         }
     }
 
@@ -76,9 +71,8 @@ public class UserService {
             user.setLastName(lastName);
 
             return userDAO.insert(user);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <register> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during register operation.", exception);
         }
     }
 
@@ -94,9 +88,8 @@ public class UserService {
             UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
             return userDAO.checkLoginForUnique(login);
-        } catch (DAOException | ConnectionException exception) {
-            LOGGER.warn("Exception during <check login for unique> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during check user login for unique operation.", exception);
         }
     }
 
@@ -121,9 +114,8 @@ public class UserService {
             } else {
                 return userDAO.selectClientByNamePart(name);
             }
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find client by name> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find client by name operation.", exception);
         }
     }
 
@@ -145,9 +137,8 @@ public class UserService {
             clients.put(findClient, countOfRecords);
 
             return clients;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find all clients by pages> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find all clients by pages operation.", exception);
         }
     }
 
@@ -163,26 +154,24 @@ public class UserService {
             UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
             return userDAO.selectPersonalClients(trainerId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find personal clients> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find personal clients operation.", exception);
         }
     }
 
     /**
-     * This method finds clients ids and names.
+     * This method finds clients for training program creation.
      *
      * @return Map with id and name.
      * @throws ServiceException object if execution of method is failed.
      */
-    public Map<Integer, String> findClientsIdAndName() throws ServiceException {
+    public Map<Integer, String> findClientsForTrainingProgramCreation() throws ServiceException {
         try (ConnectionManager connectionManager = new ConnectionManager()) {
             UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
             return userDAO.selectClientIdAndNameForTrainingProgramCreation();
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find clients id and name> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find clients id and name operation.", exception);
         }
     }
 

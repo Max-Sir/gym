@@ -3,7 +3,6 @@ package by.epam.gym.commands.special;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.servlet.Page;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpSession;
  * @see by.epam.gym.entities.TrainingProgram
  */
 public class EditDietInTrainingProgramCommand implements ActionCommand {
-
-    private final static Logger LOGGER = Logger.getLogger(EditDietInTrainingProgramCommand.class);
 
     /**
      * Implementation of command to edit diet in training program.
@@ -33,7 +30,6 @@ public class EditDietInTrainingProgramCommand implements ActionCommand {
         TrainingProgram trainingProgram = (TrainingProgram) session.getAttribute(TRAINING_PROGRAM_ATTRIBUTE);
         trainingProgram.setDiet(diet);
 
-        LOGGER.info("Diet was edited successful.");
         return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
     }
 }

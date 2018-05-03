@@ -5,7 +5,7 @@
 <c:set var="now" value="<%=new java.util.Date()%>"/>
 <c:set var="client" value="<%=UserRole.CLIENT%>"/>
 <c:set var="currentRole" value="${sessionScope.user.userRole}"/>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <fmt:bundle basename="page_content">
     <fmt:message key="order.history_title" var="title"/>
@@ -89,10 +89,12 @@
                             <c:choose>
                                 <c:when test="${order.feedback == null && order.endDate < now}">
                                     <c:set var="orderId" scope="session" value="${order.id}"/>
-                                    <a href="${pageContext.request.contextPath}/jsp/client/add_feedback.jsp">${pageScope.leave_feedback} <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    <a href="${pageContext.request.contextPath}/jsp/client/add_feedback.jsp">${pageScope.leave_feedback}
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                 </c:when>
                                 <c:when test="${order.feedback != null}">
-                                    <div class="popup" id="${count}" onclick="popUp(this.id)"><a>${pageScope.show_feedback} <i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    <div class="popup" id="${count}" onclick="popUp(this.id)">
+                                        <a>${pageScope.show_feedback} <i class="fa fa-eye" aria-hidden="true"></i></a>
                                         <span>${order.feedback}</span>
                                     </div>
                                 </c:when>
@@ -104,7 +106,8 @@
                         <c:otherwise>
                             <c:choose>
                                 <c:when test="${order.feedback != null}">
-                                    <div class="popup" id="${count}" onclick="popUp(this.id)"><a>${pageScope.show_feedback} <i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    <div class="popup" id="${count}" onclick="popUp(this.id)">
+                                        <a>${pageScope.show_feedback} <i class="fa fa-eye" aria-hidden="true"></i></a>
                                         <span>${order.feedback}</span>
                                     </div>
                                 </c:when>

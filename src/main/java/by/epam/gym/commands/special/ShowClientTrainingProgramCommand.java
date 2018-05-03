@@ -54,13 +54,13 @@ public class ShowClientTrainingProgramCommand implements ActionCommand {
             String authorName = trainingProgramService.findTrainingProgramAuthorName(trainingProgramId);
             session.setAttribute(NAME_ATTRIBUTE, authorName);
 
-            TreeMap<Integer, List<Exercise>> daysAndExercises = trainingProgramService.showExerciseFromTrainingProgram(trainingProgramId);
+            TreeMap<Integer, List<Exercise>> daysAndExercises = trainingProgramService.showExercisesFromTrainingProgram(trainingProgramId);
             session.setAttribute(DAYS_AND_EXERCISES_ATTRIBUTE, daysAndExercises);
 
-            LOGGER.info(String.format("Data was loaded successful for training program of client id - %d.", clientId));
+
             return new Page(DESCRIBE_TRAINING_PROGRAM_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

@@ -47,10 +47,9 @@ public class FindClientByNameCommand implements ActionCommand {
 
             request.setAttribute(LIST_ATTRIBUTE, findUsers);
 
-            LOGGER.info(String.format("Clients for name - %s were/was founded successful.", name));
             return new Page(DESCRIBE_CLIENT_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

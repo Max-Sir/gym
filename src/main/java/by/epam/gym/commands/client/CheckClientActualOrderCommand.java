@@ -36,13 +36,13 @@ public class CheckClientActualOrderCommand implements ActionCommand {
             OrderService orderService = new OrderService();
             boolean hasClientActualOrder = orderService.hasClientActualOrder(clientIdValue);
 
-            if (hasClientActualOrder){
-                return new Page(Page.MAIN_PAGE_PATH,false,CLIENT_HAS_ALREADY_ORDER_MESSAGE_KEY);
+            if (hasClientActualOrder) {
+                return new Page(Page.MAIN_PAGE_PATH, false, CLIENT_HAS_ALREADY_ORDER_MESSAGE_KEY);
             }
 
-            return new Page(Page.PREPARE_ORDER_PAGE_PATH,false);
+            return new Page(Page.PREPARE_ORDER_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

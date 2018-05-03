@@ -6,11 +6,9 @@ import by.epam.gym.dao.TrainingProgramDAOImpl;
 import by.epam.gym.dao.UserDAOImpl;
 import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.entities.exercise.Exercise;
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.TrainingProgramDataValidator;
-import org.apache.log4j.Logger;
 
 import java.sql.Date;
 import java.util.*;
@@ -23,8 +21,6 @@ import java.util.*;
  */
 public class TrainingProgramService {
 
-    private static final Logger LOGGER = Logger.getLogger(TrainingProgramService.class);
-
     private static final int DAY_INCREMENT_INDEX = 1;
 
     /**
@@ -36,9 +32,8 @@ public class TrainingProgramService {
      */
     public boolean refuseTrainingProgram(int trainingProgramId) throws ServiceException {
 
-        ConnectionManager connectionManager = null;
+        ConnectionManager connectionManager = new ConnectionManager();
         try {
-            connectionManager = new ConnectionManager();
             connectionManager.startTransaction();
 
             TrainingProgramDAOImpl trainingProgramDAO = new TrainingProgramDAOImpl(connectionManager.getConnection());
@@ -57,17 +52,15 @@ public class TrainingProgramService {
 
             connectionManager.commitTransaction();
             return true;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <refuse training program> operation.");
-            if (connectionManager != null) {
-                connectionManager.rollbackTransaction();
-            }
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            connectionManager.rollbackTransaction();
+
+            throw new ServiceException("Exception during refuse training program operation.", exception);
         } finally {
-            if (connectionManager != null) {
-                connectionManager.endTransaction();
-                connectionManager.close();
-            }
+
+            connectionManager.endTransaction();
+            connectionManager.close();
+
         }
     }
 
@@ -83,9 +76,8 @@ public class TrainingProgramService {
             TrainingProgramDAOImpl trainingProgramDAO = new TrainingProgramDAOImpl(connectionManager.getConnection());
 
             return trainingProgramDAO.insertTrainingProgram(trainingProgram);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <save training program> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during save training program operation.", exception);
         }
     }
 
@@ -125,9 +117,8 @@ public class TrainingProgramService {
             trainingProgram.setEndDate(endDate);
 
             return trainingProgram;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <create training program> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during create training program operation.", exception);
         }
     }
 
@@ -161,9 +152,8 @@ public class TrainingProgramService {
             TrainingProgramDAOImpl trainingProgramDAO = new TrainingProgramDAOImpl(connectionManager.getConnection());
 
             return trainingProgramDAO.update(trainingProgram);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <update training program> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during update training program operation.", exception);
         }
     }
 
@@ -180,9 +170,8 @@ public class TrainingProgramService {
             TrainingProgram trainingProgram = trainingProgramDAO.selectClientTrainingProgram(clientId);
 
             return trainingProgram;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find training program by id> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find training program by id operation.", exception);
         }
     }
 
@@ -198,9 +187,8 @@ public class TrainingProgramService {
             UserDAOImpl userDAO = new UserDAOImpl(connectionManager.getConnection());
 
             return userDAO.selectTrainingProgramAuthorName(trainingProgramId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find training program author name> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find training program author name operation.", exception);
         }
     }
 
@@ -211,14 +199,13 @@ public class TrainingProgramService {
      * @return TreeMap of exercises.
      * @throws ServiceException object if execution of method is failed.
      */
-    public TreeMap<Integer, List<Exercise>> showExerciseFromTrainingProgram(int trainingProgramId) throws ServiceException {
+    public TreeMap<Integer, List<Exercise>> showExercisesFromTrainingProgram(int trainingProgramId) throws ServiceException {
         try (ConnectionManager connectionManager = new ConnectionManager()) {
             ExerciseDAOImpl exerciseDAO = new ExerciseDAOImpl(connectionManager.getConnection());
 
             return exerciseDAO.selectExerciseFromTrainingProgram(trainingProgramId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <show exercise from training program> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during show exercises from training program operation.", exception);
         }
     }
 

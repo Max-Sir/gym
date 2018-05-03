@@ -3,10 +3,8 @@ package by.epam.gym.service;
 import by.epam.gym.dao.ConnectionManager;
 import by.epam.gym.dao.OrderDAOImpl;
 import by.epam.gym.entities.order.Order;
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
 public class DiscountService {
 
     public static final int NONE_DISCOUNT = 0;
-
-    private static final Logger LOGGER = Logger.getLogger(DiscountService.class);
 
     private static final int MINIMAL_ORDERS_COUNT_FOR_DISCOUNT = 5;
     private static final int MIDDLE_ORDERS_COUNT_FOR_DISCOUNT = 10;
@@ -52,9 +48,8 @@ public class DiscountService {
             }
 
             return NONE_DISCOUNT;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <prepare order> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during get discount operation.", exception);
         }
     }
 }

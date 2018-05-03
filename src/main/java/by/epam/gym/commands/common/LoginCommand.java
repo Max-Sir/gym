@@ -46,10 +46,9 @@ public class LoginCommand implements ActionCommand {
             HttpSession currentSession = request.getSession();
             currentSession.setAttribute(USER_ATTRIBUTE, user);
 
-            LOGGER.info(String.format("User: login - %s logged in successful.", login));
             return new Page(Page.MAIN_PAGE_PATH, true);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

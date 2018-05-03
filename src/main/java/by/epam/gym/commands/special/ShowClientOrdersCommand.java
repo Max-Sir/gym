@@ -46,10 +46,9 @@ public class ShowClientOrdersCommand implements ActionCommand {
 
             request.setAttribute(LIST_ATTRIBUTE, orderList);
 
-            LOGGER.info(String.format("Information about orders of client - %d were/was loaded successful.", clientId));
             return new Page(SHOW_CLIENT_ORDERS_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

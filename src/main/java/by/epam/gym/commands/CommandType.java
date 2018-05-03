@@ -121,7 +121,7 @@ public enum CommandType {
         }
     },
 
-    CLIENT_CHECK_ACTUAL_ORDER{
+    CLIENT_CHECK_ACTUAL_ORDER {
         {
             this.command = new CheckClientActualOrderCommand();
         }

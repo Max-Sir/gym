@@ -4,7 +4,6 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.service.ExerciseService;
 import by.epam.gym.servlet.Page;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,8 +23,6 @@ import static by.epam.gym.servlet.Page.EDIT_TRAINING_PROGRAM_PAGE_PATH;
  */
 public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
 
-    private static final Logger LOGGER = Logger.getLogger(DeleteExerciseFromTrainingProgramCommand.class);
-
     /**
      * Implementation of command to delete exercise from training program.
      *
@@ -41,7 +38,6 @@ public class DeleteExerciseFromTrainingProgramCommand implements ActionCommand {
         ExerciseService exerciseService = new ExerciseService();
         exerciseService.deleteExerciseFromTrainingProgram(exerciseIdValue, dayNumberValue, daysAndExercises);
 
-        LOGGER.info("Exercise was deleted from training program.");
         return new Page(EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
     }
 }

@@ -48,10 +48,9 @@ public class AddExerciseToTrainingProgramCommand implements ActionCommand {
                 return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false, INVALID_INPUT_DATA_MESSAGE_KEY);
             }
 
-            LOGGER.info("Exercise was added to training program.");
             return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

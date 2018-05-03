@@ -1,19 +1,17 @@
 .header {
-    margin: 0 auto;
     border-radius: 8px;
-    padding: 10px 0 10px 0;
     background-color: rgba(120, 120, 120, 0.7);
     text-align: center;
     width: 98%;
     color: white;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     padding: 5px;
 }
 
 .top {
     display: block;
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 .hello_message {
@@ -42,11 +40,10 @@
 .user_menu {
     box-sizing: border-box;
     padding-right: 20px;
-    margin: 0 auto;
     width: 98%;
     border-radius: 8px;
     background-color: rgba(120, 120, 120, 0.7);
-    margin-bottom: 50px;
+    margin: 0 auto 50px;
 }
 
 .user_menu ul {
@@ -76,8 +73,7 @@
 .user_menu form {
     font-size: 20px;
     color: white;
-    border-color: white;
-    border: 2px;
+    border: 2px white;
     margin: 0;
 }
 
@@ -90,7 +86,7 @@
     border-radius: 5px;
     font-size: 15px;
     font-weight: bold;
-    font-family: 'Caviar';
+    font-family: 'Caviar', serif;
 }
 
 .user_menu button .fa:hover {
@@ -98,23 +94,23 @@
 }
 
 .change_level {
-  float: left;
-  margin-top: -3%;
+    float: left;
+    margin-top: -3%;
 }
 
 .change_level ul {
-  list-style: none;
+    list-style: none;
 }
 
 .change_level li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .change_level a {
-  color: white;
-  text-decoration: none;
+    color: white;
+    text-decoration: none;
 }
 
-.change_level a:hover{
+.change_level a:hover {
     color: #de81df;
 }

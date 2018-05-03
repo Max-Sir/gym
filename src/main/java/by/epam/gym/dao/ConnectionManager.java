@@ -1,6 +1,5 @@
 package by.epam.gym.dao;
 
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.pool.ConnectionPool;
 import org.apache.log4j.Logger;
 
@@ -22,10 +21,8 @@ public class ConnectionManager implements AutoCloseable {
 
     /**
      * Instantiates a new ConnectionManager.
-     *
-     * @throws ConnectionException object during getting from pool connection.
      */
-    public ConnectionManager() throws ConnectionException {
+    public ConnectionManager() {
         connectionPool = ConnectionPool.getInstance();
         connection = connectionPool.getConnection();
     }

@@ -110,10 +110,10 @@ public class ExerciseDataValidator {
     }
 
     private boolean checkDescription(String description) {
-        if (description == null){
+        if (description == null) {
             return false;
         }
-        if (description.isEmpty()){
+        if (description.isEmpty()) {
             return false;
         }
         Pattern pattern = Pattern.compile(EXERCISE_DESCRIPTION_PATTERN);

@@ -2,7 +2,6 @@ package by.epam.gym.dao;
 
 import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.exceptions.DAOException;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,8 +17,6 @@ import java.util.Map;
  * @see TrainingProgramDAOImpl
  */
 public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
-
-    private static final Logger LOGGER = Logger.getLogger(TrainingProgramDAOImpl.class);
 
     /**
      * Common queries.
@@ -71,8 +68,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
 
             return trainingProgram;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENT_TRAINING_PROGRAM_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -94,8 +90,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
                     lastId = resultSet.getInt(LAST_INSERT_ID_COLUMN_LABEL);
                 }
             } catch (SQLException exception) {
-                LOGGER.warn(String.format("Sql exception during %s.", SELECT_LAST_INSERT_ID_QUERY));
-                throw new DAOException("SQL exception detected. " + exception);
+                throw new DAOException(exception.getMessage(), exception);
             }
         }
         return lastId;
@@ -138,8 +133,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
             }
 
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_IS_PERSONAL_TRAINER_NEED_VALUE_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -148,7 +142,6 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
      *
      * @param entity the entity.
      * @return List object with parameters.
-     * @throws DAOException object if execution of query is failed.
      */
     @Override
     protected List<String> getEntityParameters(TrainingProgram entity) {
@@ -222,7 +215,7 @@ public class TrainingProgramDAOImpl extends AbstractDAOImpl<TrainingProgram> {
 
             return trainingProgram;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 

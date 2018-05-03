@@ -58,10 +58,9 @@ public class CreateExerciseCommand implements ActionCommand {
             session.setAttribute(IS_RECORD_INSERTED, true);
             request.setAttribute(EXERCISE_ATTRIBUTE, exercise);
 
-            LOGGER.info("Exercise was created successful.");
             return new Page(SHOW_EXERCISE, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

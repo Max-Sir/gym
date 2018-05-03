@@ -4,7 +4,8 @@
 <%@attribute name="role" required="true" rtexprvalue="true" type="java.lang.String" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700&amp;subset=cyrillic" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700&amp;subset=cyrillic"
+      rel="stylesheet">
 
 <fmt:bundle basename="page_content">
     <fmt:message key="client.name" var="name"/>
@@ -37,10 +38,12 @@
                 <td>
                     <c:choose>
                         <c:when test="${role.equals('TRAINER')}">
-                            <a href="controller?command=special_show_client_training_program&client_id=${client.id}">${pageScope.describe} <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                            <a href="controller?command=special_show_client_training_program&client_id=${client.id}">${pageScope.describe}
+                                <i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         </c:when>
                         <c:otherwise>
-                            <a href="controller?command=special_show_client_orders&client_id=${client.id}">${pageScope.describe} <i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                            <a href="controller?command=special_show_client_orders&client_id=${client.id}">${pageScope.describe}
+                                <i class="fa fa-info-circle" aria-hidden="true"></i></a>
                         </c:otherwise>
                     </c:choose>
                 </td>

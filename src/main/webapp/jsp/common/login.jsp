@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="ctg" uri="customtags"%>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 
 <fmt:bundle basename="page_content">
@@ -22,13 +22,13 @@
 </head>
 <body class="page">
 <div class="title">
-   <a href="${pageContext.request.contextPath}/jsp/common/main.jsp"><i class="fa fa-home" aria-hidden="true"></i></a>
+    <a href="${pageContext.request.contextPath}/jsp/common/main.jsp"><i class="fa fa-home" aria-hidden="true"></i></a>
     <h1>${pageScope.log_in}</h1>
 </div>
 <div class="wrapper_form">
     <p>${requestScope.message}</p>
     <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
-        <input type="hidden" name="command" value="common_login"  />
+        <input type="hidden" name="command" value="common_login"/>
         <p><label>${pageScope.enter_login}<input class="log_input" type="text" name="login" value=""/></label></p>
         <p><label>${pageScope.enter_password}<input class="log_input" type="password" name="password" value=""/></label></p>
         <input class="log_button" type="submit" value="${pageScope.log_in}"/>

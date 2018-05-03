@@ -39,7 +39,6 @@ public class RefuseTrainingProgramCommand implements ActionCommand {
             TrainingProgramService trainingProgramService = new TrainingProgramService();
             boolean isOperationSuccessful = trainingProgramService.refuseTrainingProgram(trainingProgramId);
             if (!isOperationSuccessful) {
-                LOGGER.info(String.format("Training program id=%d wasn't deleted.", trainingProgramId));
                 return new Page(DESCRIBE_TRAINING_PROGRAM_PAGE_PATH, false, REFUSE_TRAINING_PROGRAM_FAILED_MESSAGE_KEY);
             }
 
@@ -47,10 +46,9 @@ public class RefuseTrainingProgramCommand implements ActionCommand {
             session.setAttribute(IS_RECORD_INSERTED, true);
             session.removeAttribute(TRAINING_PROGRAM_ATTRIBUTE);
 
-            LOGGER.info(String.format("Training program id=%d was deleted successful.", trainingProgramId));
             return new Page(Page.MAIN_PAGE_PATH, false, REFUSE_TRAINING_PROGRAM_SUCCESS_MESSAGE_KEY);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

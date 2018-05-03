@@ -1,6 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <fmt:bundle basename="page_content">
     <fmt:message key="exercise.create_title" var="title"/>
@@ -25,18 +25,22 @@
 <tag:userMenu/>
 <p class="error">${requestScope.message}</p>
 <div class="create_exercise">
-<form id="createExercise" name="createExercise" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="trainer_create_exercise"/>
-    <p><label>${pageScope.name} <input id="name_id" class="create_exercise_name" title="${pageScope.title_name}" type="text" name="name" value="" onkeyup="checkName()"/></label></p>
-    <p><label>${pageScope.level} <select name="level" title="${pageScope.title_level}">
-        <option value="BEGINNER">${pageScope.beginner}</option>
-        <option value="EXPERT">${pageScope.expert}</option>
-        <option value="PRO">${pageScope.pro}</option>
-    </select></label></p>
-    <p>${pageScope.description}</p>
-    <p><textarea title="${pageScope.title_description}" id="description_id" name="description" onkeyup="checkDescription()"></textarea></p>
-    <button id="create_exercise_id" class="create_exercise_confirm" id="submit" type="submit" disabled>${pageScope.create} <i class="fa fa-plus" aria-hidden="true"></i></button>
-</form>
+    <form id="createExercise" name="createExercise" method="POST"
+          action="${pageContext.request.contextPath}/controller">
+        <input type="hidden" name="command" value="trainer_create_exercise"/>
+        <p><label>${pageScope.name} <input id="name_id" class="create_exercise_name" title="${pageScope.title_name}"
+                                           type="text" name="name" value="" onkeyup="checkName()"/></label></p>
+        <p><label>${pageScope.level} <select name="level" title="${pageScope.title_level}">
+            <option value="BEGINNER">${pageScope.beginner}</option>
+            <option value="EXPERT">${pageScope.expert}</option>
+            <option value="PRO">${pageScope.pro}</option>
+        </select></label></p>
+        <p>${pageScope.description}</p>
+        <p><textarea title="${pageScope.title_description}" id="description_id" name="description"
+                     onkeyup="checkDescription()"></textarea></p>
+        <button id="create_exercise_id" class="create_exercise_confirm" id="submit" type="submit"
+                disabled>${pageScope.create} <i class="fa fa-plus" aria-hidden="true"></i></button>
+    </form>
 </div>
 <script>
     <jsp:directive.include file="/js/exerciseValidation.js"/>

@@ -41,10 +41,10 @@ public class OrderDataValidator {
      * @return true if feedback is valid and false otherwise.
      */
     public boolean checkFeedback(String feedback) {
-        if (feedback == null){
+        if (feedback == null) {
             return false;
         }
-        if (feedback.isEmpty()){
+        if (feedback.isEmpty()) {
             return false;
         }
         Pattern pattern = Pattern.compile(ORDER_FEEDBACK_PATTERN);

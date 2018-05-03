@@ -29,19 +29,23 @@
     <form id="reg" name="RegisterForm" method="POST" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="common_register"/>
         <p><span>${pageScope.login}</span>
-            <input id="login" title="${pageScope.title_login}" type="text" name="login" value="" onkeyup=checkLogin(); />
+            <input id="login" title="${pageScope.title_login}" type="text" name="login" value="" onkeyup="checkLogin();"/>
         </p>
         <p><span>${pageScope.password}</span>
-            <input id="password" title="${pageScope.title_password}" type="password" name="password" value="" onkeyup=checkPassword(); />
+            <input id="password" title="${pageScope.title_password}" type="password" name="password" value=""
+                   onkeyup="checkPassword();"/>
         </p>
         <p><span>${pageScope.repeat_password}</span>
-            <input id="confirm_password" title="${pageScope.title_confirm_password}" type="password" value="" onkeyup=checkPassword(); />
+            <input id="confirm_password" title="${pageScope.title_confirm_password}" type="password" value=""
+                   onkeyup="checkPassword();"/>
         </p>
         <p><span>${pageScope.first_name}</span>
-            <input id="first_name" title="${pageScope.title_first_name}" type="text" name="first_name" value="" onkeyup=checkName(); />
+            <input id="first_name" title="${pageScope.title_first_name}" type="text" name="first_name" value=""
+                   onkeyup="checkName();"/>
         </p>
         <p><span>${pageScope.last_name}</span>
-            <input id="last_name" title="${pageScope.title_last_name}" type="text" name="last_name" value="" onkeyup=checkName(); />
+            <input id="last_name" title="${pageScope.title_last_name}" type="text" name="last_name" value=""
+                   onkeyup="checkName();"/>
         </p>
         <input class="reg_submit" id="submit" type="submit" value="${pageScope.register_submit}" disabled/>
     </form>

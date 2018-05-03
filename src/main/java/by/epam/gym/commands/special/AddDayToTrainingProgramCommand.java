@@ -4,7 +4,6 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.service.TrainingProgramService;
 import by.epam.gym.servlet.Page;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,8 +21,6 @@ import static by.epam.gym.utils.MessageManager.DAY_ADD_FAILED_MESSAGE_KEY;
  */
 public class AddDayToTrainingProgramCommand implements ActionCommand {
 
-    private static final Logger LOGGER = Logger.getLogger(AddDayToTrainingProgramCommand.class);
-
     /**
      * Implementation of command to add day into training program.
      *
@@ -37,11 +34,9 @@ public class AddDayToTrainingProgramCommand implements ActionCommand {
         TrainingProgramService trainingProgramService = new TrainingProgramService();
         boolean isOperationSuccessful = trainingProgramService.addDayInTrainingProgram(daysAndExercises);
         if (!isOperationSuccessful) {
-            LOGGER.info("Day wasn't added to training program.");
             return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false, DAY_ADD_FAILED_MESSAGE_KEY);
         }
 
-        LOGGER.info("Day was added to training program.");
         return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
     }
 }

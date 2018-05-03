@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import static by.epam.gym.servlet.Page.CREATE_TRAINING_PROGRAM_PAGE_PATH;
@@ -69,10 +68,9 @@ public class CreateTrainingProgramCommand implements ActionCommand {
             TreeMap<Integer, List<Exercise>> daysAndExercises = trainingProgramService.getDaysAndExerciseFromTrainingProgram(daysCountValue);
             session.setAttribute(DAYS_AND_EXERCISES_ATTRIBUTE, daysAndExercises);
 
-            LOGGER.info(String.format("Training program for client - %s, was created successful.", clientIdValue));
             return new Page(EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

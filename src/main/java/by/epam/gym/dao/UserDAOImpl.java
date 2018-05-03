@@ -3,7 +3,6 @@ package by.epam.gym.dao;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.entities.user.UserRole;
 import by.epam.gym.exceptions.DAOException;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ import java.util.Map;
  * @see User
  */
 public class UserDAOImpl extends AbstractDAOImpl<User> {
-
-    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 
     /**
      * Common queries.
@@ -94,8 +91,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return user;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_USER_BY_LOGIN_AND_PASSWORD_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -112,8 +108,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return resultSet.next();
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_USERS_BY_LOGIN_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -138,8 +133,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return findUsers;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENTS_BY_FULL_NAME_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -165,8 +159,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return findUsers;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENTS_BY_NAME_PART_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -195,8 +188,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return findUsers;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s or %s.", SELECT_USERS_BY_FOUND_ROWS_QUERY, SELECT_FOUND_ROWS_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -219,8 +211,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return clients;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_PERSONAL_CLIENTS));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -244,8 +235,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
                 return EMPTY_NAME;
             }
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_TRAINING_PROGRAM_AUTHOR_NAME_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -272,8 +262,7 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
 
             return clientsIdAndName;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENT_ID_AND_NAME_FOR_TRAINING_PROGRAM_CREATION_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -282,7 +271,6 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
      *
      * @param entity the entity.
      * @return List object with parameters.
-     * @throws DAOException object if execution of query is failed.
      */
     @Override
     protected List<String> getEntityParameters(User entity) {
@@ -319,25 +307,28 @@ public class UserDAOImpl extends AbstractDAOImpl<User> {
         try {
             User user = new User();
 
-            String userRoleValue = resultSet.getString(ROLE_COLUMN_LABEL);
-
             int id = resultSet.getInt(ID_COLUMN_LABEL);
-            String login = resultSet.getString(LOGIN_COLUMN_LABEL);
-            String password = resultSet.getString(PASSWORD_COLUMN_LABEL);
-            UserRole userRole = UserRole.valueOf(userRoleValue);
-            String firstName = resultSet.getString(FIRST_NAME_COLUMN_LABEL);
-            String lastName = resultSet.getString(LAST_NAME_COLUMN_LABEL);
-
             user.setId(id);
+
+            String login = resultSet.getString(LOGIN_COLUMN_LABEL);
             user.setLogin(login);
+
+            String password = resultSet.getString(PASSWORD_COLUMN_LABEL);
             user.setPassword(password);
+
+            String userRoleValue = resultSet.getString(ROLE_COLUMN_LABEL);
+            UserRole userRole = UserRole.valueOf(userRoleValue);
             user.setUserRole(userRole);
+
+            String firstName = resultSet.getString(FIRST_NAME_COLUMN_LABEL);
             user.setFirstName(firstName);
+
+            String lastName = resultSet.getString(LAST_NAME_COLUMN_LABEL);
             user.setLastName(lastName);
 
             return user;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 

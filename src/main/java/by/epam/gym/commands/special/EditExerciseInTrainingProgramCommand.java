@@ -4,7 +4,6 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.service.ExerciseService;
 import by.epam.gym.servlet.Page;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,8 +23,6 @@ import static by.epam.gym.utils.MessageManager.INVALID_INPUT_DATA_MESSAGE_KEY;
  * @see by.epam.gym.commands.ActionCommand
  */
 public class EditExerciseInTrainingProgramCommand implements ActionCommand {
-
-    private static final Logger LOGGER = Logger.getLogger(EditExerciseInTrainingProgramCommand.class);
 
     /**
      * Implementation of command to edit exercise in training program.
@@ -49,7 +46,6 @@ public class EditExerciseInTrainingProgramCommand implements ActionCommand {
             return new Page(EDIT_TRAINING_PROGRAM_PAGE_PATH, false, INVALID_INPUT_DATA_MESSAGE_KEY);
         }
 
-        LOGGER.info("Exercise was edited successful.");
         return new Page(EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
     }
 }

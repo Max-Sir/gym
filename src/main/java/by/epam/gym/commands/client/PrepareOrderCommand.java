@@ -57,10 +57,9 @@ public class PrepareOrderCommand implements ActionCommand {
             Order order = orderService.prepareOrder(clientId, purchaseDateValue, durationValue, isPersonalTrainerNeedValue);
             session.setAttribute(ORDER_ATTRIBUTE, order);
 
-            LOGGER.info(String.format("Order for user - %d, was prepared successful.", clientId));
             return new Page(PAY_ORDER_PAGE_PATH, false);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

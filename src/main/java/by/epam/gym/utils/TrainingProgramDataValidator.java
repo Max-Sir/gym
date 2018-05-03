@@ -97,10 +97,10 @@ public class TrainingProgramDataValidator {
     }
 
     private boolean checkDiet(String diet) {
-        if (diet == null){
+        if (diet == null) {
             return false;
         }
-        if (diet.isEmpty()){
+        if (diet.isEmpty()) {
             return false;
         }
         Pattern pattern = Pattern.compile(DIET_PATTERN);

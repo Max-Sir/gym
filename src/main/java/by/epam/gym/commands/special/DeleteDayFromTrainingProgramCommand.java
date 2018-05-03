@@ -5,7 +5,6 @@ import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.service.TrainingProgramService;
 import by.epam.gym.servlet.Page;
 import by.epam.gym.utils.TrainingProgramDataValidator;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,8 +21,6 @@ import static by.epam.gym.utils.MessageManager.DAY_CAN_NOT_BE_DELETED_MESSAGE_KE
  * @see ActionCommand
  */
 public class DeleteDayFromTrainingProgramCommand implements ActionCommand {
-
-    private static final Logger LOGGER = Logger.getLogger(DeleteDayFromTrainingProgramCommand.class);
 
     /**
      * Implementation of command to delete day from training program.
@@ -47,7 +44,6 @@ public class DeleteDayFromTrainingProgramCommand implements ActionCommand {
 
         session.setAttribute(DAYS_AND_EXERCISES_ATTRIBUTE, changedDaysAndExercises);
 
-        LOGGER.info("Day was deleted from training program.");
         return new Page(Page.EDIT_TRAINING_PROGRAM_PAGE_PATH, false);
     }
 }

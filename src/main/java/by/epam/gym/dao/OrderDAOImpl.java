@@ -3,7 +3,6 @@ package by.epam.gym.dao;
 import by.epam.gym.entities.order.Order;
 import by.epam.gym.entities.order.OrderDurationType;
 import by.epam.gym.exceptions.DAOException;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -20,8 +19,6 @@ import java.util.Map;
  * @see Order
  */
 public class OrderDAOImpl extends AbstractDAOImpl<Order> {
-
-    private static final Logger LOGGER = Logger.getLogger(OrderDAOImpl.class);
 
     /**
      * Common queries.
@@ -92,8 +89,7 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order> {
             }
             return orders;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENT_ORDERS_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -119,8 +115,7 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order> {
 
             return price;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_PRICE_FOR_ORDER_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -132,13 +127,12 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order> {
      * @throws DAOException object if execution of query is failed.
      */
     public boolean hasClientActualOrder(int clientId) throws DAOException {
-        try(PreparedStatement preparedStatement = prepareStatementForQuery(SELECT_CLIENT_ACTUAL_ORDER_QUERY,clientId)) {
+        try (PreparedStatement preparedStatement = prepareStatementForQuery(SELECT_CLIENT_ACTUAL_ORDER_QUERY, clientId)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             return resultSet.next();
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", SELECT_CLIENT_ACTUAL_ORDER_QUERY));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -147,7 +141,6 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order> {
      *
      * @param entity the entity.
      * @return List object with parameters.
-     * @throws DAOException object if execution of query is failed.
      */
     @Override
     protected List<String> getEntityParameters(Order entity) {
@@ -233,7 +226,7 @@ public class OrderDAOImpl extends AbstractDAOImpl<Order> {
 
             return order;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 

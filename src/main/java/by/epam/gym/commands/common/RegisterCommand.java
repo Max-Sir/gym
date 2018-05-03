@@ -54,18 +54,16 @@ public class RegisterCommand implements ActionCommand {
             password = PasswordEncoder.encode(password);
             boolean isOperationSuccessful = userService.register(login, password, firstName, lastName);
             if (!isOperationSuccessful) {
-                LOGGER.info(String.format("User: login - %s, had some problems during registration.", login));
                 return new Page(Page.REGISTER_PAGE_PATH, false, REGISTRATION_FAILED_MESSAGE_KEY);
             }
 
             HttpSession session = request.getSession();
             session.setAttribute(IS_RECORD_INSERTED, true);
 
-            LOGGER.info(String.format("User: login - %s, registered successful.", login));
             return new Page(Page.LOGIN_PAGE_PATH, false, REGISTRATION_SUCCESSFUL_MESSAGE_KEY);
 
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

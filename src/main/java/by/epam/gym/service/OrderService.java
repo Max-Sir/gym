@@ -4,12 +4,10 @@ import by.epam.gym.dao.ConnectionManager;
 import by.epam.gym.dao.OrderDAOImpl;
 import by.epam.gym.entities.order.Order;
 import by.epam.gym.entities.order.OrderDurationType;
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.OrderCalculator;
 import by.epam.gym.utils.OrderDataValidator;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -27,8 +25,6 @@ import static by.epam.gym.service.DiscountService.NONE_DISCOUNT;
  */
 public class OrderService {
 
-    private static final Logger LOGGER = Logger.getLogger(OrderService.class);
-
     private static final int NOT_PAYED_ORDER_STATUS = 0;
     private static final int PAYED_ORDER_STATUS = 1;
 
@@ -45,9 +41,8 @@ public class OrderService {
             int clientId = Integer.parseInt(clientIdValue);
 
             return orderDAO.hasClientActualOrder(clientId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <hasClientActualOrder> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during has client actual order operation.", exception);
         }
     }
 
@@ -69,9 +64,8 @@ public class OrderService {
 
             OrderDAOImpl orderDAO = new OrderDAOImpl(connectionManager.getConnection());
             return orderDAO.updateFeedback(feedback, orderId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <add feedback> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during add feedback operation.", exception);
         }
     }
 
@@ -83,9 +77,8 @@ public class OrderService {
      * @throws ServiceException object if execution of method is failed.
      */
     public boolean payOrder(Order order) throws ServiceException {
-        ConnectionManager connectionManager = null;
+        ConnectionManager connectionManager = new ConnectionManager();
         try {
-            connectionManager = new ConnectionManager();
             connectionManager.startTransaction();
 
             order.setIsPayed(PAYED_ORDER_STATUS);
@@ -100,17 +93,12 @@ public class OrderService {
 
             connectionManager.commitTransaction();
             return true;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <pay order> operation.");
-            if (connectionManager != null) {
-                connectionManager.rollbackTransaction();
-            }
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            connectionManager.rollbackTransaction();
+            throw new ServiceException("Exception during pay order operation.", exception);
         } finally {
-            if (connectionManager != null) {
-                connectionManager.endTransaction();
-                connectionManager.close();
-            }
+            connectionManager.endTransaction();
+            connectionManager.close();
         }
     }
 
@@ -154,9 +142,8 @@ public class OrderService {
             order.setFeedback(null);
 
             return order;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <prepare order> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during prepare order operation.", exception);
         }
     }
 
@@ -172,9 +159,8 @@ public class OrderService {
             OrderDAOImpl orderDAO = new OrderDAOImpl(connectionManager.getConnection());
 
             return orderDAO.selectClientOrders(clientId);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find client order> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find client order operation.", exception);
         }
     }
 

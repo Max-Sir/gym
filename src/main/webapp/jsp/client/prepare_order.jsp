@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <fmt:bundle basename="page_content">
     <fmt:message key="order.form_title" var="title"/>
@@ -30,22 +30,22 @@
 <div class="prepare_order">
     <form method="POST" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="client_prepare_order"/>
-    <p><label>${pageScope.purchase_date}<input class="date_input" title="${pageScope.title_purchase_date}" id="purchase_date" type="date" name="start_date" onchange="checkDate()"/></label></p>
-    <p><label>
-        ${pageScope.duration}
-        <select title="${pageScope.title_duration}" class="duration_select" name="duration">
-            <option value="MONTH">${pageScope.month}</option>
-            <option value="HALF_YEAR">${pageScope.half_year}</option>
-            <option value="YEAR">${pageScope.year}</option>
-        </select>
-    </label>
-    </p>
-    <ul>
-        <li> ${pageScope.need_trainer}</li>
-        <li><input type="radio" name="is_personal_trainer_need" value="1">${pageScope.yes}</li>
-        <li><input type="radio" name="is_personal_trainer_need" value="0" checked>${pageScope.no}</li>
-    </ul>
-    <button class="prepare_order_confirm" id="button_confirm" type="submit" disabled>${pageScope.confirm} <i class="fa fa-check-circle-o" aria-hidden="true"></i></button>
+        <p><label>${pageScope.purchase_date}<input class="date_input" title="${pageScope.title_purchase_date}" id="purchase_date" type="date" name="start_date" onchange="checkDate()"/></label></p>
+        <p><label>
+            ${pageScope.duration}
+            <select title="${pageScope.title_duration}" class="duration_select" name="duration">
+                <option value="MONTH">${pageScope.month}</option>
+                <option value="HALF_YEAR">${pageScope.half_year}</option>
+                <option value="YEAR">${pageScope.year}</option>
+            </select>
+        </label>
+        </p>
+        <ul>
+            <li> ${pageScope.need_trainer}</li>
+            <li><input type="radio" name="is_personal_trainer_need" value="1">${pageScope.yes}</li>
+            <li><input type="radio" name="is_personal_trainer_need" value="0" checked>${pageScope.no}</li>
+        </ul>
+        <button class="prepare_order_confirm" id="button_confirm" type="submit" disabled>${pageScope.confirm} <i class="fa fa-check-circle-o" aria-hidden="true"></i></button>
     </form>
 </div>
 <script>

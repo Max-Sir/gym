@@ -62,10 +62,9 @@ public class SaveTrainingProgramCommand implements ActionCommand {
             session.removeAttribute(EXERCISES_ATTRIBUTE);
             session.setAttribute(IS_RECORD_INSERTED, true);
 
-            LOGGER.info(String.format("Training program: id - %d was saved successful.", trainingProgramId));
             return new Page(DESCRIBE_TRAINING_PROGRAM_PAGE_PATH, false, TRAINING_PROGRAM_SAVED_SUCCESSFUL_MESSAGE_KEY);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }

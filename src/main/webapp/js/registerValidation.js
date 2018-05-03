@@ -19,7 +19,7 @@ var firstName = document.getElementById("first_name");
 var lastName = document.getElementById("last_name");
 var login = document.getElementById("login");
 
-var submitChange = function() {
+var submitChange = function () {
     if (firstNameChecked && lastNameChecked && passChecked && loginChecked) {
         submit.disabled = false;
         submit.classList.add("active");
@@ -29,17 +29,17 @@ var submitChange = function() {
     }
 };
 
-var validColor = function(element) {
+var validColor = function (element) {
     element.classList.add("valid");
     element.classList.remove("notValid");
 }
 
-var notValidColor = function(element) {
+var notValidColor = function (element) {
     element.classList.add("notValid");
     element.classList.remove("valid");
 }
 
-var checkPassword = function() {
+var checkPassword = function () {
     if (password.value.search(passwordRegEx) > notFoundIndex ||
         password.value.length < minPasswordLength) {
         notValidColor(password);
@@ -56,7 +56,7 @@ var checkPassword = function() {
     submitChange();
 };
 
-var checkName = function() {
+var checkName = function () {
     if (firstName.value.search(punct) > notFoundIndex ||
         firstName.value.search(digit) > notFoundIndex ||
         firstName.value.length < 1) {
@@ -78,7 +78,7 @@ var checkName = function() {
     submitChange();
 };
 
-var checkLogin = function() {
+var checkLogin = function () {
     if (login.value.search(logRegEx) > notFoundIndex ||
         login.value.length <= minLoginLength) {
         notValidColor(login);

@@ -28,6 +28,7 @@ public class InsertFlagCleanFilter implements Filter {
 
     private static final String EDIT_TRAINING_PROGRAM_COMMAND = "special_edit_training_program";
     private static final String CREATE_TRAINING_PROGRAM_COMMAND = "trainer_create_training_program";
+    private static final String LOGIN_COMMAND = "common_login";
 
     private static final List<String> pages = new ArrayList<>();
     private static final List<String> commands = new ArrayList<>();
@@ -40,6 +41,7 @@ public class InsertFlagCleanFilter implements Filter {
 
         commands.add(EDIT_TRAINING_PROGRAM_COMMAND);
         commands.add(CREATE_TRAINING_PROGRAM_COMMAND);
+        commands.add(LOGIN_COMMAND);
     }
 
     /**

@@ -8,14 +8,14 @@ function mergeNodeLists(a, b) {
     return slice.call(a).concat(slice.call(b));
 }
 
-var values = mergeNodeLists(sets_values,repeats_values );
+var values = mergeNodeLists(sets_values, repeats_values);
 
 var jsRegEx = /[<>]+/;
 var notFoundIndex = -1;
 var isDietValid = true;
 var isValuesValid = true;
 
-var submitChange = function() {
+var submitChange = function () {
     if (isValuesValid && isDietValid) {
         submit.disabled = false;
         submit.classList.add("active_button");
@@ -25,12 +25,12 @@ var submitChange = function() {
     }
 };
 
-var validColor = function(element) {
+var validColor = function (element) {
     element.classList.add("valid");
     element.classList.remove("notValid");
 };
 
-var notValidColor = function(element) {
+var notValidColor = function (element) {
     element.classList.add("notValid");
     element.classList.remove("valid");
 };
@@ -46,7 +46,7 @@ for (i = 0; i < values.length; i++) {
 
 submitChange();
 
-var check = function() {
+var check = function () {
     var isValid = true;
     for (i = 0; i < values.length; i++) {
         if (values[i].value >= 1) {
@@ -61,12 +61,12 @@ var check = function() {
 }
 
 for (i = 0; i < values.length; i++) {
-    values[i].addEventListener("input", function() {
+    values[i].addEventListener("input", function () {
         check();
     });
 }
 
-var checkDiet = function() {
+var checkDiet = function () {
     if (diet.value.length < 12 || diet.value.search(jsRegEx) > notFoundIndex) {
         diet.classList.remove("valid_text_area");
         diet.classList.add("error_text_area");

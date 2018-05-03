@@ -1,611 +1,602 @@
-
 @font-face {
-  font-family: 'Caviar';
-  src: url("../fonts/Caviar/CaviarDreams.ttf");
+    font-family: 'Caviar';
+    src: url("../fonts/Caviar/CaviarDreams.ttf");
 }
 
 .page {
-  margin: 0;
-  padding: 0;
-  background: url("../img/background.jpg") no-repeat center center fixed;
-  background-size: cover;
-  background-color: grey;
-  color: white;
-  font-family: 'Caviar';
+    margin: 0;
+    padding: 0;
+    background: url("../img/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Caviar', serif;
 }
 
 .title {
-  text-align: center;
+    text-align: center;
 }
 
 .title h1 {
-  font-weight: 100;
+    font-weight: 100;
 }
 
 .title a {
-  color: white;
-  font-size: 40px;
+    color: white;
+    font-size: 40px;
 }
 
 .title a:hover {
-  color: #de81df;
+    color: #de81df;
 }
 
 .wrapper_form {
-  margin: 0 auto;
-  width: 300px;
-  height: 300px;
-  background-color: rgba(120, 120, 120, 0.7);
-  text-align: center;
-  border-radius: 8px;
-  padding-top: 30px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(120, 120, 120, 0.7);
+    text-align: center;
+    border-radius: 8px;
+    padding-top: 30px;
+    box-sizing: border-box;
+    margin: 0 auto 20px;
 }
 
 .log_input {
-  display: block;
-  border: 1px solid #000;
-  width: 250px;
-  margin: 0 auto;
-  padding: 10px 0 10px 0;
-  border-radius: 5px;
+    display: block;
+    border: 1px solid #000;
+    width: 250px;
+    margin: 0 auto;
+    padding: 10px 0 10px 0;
+    border-radius: 5px;
 }
 
 .log_button {
-  display: block;
-  margin: 0 auto;
-  width: 250px;
-  margin-top: 30px;
-  background-color: #72a4a0;
-  padding: 10px 0 10px 0;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 2px solid #4e9690;
-  font-weight: bold;
-  color: #fff;
-  font-family: 'Caviar';
+    display: block;
+    width: 250px;
+    margin: 30px auto 0;
+    background-color: #72a4a0;
+    padding: 10px 0 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid #4e9690;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Caviar', serif;
 }
 
 .log_button:hover {
-  background-color: #4e9690;
+    background-color: #4e9690;
 }
 
 .reg_link {
-  width: 300px;
-  height: 50px;
-  margin: 0 auto;
-  background-color: rgba(120, 120, 120, 0.7);
-  text-align: center;
-  border-radius: 8px;
-  padding-top: 15px;
-  box-sizing: border-box;
+    width: 300px;
+    height: 50px;
+    margin: 0 auto;
+    background-color: rgba(120, 120, 120, 0.7);
+    text-align: center;
+    border-radius: 8px;
+    padding-top: 15px;
+    box-sizing: border-box;
 }
 
 .reg_link .reg_button {
-  color: #de81df;
-  text-decoration: none;
+    color: #de81df;
+    text-decoration: none;
 }
 
 .reg_link .reg_button:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .table_user table {
-  border-radius: 8px;
-  width: 40%;
-  font-size: 20px;
-  margin: 0 auto;
-  padding: 10px;
-  color: white;
-  background-color: rgba(120, 120, 120, 0.7);
-  margin-bottom: 30px;
+    border-radius: 8px;
+    width: 40%;
+    font-size: 20px;
+    padding: 10px;
+    color: white;
+    background-color: rgba(120, 120, 120, 0.7);
+    margin: 0 auto 30px;
 }
 
 .table_user table th, .table_user table td {
-  text-align: center;
+    text-align: center;
 }
 
 .table_user table td a {
-  text-decoration: none;
-  color: #fff;
+    text-decoration: none;
+    color: #fff;
 }
 
 .table_user table td a:hover {
-  color: #de81df;
-  text-decoration: underline;
+    color: #de81df;
+    text-decoration: underline;
 }
 
 .navigation_buttons {
-  border-radius: 8px;
-  width: 30%;
-  font-size: 20px;
-  margin: 0 auto;
-  padding: 10px;
-  color: white;
-  background-color: rgba(120, 120, 120, 0.7);
+    border-radius: 8px;
+    width: 30%;
+    font-size: 20px;
+    margin: 0 auto;
+    padding: 10px;
+    color: white;
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .navigation_buttons ul {
-  display: flex;
-  justify-content: space-around;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
 }
 
 .navigation_buttons ul li {
-  list-style: none;
-  margin: 0;
+    list-style: none;
+    margin: 0;
 }
 
 .navigation_buttons ul li a {
-  color: #fff;
-  text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
 .navigation_buttons ul li a:hover {
-  color: #de81df;
-  text-decoration: underline;
+    color: #de81df;
+    text-decoration: underline;
 }
 
 .reg_form {
-  background-color: rgba(120, 120, 120, 0.7);
-  width: 250px;
-  border-radius: 8px;
-  margin: 0 auto;
-  padding: 10px;
+    background-color: rgba(120, 120, 120, 0.7);
+    width: 250px;
+    border-radius: 8px;
+    margin: 0 auto;
+    padding: 10px;
 }
 
 .reg_form input {
-  border-radius: 5px;
-  padding: 3px 0  3px 0;
-  border: none;
-  width: 100%;
+    border-radius: 5px;
+    padding: 3px 0 3px 0;
+    border: none;
+    width: 100%;
 }
 
 .valid {
-  background-color: rgb(138, 219, 219);
+    background-color: rgb(138, 219, 219);
 }
 
 .notValid {
-  background-color: #eca9bb;
+    background-color: #eca9bb;
 }
 
 .reg_form span {
-  display: block;
-  text-align: center;
+    display: block;
+    text-align: center;
 }
 
 .reg_form .reg_submit {
-  display: block;
-  width: 100%;
-  margin: 0 auto;
-  color: #de81df;
-  background-color: #fff;
-  padding: 10px;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    color: #de81df;
+    background-color: #fff;
+    padding: 10px;
 }
 
 .reg_form .active:hover {
-  background-color: rgb(138, 219, 219);
-  cursor: pointer;
-  color: #fff;
+    background-color: rgb(138, 219, 219);
+    cursor: pointer;
+    color: #fff;
 }
 
 .table_order table {
-  border-radius: 8px;
-  width: 98%;
-  font-size: 17px;
-  margin: 0 auto;
-  color: white;
-  background-color: rgba(120, 120, 120, 0.7);
-  margin-bottom: 30px;
+    border-radius: 8px;
+    width: 98%;
+    font-size: 15px;
+    color: white;
+    background-color: rgba(120, 120, 120, 0.7);
+    margin: 0 auto 30px;
 }
 
 .table_order table th, .table_order table td {
-  padding: 10px 20px 10px 20px;
-  text-align: left;
+    padding: 10px 20px 10px 20px;
+    text-align: left;
 }
 
 .table_order table td a {
-  text-decoration: none;
-  color: #fff;
+    text-decoration: none;
+    color: #fff;
 }
 
 .table_order table td a:hover {
-  color: #de81df;
+    color: #de81df;
 }
 
 .popup {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .popup span {
-  visibility: hidden;
-  width: auto;
-  background-color: #555;
-  color: #fff;
-  border-radius: 6px;
-  padding: 8px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -80px;
-  font-size: 15px;
+    visibility: hidden;
+    width: auto;
+    background-color: #555;
+    color: #fff;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+    font-size: 15px;
 }
 
 .popup span::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #555;
 }
 
 .show span {
-  visibility: visible;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeIn 1s;
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
 }
 
 @-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .pay_button {
-  box-sizing: border-box;
-  margin: 0 auto;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .pay_button ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
 }
 
 .pay_button li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .pay_button button {
-  font-family: 'Caviar';
-  color: white;
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .pay_button button:hover {
-  border-color: grey;
-  color: #de81df;
+    border-color: grey;
+    color: #de81df;
 }
 
 .pay_button button:active, button:focus {
-  outline: none;
-  border-color: grey;
+    outline: none;
+    border-color: grey;
 }
 
 .add_feedback {
-  font-size: 20px;
-  margin: 0 auto;
-  text-align: center;
-  border-radius: 8px;
+    font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 8px;
 }
 
 .add_feedback textarea {
-  font-family: 'Caviar';
-  outline: none;
-  color: white;
-  border-radius: 8px;
-  width: 500px;
-  height: 300px;
-  resize: none;
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    outline: none;
+    color: white;
+    border-radius: 8px;
+    width: 500px;
+    height: 300px;
+    resize: none;
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .add_feedback textarea:hover {
-  border-color: white;
+    border-color: white;
 }
 
 .add_feedback a {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
 }
 
 .add_feedback a:hover {
-  color: #de81df;
+    color: #de81df;
 }
 
 .add_feedback_confirm {
-  font-family: 'Caviar';
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .prepare_order {
-  font-size: 20px;
-  margin: 0 auto;
-  text-align: center;
+    font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .prepare_order_confirm {
-  margin-top: 1%;
-  font-family: 'Caviar';
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    margin-top: 1%;
+    font-family: 'Caviar', serif;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .prepare_order ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
 }
 
 .prepare_order li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .date_input {
-  font-family: 'Caviar';
-  border-radius: 5px;
-  border-color: grey;
-  text-align: center;
-  font-size: 15px;
+    font-family: 'Caviar', serif;
+    border-radius: 5px;
+    border-color: grey;
+    text-align: center;
+    font-size: 15px;
 }
 
 .duration_select {
-  font-family: 'Caviar';
-  border-radius: 5px;
-  border-color: grey;
-  text-align: center;
-  font-size: 15px;
+    font-family: 'Caviar', serif;
+    border-radius: 5px;
+    border-color: grey;
+    text-align: center;
+    font-size: 15px;
 }
 
 .prepare_order select:hover {
-  border-color: white;
+    border-color: white;
 }
 
 .create_exercise {
-  font-size: 20px;
-  margin: 0 auto;
-  text-align: center;
+    font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .create_exercise_confirm {
-  margin-top: 1%;
-  font-family: 'Caviar';
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    margin-top: 1%;
+    font-family: 'Caviar', serif;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
-
 .create_exercise textarea {
-  font-family: 'Caviar';
-  outline: none;
-  color: white;
-  border-radius: 8px;
-  width: 500px;
-  height: 300px;
-  resize: none;
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    outline: none;
+    color: white;
+    border-radius: 8px;
+    width: 500px;
+    height: 300px;
+    resize: none;
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .create_exercise textarea:hover {
-  border-color: white;
+    border-color: white;
 }
 
 .create_exercise_name {
-  width: 25%;
-  font-family: 'Caviar';
-  border-radius: 10px;
-  font-size: 15px;
+    width: 25%;
+    font-family: 'Caviar', serif;
+    border-radius: 10px;
+    font-size: 15px;
 }
 
 .create_exercise input:active, .create_exercise input:focus {
-  outline: none;
-  border-color: rgb(142, 154, 153);
+    outline: none;
+    border-color: rgb(142, 154, 153);
 }
 
 .show_exercise {
-  font-size: 20px;
-  text-align: center;
-  background-color: rgba(120, 120, 120, 0.7);
-  width: 70%;
-  margin: 0 auto;
-  border-radius: 10px;
+    font-size: 20px;
+    text-align: center;
+    background-color: rgba(120, 120, 120, 0.7);
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 10px;
 }
 
 .collapsible {
-  color: rgb(223, 208, 91);
-  cursor: pointer;
-  text-decoration: underline;
+    color: rgb(223, 208, 91);
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .active, .collapsible:hover {
-  color: #de81df;
+    color: #de81df;
 }
 
 .content {
-  display: none;
-  overflow: hidden;
+    display: none;
+    overflow: hidden;
 }
 
 .training_program_description {
-  font-family: 'Caviar';
-  font-size: 15px;
+    font-family: 'Caviar', serif;
+    font-size: 15px;
 }
 
 .training_program_description_top {
-  text-align: center;
-  font-size: 20px;
+    text-align: center;
+    font-size: 20px;
 }
 
 .training_program_description ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .training_program_description_day {
-  background-color: rgba(120, 120, 120, 0.7);
-  padding: 1%;
-  margin: 1%;
-  border-radius: 10px;
+    background-color: rgba(120, 120, 120, 0.7);
+    padding: 1%;
+    margin: 1%;
+    border-radius: 10px;
 }
 
 .training_program_client_buttons {
-  box-sizing: border-box;
-  margin: 0 auto;
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .training_program_client_buttons ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
 }
 
 .training_program_client_buttons li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .training_program_client_buttons button {
-  font-family: 'Caviar';
-  color: white;
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .training_program_client_buttons button:hover {
-  border-color: grey;
-  color: #de81df;
+    border-color: grey;
+    color: #de81df;
 }
 
 .training_program_client_buttons button:active, button:focus {
-  outline: none;
-  border-color: grey;
+    outline: none;
+    border-color: grey;
 }
 
 .create_training_program {
-  font-size: 20px;
-  margin: 0 auto;
-  text-align: center;
+    font-size: 20px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .create_training_program input {
-  border-radius: 3px;
+    border-radius: 3px;
 }
 
 .create_training_program button {
-  font-family: 'Caviar';
-  font-size: 20px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .not_active_button {
-  color: grey;
+    color: grey;
 }
 
 .active_button {
-  color: white;
+    color: white;
 }
 
 .active_button:hover {
-  border-color: grey;
-  color: #de81df;
+    border-color: grey;
+    color: #de81df;
 }
 
 .active_button:active, :focus {
-  outline: none;
-  border-color: grey;
+    outline: none;
+    border-color: grey;
 }
 
 .create_training_program textarea {
-  font-family: 'Caviar';
-  outline: none;
-  color: white;
-  border-radius: 8px;
-  width: 500px;
-  height: 300px;
-  resize: none;
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    outline: none;
+    color: white;
+    border-radius: 8px;
+    width: 500px;
+    height: 300px;
+    resize: none;
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .error_text_area {
-  border-color:  #de81df;
+    border-color: #de81df;
 }
 
 .valid_text_area {
-border-color:rgb(138, 219, 219);
+    border-color: rgb(138, 219, 219);
 }
 
 .create_training_program textarea:hover {
-  border-color: white;
+    border-color: white;
 }
 
 .create_training_program_number {
-  width: 30px;
-  border-radius: 3px;
+    width: 30px;
+    border-radius: 3px;
 }
 
 .wrapper_content {
-  margin: 0 auto;
-  width: 1000px;
+    margin: 0 auto;
+    width: 1000px;
 }
 
 .wrapper_content img {
-  margin-right: 20px;
-  float: left;
+    margin-right: 20px;
+    float: left;
 }
 
 .wrapper_content p {
-  font-size: 18px;
-  background-color: rgba(120, 120, 120, 0.7);
-  border-radius: 10px;
-  padding: 5px 0  5px 0;
+    font-size: 18px;
+    background-color: rgba(120, 120, 120, 0.7);
+    border-radius: 10px;
+    padding: 5px 0 5px 0;
 }
 
 .error {
-  display: block;
-  margin: 0 auto;
-  border-radius: 3px;
-  text-align: center;
-  background-color: rgba(240, 23, 192, 0.44);
-  width: 30%;
-  margin-bottom: 1%;
+    display: block;
+    border-radius: 3px;
+    text-align: center;
+    background-color: rgba(240, 23, 192, 0.44);
+    width: 30%;
+    margin: 0 auto 1%;
 }
 
 .clearfix:after {
@@ -615,104 +606,104 @@ border-color:rgb(138, 219, 219);
 }
 
 .error_wrapper {
-  background-color: rgba(240, 23, 192, 0.44);
-  font-size: 25px;
-  width: 70%;
-  border-radius: 10px;
-  margin: 0 auto;
+    background-color: rgba(240, 23, 192, 0.44);
+    font-size: 25px;
+    width: 70%;
+    border-radius: 10px;
+    margin: 0 auto;
 }
 
 .edit_training_program_wrapper {
-margin-left: auto;
-width: 98%;
+    margin-left: auto;
+    width: 98%;
 }
 
 .exercises_button input {
-  width: 40px;
-  border-radius: 3px;
+    width: 40px;
+    border-radius: 3px;
 }
 
 .exercises_button ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .exercises_button li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .edit_training_program_wrapper_button {
-  font-family: 'Caviar';
-  color: white;
-  font-size: 15px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    color: white;
+    font-size: 15px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .edit_training_program_wrapper_button:hover {
-  border-color: grey;
-  color: #de81df;
+    border-color: grey;
+    color: #de81df;
 }
 
 .edit_training_program_wrapper_button:active, :focus {
-  outline: none;
-  border-color: grey;
+    outline: none;
+    border-color: grey;
 }
 
 .save_button {
-  font-family: 'Caviar';
-  font-size: 15px;
-  border-radius: 5px;
-  border-color: rgba(120, 120, 120, 0.7);
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    font-size: 15px;
+    border-radius: 5px;
+    border-color: rgba(120, 120, 120, 0.7);
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
-.day_wrapper{
-  width: 95%;
-  padding: 1%;
-  background-color: rgba(31, 55, 78, 0.41);
-  border-radius: 10px;
-  margin: 1%;
+.day_wrapper {
+    width: 95%;
+    padding: 1%;
+    background-color: rgba(31, 55, 78, 0.41);
+    border-radius: 10px;
+    margin: 1%;
 }
 
 .add_exercise_wrapper input {
-  width: 40px;
-  border-radius: 3px;
+    width: 40px;
+    border-radius: 3px;
 }
 
 .diet_wrapper textarea {
-  font-family: 'Caviar';
-  outline: none;
-  color: white;
-  border-radius: 8px;
-  width: 500px;
-  height: 300px;
-  resize: none;
-  background-color: rgba(120, 120, 120, 0.7);
+    font-family: 'Caviar', serif;
+    outline: none;
+    color: white;
+    border-radius: 8px;
+    width: 500px;
+    height: 300px;
+    resize: none;
+    background-color: rgba(120, 120, 120, 0.7);
 }
 
 .diet_wrapper textarea:hover {
-  border-color: white;
+    border-color: white;
 }
 
-.diet_wrapper{
-  display: flex;
+.diet_wrapper {
+    display: flex;
 }
 
 .diet_wrapper button {
-float: right;
+    float: right;
 }
 
 .add_buttons ul {
-  list-style-type: none;
-  margin: 0 auto;
-  padding: 0;
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .add_buttons li {
-  display: inline-block;
+    display: inline-block;
 }
 
 .footer {

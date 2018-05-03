@@ -5,11 +5,9 @@ import by.epam.gym.dao.ExerciseDAOImpl;
 import by.epam.gym.dao.TrainingProgramDAOImpl;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.entities.exercise.ExerciseDifficultyLevel;
-import by.epam.gym.exceptions.ConnectionException;
 import by.epam.gym.exceptions.DAOException;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.utils.ExerciseDataValidator;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -23,8 +21,6 @@ import java.util.*;
  */
 public class ExerciseService {
 
-    private static final Logger LOGGER = Logger.getLogger(ExerciseService.class);
-
     private static final int DAY_NUMBER_INCREMENT_INDEX = 1;
 
     /**
@@ -37,9 +33,8 @@ public class ExerciseService {
      */
     public boolean addExercisesToTrainingProgram(int trainingProgramId, Map<Integer, List<Exercise>> daysAndExercises, boolean isCleanNeed) throws ServiceException {
 
-        ConnectionManager connectionManager = null;
+        ConnectionManager connectionManager = new ConnectionManager();
         try {
-            connectionManager = new ConnectionManager();
             connectionManager.startTransaction();
 
             if (isCleanNeed) {
@@ -73,17 +68,12 @@ public class ExerciseService {
 
             connectionManager.commitTransaction();
             return true;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <add exercise to training program> operation.");
-            if (connectionManager != null) {
-                connectionManager.rollbackTransaction();
-            }
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            connectionManager.rollbackTransaction();
+            throw new ServiceException("Exception during add exercises to training program operation.", exception);
         } finally {
-            if (connectionManager != null) {
-                connectionManager.endTransaction();
-                connectionManager.close();
-            }
+            connectionManager.endTransaction();
+            connectionManager.close();
         }
     }
 
@@ -99,9 +89,8 @@ public class ExerciseService {
             List<Exercise> exercises = exerciseDAO.selectAll();
 
             return exercises;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <find all exercises id and name> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during find all exercises id and name operation.", exception);
         }
     }
 
@@ -117,9 +106,8 @@ public class ExerciseService {
             ExerciseDAOImpl exerciseDAO = new ExerciseDAOImpl(connectionManager.getConnection());
 
             return exerciseDAO.insert(exercise);
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <create exercise> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException exception) {
+            throw new ServiceException("Exception during save exercise operation.", exception);
         }
     }
 
@@ -168,9 +156,7 @@ public class ExerciseService {
             int day = entry.getKey();
             if (day == dayNumber) {
                 List<Exercise> exercises = entry.getValue();
-                Iterator<Exercise> iterator = exercises.iterator();
-                while (iterator.hasNext()) {
-                    Exercise exercise = iterator.next();
+                for (Exercise exercise : exercises) {
                     int currentExerciseId = exercise.getId();
 
                     if (exerciseId == currentExerciseId) {
@@ -249,9 +235,8 @@ public class ExerciseService {
             exercises.add(exercise);
 
             return true;
-        } catch (ConnectionException | DAOException exception) {
-            LOGGER.warn("Exception during <add exercise in training program> operation.");
-            throw new ServiceException("Exception detected. " + exception);
+        } catch (DAOException e) {
+            throw new ServiceException("Exception during add exercise in training program operation.", e);
         }
     }
 }

@@ -2,7 +2,6 @@ package by.epam.gym.dao;
 
 import by.epam.gym.entities.Entity;
 import by.epam.gym.exceptions.DAOException;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,14 +19,16 @@ import java.util.Map;
 public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
     public static final String ID_COLUMN_LABEL = "id";
+
     public static final int EMPTY_RESULT = 0;
     public static final String NULL_PARAMETER = "null";
+
     public static final String SELECT_ALL_QUERY_KEY = "SELECT_ALL";
     public static final String SELECT_BY_ID_QUERY_KEY = "SELECT_BY_ID";
     public static final String DELETE_BY_ID_QUERY_KEY = "DELETE_BY_ID";
     public static final String INSERT_ENTITY_QUERY_KEY = "INSERT_ENTITY";
     public static final String UPDATE_ENTITY_QUERY_KEY = "UPDATE_ENTITY";
-    private static final Logger LOGGER = Logger.getLogger(AbstractDAOImpl.class);
+
     private final Map<String, String> commonQueries;
     protected Connection connection;
 
@@ -63,8 +64,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return entities;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -89,8 +89,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return entity;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -156,8 +155,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return queryResult != EMPTY_RESULT;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -175,8 +173,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return queryResult != EMPTY_RESULT;
         } catch (SQLException exception) {
-            LOGGER.warn(String.format("Sql exception during %s.", sqlQuery));
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -206,7 +203,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return preparedStatement;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
     }
 
@@ -236,7 +233,7 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
 
             return preparedStatement;
         } catch (SQLException exception) {
-            throw new DAOException("SQL exception detected. " + exception);
+            throw new DAOException(exception.getMessage(), exception);
         }
 
     }
@@ -246,7 +243,6 @@ public abstract class AbstractDAOImpl<T extends Entity> implements DAO<T> {
      *
      * @param entity the entity.
      * @return List object with parameters.
-     * @throws DAOException object if execution of query is failed.
      */
     protected abstract List<String> getEntityParameters(T entity);
 

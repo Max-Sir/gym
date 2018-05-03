@@ -3,7 +3,6 @@ package by.epam.gym.commands.common;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.servlet.Page;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpSession;
  * @see HttpServletRequest
  */
 public class LogoutCommand implements ActionCommand {
-
-    private static final Logger LOGGER = Logger.getLogger(LogoutCommand.class);
 
     /**
      * Implementation of commands that user use to sign out
@@ -34,7 +31,6 @@ public class LogoutCommand implements ActionCommand {
 
         session.invalidate();
 
-        LOGGER.info(String.format("User: login - %s logged out successful.", login));
         return new Page(Page.MAIN_PAGE_PATH, true);
     }
 }

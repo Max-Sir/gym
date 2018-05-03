@@ -1,6 +1,5 @@
 package by.epam.gym.pool;
 
-import by.epam.gym.exceptions.ConnectionException;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -65,7 +64,7 @@ public class ConnectionPool {
      *
      * @return first connection from pool.
      */
-    public Connection getConnection() throws ConnectionException {
+    public Connection getConnection() {
         Connection connection;
         poolLocker.lock();
 
@@ -79,7 +78,7 @@ public class ConnectionPool {
             connection = pool.poll();
             LOGGER.info("Connection was get successful.");
         } catch (InterruptedException exception) {
-            throw new ConnectionException("Can't get connection. ", exception);
+            throw new IllegalStateException("Can't get connection. ", exception);
         } finally {
             poolLocker.unlock();
         }

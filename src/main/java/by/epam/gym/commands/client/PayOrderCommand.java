@@ -46,10 +46,9 @@ public class PayOrderCommand implements ActionCommand {
             session.removeAttribute(ORDER_ATTRIBUTE);
             session.setAttribute(IS_RECORD_INSERTED, true);
 
-            LOGGER.info(String.format("Order of user - %d was payed successful", order.getClientId()));
             return new Page(Page.MAIN_PAGE_PATH, false, ORDER_WAS_PAYED_MESSAGE_KEY);
         } catch (ServiceException exception) {
-            LOGGER.error(String.format("Service exception detected in command - %s. ", getClass().getSimpleName()), exception);
+            LOGGER.error(exception.getMessage(), exception);
             return new Page(Page.ERROR_PAGE_PATH, true);
         }
     }
