@@ -3,15 +3,15 @@ package by.epam.gym.commands.trainer;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-import static by.epam.gym.servlet.Page.CREATE_TRAINING_PROGRAM_PAGE_PATH;
-import static by.epam.gym.servlet.Page.MAIN_PAGE_PATH;
+import static by.epam.gym.commands.Page.CREATE_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.commands.Page.MAIN_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.NO_CLIENT_FOR_TRAINING_PROGRAM_CREATION_MESSAGE_KEY;
 
 /**

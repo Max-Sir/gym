@@ -5,7 +5,7 @@ import by.epam.gym.entities.TrainingProgram;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.TrainingProgramService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.TreeMap;
 
-import static by.epam.gym.servlet.Page.DESCRIBE_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.commands.Page.DESCRIBE_TRAINING_PROGRAM_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.INFORMATION_NOT_FOUND_MESSAGE_KEY;
 
 /**

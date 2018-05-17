@@ -112,7 +112,7 @@ public class ConnectionPool {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                LOGGER.error("Exception was detected during pool closing." + exception);
+                LOGGER.error("Exception was detected during pool closing.", exception);
             }
         }
         LOGGER.info("Pool was closed successful.");

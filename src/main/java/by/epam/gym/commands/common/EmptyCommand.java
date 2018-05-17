@@ -1,7 +1,7 @@
 package by.epam.gym.commands.common;
 
 import by.epam.gym.commands.ActionCommand;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 
 import javax.servlet.http.HttpServletRequest;
 

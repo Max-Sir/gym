@@ -3,13 +3,13 @@ package by.epam.gym.commands.client;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.OrderService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static by.epam.gym.servlet.Page.ADD_FEEDBACK_PAGE_PATH;
+import static by.epam.gym.commands.Page.ADD_FEEDBACK_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.FEEDBACK_WAS_ADDED_MESSAGE_KEY;
 import static by.epam.gym.utils.MessageManager.FEEDBACK_WAS_NOT_ADDED_MESSAGE_KEY;
 

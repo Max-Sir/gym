@@ -3,7 +3,7 @@ package by.epam.gym.commands.common;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import by.epam.gym.utils.PasswordEncoder;
 import by.epam.gym.utils.UserDataValidator;
 import org.apache.log4j.Logger;

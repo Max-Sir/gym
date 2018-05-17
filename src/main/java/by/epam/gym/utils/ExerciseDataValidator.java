@@ -80,7 +80,7 @@ public class ExerciseDataValidator {
      * @return true if count is valid and false otherwise.
      */
     public boolean checkExerciseDuringEditOperation(int setsCount, int repeatsCount) {
-        return setsCount > MINIMUM_SETS_COUNT && repeatsCount > MINIMUM_REPEATS_COUNT;
+        return setsCount >= MINIMUM_SETS_COUNT && repeatsCount >= MINIMUM_REPEATS_COUNT;
     }
 
     private boolean checkLevel(String levelValue) {

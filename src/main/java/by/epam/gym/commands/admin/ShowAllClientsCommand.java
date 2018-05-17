@@ -4,7 +4,7 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static by.epam.gym.servlet.Page.SHOW_ALL_CLIENTS_PAGE_PATH;
+import static by.epam.gym.commands.Page.SHOW_ALL_CLIENTS_PAGE_PATH;
 
 /**
  * Command to show all clients.

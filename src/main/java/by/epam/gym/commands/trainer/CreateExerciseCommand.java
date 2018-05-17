@@ -4,15 +4,15 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.ExerciseService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import by.epam.gym.utils.ExerciseDataValidator;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static by.epam.gym.servlet.Page.CREATE_EXERCISE_PAGE_PATH;
-import static by.epam.gym.servlet.Page.SHOW_EXERCISE;
+import static by.epam.gym.commands.Page.CREATE_EXERCISE_PAGE_PATH;
+import static by.epam.gym.commands.Page.SHOW_EXERCISE;
 import static by.epam.gym.utils.MessageManager.EXERCISE_CREATION_FAILED_MESSAGE_KEY;
 import static by.epam.gym.utils.MessageManager.INVALID_INPUT_DATA_MESSAGE_KEY;
 

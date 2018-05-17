@@ -4,14 +4,14 @@ import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.user.User;
 import by.epam.gym.exceptions.ServiceException;
 import by.epam.gym.service.UserService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-import static by.epam.gym.servlet.Page.PERSONAL_CLIENTS_PAGE_PATH;
+import static by.epam.gym.commands.Page.PERSONAL_CLIENTS_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.INFORMATION_NOT_FOUND_MESSAGE_KEY;
 
 /**

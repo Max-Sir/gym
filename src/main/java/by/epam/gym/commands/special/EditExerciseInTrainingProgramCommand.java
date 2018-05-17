@@ -3,14 +3,14 @@ package by.epam.gym.commands.special;
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.entities.exercise.Exercise;
 import by.epam.gym.service.ExerciseService;
-import by.epam.gym.servlet.Page;
+import by.epam.gym.commands.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.gym.servlet.Page.EDIT_TRAINING_PROGRAM_PAGE_PATH;
+import static by.epam.gym.commands.Page.EDIT_TRAINING_PROGRAM_PAGE_PATH;
 import static by.epam.gym.utils.MessageManager.INVALID_INPUT_DATA_MESSAGE_KEY;
 
 

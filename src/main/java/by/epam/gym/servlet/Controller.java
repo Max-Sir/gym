@@ -2,6 +2,7 @@ package by.epam.gym.servlet;
 
 import by.epam.gym.commands.ActionCommand;
 import by.epam.gym.commands.CommandFactory;
+import by.epam.gym.commands.Page;
 import by.epam.gym.utils.MessageManager;
 
 import javax.servlet.RequestDispatcher;
