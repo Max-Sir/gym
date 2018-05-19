@@ -25,8 +25,8 @@
     <a href="${pageContext.request.contextPath}/jsp/common/main.jsp"><i class="fa fa-home" aria-hidden="true"></i></a>
     <h1>${pageScope.log_in}</h1>
 </div>
+<p class="error">${requestScope.message}</p>
 <div class="wrapper_form">
-    <p>${requestScope.message}</p>
     <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="common_login"/>
         <p><label>${pageScope.enter_login}<input class="log_input" type="text" name="login" value=""/></label></p>
