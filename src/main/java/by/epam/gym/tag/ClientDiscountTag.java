@@ -41,7 +41,7 @@ public class ClientDiscountTag extends TagSupport {
             JspWriter jspWriter = pageContext.getOut();
             jspWriter.write(String.format("%d%%):", discount));
         } catch (IOException | ServiceException exception) {
-            throw new JspException("Menu tag failed. " + exception);
+            throw new JspException("Menu tag failed.",exception);
         }
         return SKIP_BODY;
     }

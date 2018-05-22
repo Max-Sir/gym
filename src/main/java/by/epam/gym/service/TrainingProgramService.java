@@ -57,10 +57,8 @@ public class TrainingProgramService {
 
             throw new ServiceException("Exception during refuse training program operation.", exception);
         } finally {
-
             connectionManager.endTransaction();
             connectionManager.close();
-
         }
     }
 
@@ -167,9 +165,8 @@ public class TrainingProgramService {
     public TrainingProgram findTrainingProgramById(int clientId) throws ServiceException {
         try (ConnectionManager connectionManager = new ConnectionManager()) {
             TrainingProgramDAOImpl trainingProgramDAO = new TrainingProgramDAOImpl(connectionManager.getConnection());
-            TrainingProgram trainingProgram = trainingProgramDAO.selectClientTrainingProgram(clientId);
 
-            return trainingProgram;
+            return trainingProgramDAO.selectClientTrainingProgram(clientId);
         } catch (DAOException exception) {
             throw new ServiceException("Exception during find training program by id operation.", exception);
         }

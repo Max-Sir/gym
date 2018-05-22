@@ -52,6 +52,7 @@ public class FinishTrainingProgramCreationCommand implements ActionCommand {
             TrainingProgram trainingProgram = (TrainingProgram) session.getAttribute(TRAINING_PROGRAM_ATTRIBUTE);
             TrainingProgramService trainingProgramService = new TrainingProgramService();
             int trainingProgramId = trainingProgramService.saveTrainingProgram(trainingProgram);
+            trainingProgram.setId(trainingProgramId);
 
             ExerciseService exerciseService = new ExerciseService();
             boolean isResultSuccessful = exerciseService.addExercisesToTrainingProgram(trainingProgramId, daysAndExercises, false);

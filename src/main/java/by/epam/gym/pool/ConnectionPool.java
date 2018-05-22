@@ -71,12 +71,10 @@ public class ConnectionPool {
         try {
 
             if (pool.isEmpty()) {
-                LOGGER.info("Pool is empty.");
                 poolCondition.await();
             }
 
             connection = pool.poll();
-            LOGGER.info("Connection was get successful.");
         } catch (InterruptedException exception) {
             throw new IllegalStateException("Can't get connection. ", exception);
         } finally {
@@ -96,8 +94,6 @@ public class ConnectionPool {
 
         try {
             pool.addLast(connection);
-
-            LOGGER.info("Connection was returned successful.");
             poolCondition.signal();
         } finally {
             poolLocker.unlock();
@@ -115,6 +111,5 @@ public class ConnectionPool {
                 LOGGER.error("Exception was detected during pool closing.", exception);
             }
         }
-        LOGGER.info("Pool was closed successful.");
     }
 }
